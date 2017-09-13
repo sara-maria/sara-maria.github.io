@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    
+          <!-- Declare the character set of the document -->
+        <meta charset="UTF-8">
+
+        <!-- Describe the author of the page -->
+        <meta name="Sara Maria Sprinkhuizen" content="Sara Maria Sprinkhuizen">
+
+        <!-- Provide a description of your page -->
+        <meta name="Unwanted Uterus Expiration Reminders Awareness Page.">
+
+        <!-- List keywords of your page for search engines -->
+        <meta name="keywords" content="Uterus, Unsollicited, Advise, Pregnancy, Kids, 30-something">
+
+        <!-- Set the viewport -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      	
+        
+        <title>My Uterus. Not yours.</title>
+      
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono:300,400" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+		
+        
+<!--        <script type="text/javascript" src="./d3/d3.min.js"></script>-->
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+		
+        <script>
+        // Tracking Google analytics
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  
+            ga('create', 'UA-94002143-1', 'auto');
+            ga('send', 'pageview');
+      </script>
+        
+        
+        
+        <style type="text/css">             
+/*             layout boundary lines*/
+/*
+             *{
+                border: 1px solid orange !important;
+              }
+*/
+            
+            body{
+                font-family: 'Open Sans', sans-serif;
+                font-size:100%; 
+                font-weight:300;
+                height: 100vh; /*30em; /*500px;*/
+                width: 100vw; /*full width of screen*/  /*width:1500px;*/
+                overflow-y: hidden;
+                }
+            
+            #header {
+                font-family: 'Droid Sans Mono', monospace;
+/*                font-size: 2vw; */
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                height: 16vh; /*30em; /*500px;*/
+                width: 98%;
+                background-color:rgba(154, 113, 203, 0.26);
+                color:#444;
+                border: 4px solid rgba(239, 20, 213, 0.38) !important;
+                border-radius: 10px;
+
+            }
+            
+            h2 {
+                font-weight: 300;
+                font-size:3.3vw;
+                text-align: center;
+                margin-bottom: 0;
+                margin-top: -1px;
+                }             
+            
+            h3 {
+                font-weight: 100;
+                font-size:1.4vw;
+                text-align: center;
+                color:#444;
+                margin-top:4px;
+                }  
+            
+            #content {
+                height:85%; 
+                min-height: 70vh;
+                width:98%;
+                margin-top: 42px;
+                
+                display: -webkit-flex;
+                display: flex;
+                -webkit-flex-direction: row;
+                flex-direction: row;
+                
+                border: 4px solid rgba(239, 20, 213, 0.38) !important;
+                border-radius: 20px;
+                overflow: hidden;
+            }
+                    
+            #Uterus{
+                width:33%;
+            }
+            #counter{
+                width:33%;
+                font-weight: 300;
+                font-size:2.1vw;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                color:#444;
+                margin-top:44px;
+            }
+            #totalclock{
+                width:33%;
+            }
+            #time {
+                font-size:8.4vw;
+            }
+            #countingall{
+                font-size:8.4vw;
+            }
+            #totalclock{
+                font-weight: 300;
+                font-size:2.1vw;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                color:#444;
+                margin-top:44px;
+            }
+            
+            
+            #footer {
+                text-align: center;
+                font-size: .7em;
+                width:100vw;
+                height:5%; /*2.5em;*/
+                line-height: 2.5sem; 
+                vertical-align: bottom;
+                bottom:0;
+                }
+            
+            #footer-content {
+                position: relative;
+                bottom: -14px;
+                left: 0;
+                }
+            
+            a {
+                font-weight: 400;
+                color:#494949;
+                text-decoration:none;
+            }
+        
+            a:hover {
+                color:#9d9999;
+            }
+            
+            figure {
+                display: inline-block;
+                padding-top: 1px;
+                margin: 25px;
+                border-top: 1px solid #e5e5e5;
+
+            }
+            
+            figure img {
+                display: block;    
+                margin: 0 auto;
+            }
+
+            figure figcaption {
+                margin-top: 4px;
+                padding-top: 20px;
+                text-align: center;
+                font-size: 2vw;
+                font-weight: 500;
+                border-top: 1px solid #e5e5e5;
+
+            }
+
+            /*Code for image overlays*/
+            .block {
+                position: relative;
+                margin: 5px;
+                width: 20vw;
+                height: 20vw;
+                background: url("./images/output-uterus_and_notyours_wbg.png") no-repeat; 
+                background-size:100%; 
+            }
+
+            .overlay
+            {
+                width: 20vw;
+                height: 20vw;
+                background: url("./images/output-uterus_wbg.png") no-repeat; 
+                background-size:100%; 
+                -webkit-transition: opacity 1s ease-in-out;
+                -moz-transition: opacity 1s ease-in-out;
+                -ms-transition: opacity 1s ease-in-out;
+                -o-transition: opacity 1s ease-in-out;
+                transition: opacity 1s ease-in-out;
+            }
+
+            .block:hover .overlay {
+/*                filter:alpha(opacity=1);*/
+                opacity:0;
+            }
+
+        </style>
+        
+        
+        <script type="text/javascript">  
+   
+            function startTimer(duration, display) {
+                    var timer = duration, seconds;
+                    setInterval(function () {
+                        seconds = parseInt(timer % 60, 10);
+
+                        seconds = seconds < 10 ? "0" + seconds : seconds;
+                        
+                        display.textContent =  "00:" + seconds;
+
+                        if (--timer < 0) {
+                            timer = duration;
+                        }
+                    }, 1000);
+                }
+    
+        </script>
+	</head>
+	
+    
+    
+    
+    
+    
+    
+    <body>
+        
+<!--  Structure: -->
+    <div id="wrapper">
+        
+        <!--    // Header                       -->  
+        <div id="header">
+            <h2 id="headertitle">Ovaries-Expiration-Date-Reminder-Counter</h2>
+                <div>
+                    <h3>The one thing we really do not need reminders for.</h3>
+                </div>
+        </div>
+            
+        <!--    // Main content of vis            -->  
+        <div id="content">
+            
+                <!-- Three sections: body, disc, music--> 
+                <div id="Uterus">
+    
+                     <figure>
+                         <div class="block">
+                            <div class="overlay"></div>
+                        </div>
+                         <figcaption>Hover over the uterus <br> to see if it is yours!</figcaption>
+                    </figure>
+
+                </div>
+
+                <div id="counter">Another woman will be <br>reminded of <br>the expiration date <br>of her own ovaries in <br><span id="time"></span> <br>seconds</div>
+                            <script>                
+                                
+                            window.onload = function () {
+                                var sevenseconds = 7,
+                                    display = document.querySelector('#time');
+                                    startTimer(sevenseconds, display);
+                            };
+                            </script>
+                 
+            
+                <div id="totalclock">Total number of <br>women reminded <br>since you stumbled onto<br>this page: <br>
+                    <span id="countingall">1</span> <br></div>
+                
+                <script>
+                    debugger;
+                    var displaycounter = document.querySelector('#countingall');
+            
+                    setInterval(function () {
+                        debugger;
+                        totalnumber = displaycounter.textContent;
+                        totalnumber=parseInt(totalnumber)+1
+                        displaycounter.textContent = totalnumber;
+                    }, 8000);
+                
+                    </script>
+            </div>
+        </div>
+            </div>
+
+                
+        </div> <!--    end of main content    -->
+       
+      
+        <!--    // Footer with data details and credits            -->
+        <div id="footer">
+            
+            <div id="footer-content">
+                Ovaries Expiration Reminder Counter</a>  is created by <a href="http://www.saramaria.org/" target="_blank">Sara Maria</a>   |   <a href="https://saramaria.org/" target="_blank">Sara Maria 2017</a>
+            </div>
+        </div>
+      
+    </div> <!--    #end of content wrapper    -->
+	</body>
+
+</html>

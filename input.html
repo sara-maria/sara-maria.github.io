@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Character set of the document -->
+    <meta charset="UTF-8">
+
+    <!-- Page author -->
+    <meta name="Sara Maria Sprinkhuizen" content="Sara Maria Sprinkhuizen">
+
+    <!-- Page description -->
+    <meta name="Collection of creations by Sara Sprinkhuizen.">
+
+   <!-- Keywords  -->
+    <meta name="keywords" content="Sara,Maria,Sprinkhuizen,MRI,Thermometry,Physics,Data,Visualization,Science,Design">
+
+    <!-- Set the viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sara Maria</title>
+
+    <!-- Styles and Fonts -->
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa|Open+Sans:300" rel="stylesheet">
+    
+    <!-- JS -->
+    <script src="./javascripts/d3.min.js" charset="utf-8"></script>
+    
+    <!-- Tracking -->
+    <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-94002143-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+</head>
+    
+<body>
+            
+    <div id="wrapper">
+        <div id="header">
+            <h1 id="headtitle"><a href="./index.html" style="text-decoration:none">Sara <br> Maria.</a></h1>
+       </div>
+        
+        <!--        MENU -->
+        <nav id="menu">
+            <ul style="list-style-type:none">
+                <li><a href="./time.html">Time</a></li>
+                <li><a href="./place.html">Place</a></li>
+                <li><a href="./input.html" style="color:#ffc2cc">Input</a></li>
+                <li><a href="./output.html">Output</a></li>
+            </ul>
+        </nav>
+
+    <div id="section">
+        
+    <h3>A peek inside.</h3>
+            <p>Let's start with a little insight into my mind.</p>
+                <!--  Overay MRI on top of picture-->
+<!--                <figure style="width:100%; height:100%">-->
+                    <div class="block">
+                    <div class="overlay"></div>
+                    </div>
+                    <figcaption>Hover over the picture for a peek into my brain.</figcaption>
+<!--        </figure>-->
+
+        <div id="spacer"></div> 
+
+        <p>And now let's see what kind of input those neurons have had to endure.</p>
+        
+        <div id="spacer"></div> 
+        
+        <h3>Medical data visualization.</h3> 
+
+    <p>Being trained in medical image processing, a lot of hours have been put into reading, processing, and clearly displaying medical image data. The graphical user interface shown below is a project I worked on over 11 years ago. It was written in Matlab, and it computes temperature maps from MRI scanner data. <br><br>The experiment below is a very first step towards heating (and thus killing) tumorous tissue in patients: a gel phantom is being heated by a laser fiber, and this is monitored by MRI temperature mapping.</p>
+
+            
+<div style="width:100%">  
+<figure>        
+    <video id="myVideo" width="100%" height="100%" poster="./images/ScreenShot_2D_ThermoGUI.png" preload="auto" src="./movies/ThermoGUI_2D_and_3D_conv.mp4" type="video/mp4" controls="true">
+
+        <object type="application/x-shockwave-flash"
+                src="player.swf?etc...">
+        <p>Your browser does not support the video tag. Download <a href="./movies/ThermoGUI_2D_and_3D_conv.mov"> the video here.</a><br />
+        or use a different browser.</p>
+        </object>
+    </video>
+    <figcaption>ThermoGUI - Sara Maria - 2006. <br>Measuring temperature over time with an MRI scanner.           </figcaption>
+</figure>        
+</div>
+    
+
+    <div id="spacer"></div>  
+
+    <h3>Computer Simulations.</h3>  
+        <p>MRI scanners are giant, very strong magnets. A large part of my research work therefore consisted of conducting computer simulations of magnetic field disctributions of various tissues. </p> 
+        <p>The following simulation was done in 2010 to study the potential errors in MRI-based temperature maps during thermal ablation of breast tumors. With thermal ablation, tumorous tissue is detroyed by heating it. This heating can be done in various ways, with RF, using laser fibers, or with High Intensity Focussed Ultrasound. When you heat up breast tissue, its magnetic properties change. This leads to changes in the MRI measurement that may impact MRI-based temperature maps, leading to temperature errors. The following images display the result of this simulation, showing that errors indeed occurred. </p>
+
+        <p><div style="width:100%">
+    
+<!--    Initial reference: href="http://onlinelibrary.wiley.com/doi/10.1002/mrm.22531/epdf"-->
+        <figure><a href="./materials/Sprinkhuizen-MagnResonMed2010Nov64(5)-1360-72.pdf" target="_blank"> <img src="./images/breast_mri_tumor_segmentation_plus_simulation.jpg" style="width:80%"></a>
+                <figcaption> <a href="./materials/Sprinkhuizen-MagnResonMed2010Nov64(5)-1360-72.pdf" target="_blank"> Sprinkhuizen et al. Magn Reson Med. 2010 Nov;64(5):1360-72.</a> <br> Simulation of errors in MR thermometry during thermal therapy of breast cancer </figcaption></figure>
+        </div></p>
+        
+    <div id="spacer"></div>  
+        
+        <p>Another example: properties of water diffusion can be measured with MRI scanners. One diffusion-based MRI application that I worked on was measuring bone quality. The pore spaces of trabecular bone contain water, and the diffusion of this water depends on the pore size. Since pore size is a measure for bone quality, diffusion in these pores is an indirect measure for bone quality. Simulations of the effect of trabecular bone micro-architecture on the MRI signal were done to support this theory. </p>
+        <p><div style="width:100%">
+        <figure><a href="./materials/Sprinkhuizen-MagnResonMed2014Dec72(6)-1499%E2%80%931508.pdf" target="_blank"> <img src="./images/FIG1_CT_and_rendering_and_map_andMC.jpg" style="width:80%"></a>
+            
+<!--    Initial reference: href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4077997/"-->    
+        <figcaption> <a href="./materials/Sprinkhuizen-MagnResonMed2014Dec72(6)-1499%E2%80%931508.pdf" target="_blank"> Sprinkhuizen et al. Magn Reson Med. 2014 Dec; 72(6): 1499–1508.</a> <br> Simulation of water diffusion in pores of trabecular bone </figcaption></figure>   
+        </div></p>        
+
+
+    <div id="spacer"></div>        
+
+    <h3>Thesis.</h3>  
+    <p>The MRI research was written up in a thesis. You can download it by clicking on the cover below:</p>
+    <p><div style="width:100%">
+    
+<!--    Initial reference: href="http://onlinelibrary.wiley.com/doi/10.1002/mrm.22531/epdf"-->
+        <figure><a href="./materials/Thesis_SMSprinkhuizen.pdf" target="_blank"> <img src="./images/Thesis_cover_SMSprinkhuizen.png" style="width:50%"></a>
+                <figcaption> MR Thermometry for guidance of thermal therpy <br> Sara Maria Sprinkhuizen - 2010 <br> To download: click on image or <a href="./materials/Thesis_SMSprinkhuizen.pdf" target="_blank"> here </a></figcaption></figure>
+        </div></p>
+
+
+    <div id="spacer"></div>        
+
+    <h3>Data visualization.</h3>  
+    <p>Over the summer of 2016, it became very clear that I wanted to take a deep dive into data visualization. Ever since, quite some things have been done, written, created, and read - hours of <a href="https://www.udacity.com" target="_blank">online courses</a>, more <a href="https://www.coursera.com" target="_blank">online courses</a>, visualizations of data, listening to <a href="http://datastori.es" target="_blank">podcasts</a>, measurement of health status of a group of people who changed their eating pattern, random walk simulations, reading <a href="https://www.edwardtufte.com/tufte/books_vdqi" target="_blank">books</a>, meeting people and even a <a href="https://www.northeastern.edu/csshresearch/bostonarearesearchinitiative/2016/10/04/bari-co-hosts-inaugural-hubweek-hackathon/" target="_blank">hackathon</a>.
+    </p>
+    <p>The results of that adventure are shown in <a href="./output.html">output</a>.</p>
+
+    <div id="largespacer"></div>        
+
+    </div>   <!-- End of section div-->
+    
+<div id="footer">
+     <small><a href="https://pages.github.com" target="_blank"> Hosted on GitHub Pages </a>| <a href="https://sara-maria.github.io/">Sara Maria 2016</a> | <a href="mailto:sara.sprinkhuizen@gmail.com">Write a note</a> </small>
+</div>  
+
+</div> <!-- End of wrapper div-->
+   
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Character set of the document -->
+    <meta charset="UTF-8">
+
+    <!-- Page author -->
+    <meta name="Sara Maria Sprinkhuizen" content="Sara Maria Sprinkhuizen">
+
+    <!-- Page description -->
+    <meta name="Collection of creations by Sara Sprinkhuizen.">
+
+   <!-- Keywords  -->
+    <meta name="keywords" content="Sara,Maria,Sprinkhuizen,MRI,Thermometry,Physics,Data,Visualization,Science,Design">
+
+    <!-- Set the viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sara Maria</title>
+
+    <!-- Styles and Fonts -->
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa|Open+Sans:300" rel="stylesheet">
+    
+    <!-- JS -->
+    <script src="./javascripts/d3.min.js" charset="utf-8"></script>
+    
+    <!-- Tracking -->
+    <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-94002143-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    
+    <style>
+        /*  Globe Map markers style*/
+          circle {
+                fill: rgb(247,148,32);
+                stroke: #444;
+                stroke-width: 0.4;
+                opacity: 0.7;
+            }   
+    </style>
+    
+    <script type="text/javascript">  
+    
+    function draw(geo_data) {
+        var w=document.getElementById("globe").offsetWidth;
+        var widthglobe = w;
+        var heightglobe = w;
+
+        var margin = 1,
+            width =  widthglobe - margin,
+            height = heightglobe - margin,
+            rotate = [180,180],
+            graticule = d3.geo.graticule(),
+            scale = 20+w/5;
+      
+         // DRAW GLOBE --------------------------------------------------------------------        
+         var projection = d3.geo.azimuthalEqualArea()
+//           var projection = d3.geo.mercator()
+//           var projection = d3.geo.equirectangular() // converts lon and lat into pixel domain
+//           var projection = d3.geo.azimuthalEqualArea()
+//           var projection = d3.geo.orthographic()
+//           var projection = d3.geo.stereographic()
+            .scale(scale)
+            .translate([width / 2, height / 2])
+            .precision(0.3)
+            .clipAngle(180 - 1e-3)
+            .rotate(rotate);
+
+         var path = d3.geo.path().projection(projection);
+         var m0,
+             o0;
+
+function plot_points(data) {  
+        
+    // John Caplewski's example of DRAG function:       
+    var drag = d3.behavior.drag()
+        .on("dragstart", function() {
+        // Adapted from http://mbostock.github.io/d3/talk/20111018/azimuthal.html and updated for d3 v3
+          var proj = projection.rotate();
+          m0 = [d3.event.sourceEvent.pageX, d3.event.sourceEvent.pageY];
+          o0 = [proj[0],-proj[1]];
+        })
+        .on("drag", function() {        
+          if (m0) {
+            var m1 = [d3.event.sourceEvent.pageX, d3.event.sourceEvent.pageY],
+                o1 = [o0[0] + (m0[0] - m1[0]) / 4, o0[1] + (m1[1] - m0[1]) / 4];
+            projection.rotate([o1[0], -o1[1]]); 
+
+                function aggregation_by_id(leaves){ // aggregation of the data per ID.
+                        var total = d3.sum(leaves, function(d){ return d['circlesize']; });
+                        var coords = leaves.map(function(d) { return projection([+d.long, +d.lat]) });
+                        var center_x = d3.mean(coords,function(d){ return d[0] })
+                        var center_y = d3.mean(coords,function(d){ return d[1] })
+
+                        return {
+                            'circlesize' : total,
+                            'x' : center_x,
+                            'y' : center_y,
+                        }
+                    };
+
+            var nested = d3.nest()
+                        .key(function(d){  //grouping. In this case: group data by ID
+                            return d['id'];   
+                            })
+                        .rollup(aggregation_by_id)
+                        .entries(data);  //passes data through nest pipeline
+
+            // scale radius of circles:
+            var circlesize_max = d3.max(nested, function(d) {
+                        return d.values.circlesize;
+                    });
+
+            var radius = d3.scale.sqrt()
+                                .domain([0, circlesize_max])
+                                .range([0,7]);
+
+            function key_func(d){ //abstracting the key
+                    return d['key']; 
+                }
+
+            // remove old circles
+              var circles = svg.selectAll("circle")
+                                .data(data, key_func)
+              debugger;
+               circles.exit().remove();
+
+            // now add circles at new locations to map
+            svg.append('g')
+                .attr("class","bubble")
+                .selectAll("circle")
+                .data(nested)
+                .enter()
+                .append("circle")
+                .attr("cx",function(d){ return d.values.x })
+                .attr("cy",function(d){ return d.values.y })
+                .attr("r",function(d){ return radius(d.values.circlesize) });
+            }
+
+            // Update the map plus circle markers
+            path = d3.geo.path().projection(projection);
+            d3.selectAll("path").attr("d", path);
+        }); // end of DRAG
+    
+    var svg = d3.select("body").select("#section").select("#globe").append("svg")
+            .attr("width", width + margin)
+            .attr("height", height + margin)
+            .call(drag);
+
+    var map = svg.selectAll('path')
+             .data(geo_data.features)
+             .enter()
+             .append('path')
+             .attr('d', path);
+    
+        map.style('fill', '#a3a0a0')
+            .style('stroke', '#444')
+            .style('stroke-width', 0.2);
+
+     // DRAW POINTS ON MAP --------------------------------------------------------------------        
+        function aggregation_by_id(leaves){ // aggregation of the data per ID.
+                    var total = d3.sum(leaves, function(d){ return d['circlesize']; });
+                    var coords = leaves.map(function(d) { return projection([+d.long, +d.lat]) });
+                    var center_x = d3.mean(coords,function(d){ return d[0] })
+                    var center_y = d3.mean(coords,function(d){ return d[1] })
+                    
+                    return {
+                        'circlesize' : total,
+                        'x' : center_x,
+                        'y' : center_y,
+                    }
+                };
+          
+        var nested = d3.nest()
+                    .key(function(d){  //grouping. In this case: group data by ID
+                        return d['id'];   
+                        })
+                    .rollup(aggregation_by_id)
+                    .entries(data);  //passes data through nest pipeline
+
+     // scale radius of circles:
+        var circlesize_max = d3.max(nested, function(d) {
+                    return d.values.circlesize;
+                });
+            
+        var radius = d3.scale.sqrt()
+                            .domain([0, circlesize_max])
+                            .range([0,7]);
+            
+        function key_func(d){ //abstracting the key
+                return d['key']; 
+            }
+
+        // now add to map
+        svg.append('g')
+            .attr("class","bubble")
+            .selectAll("circle")
+            .data(nested)
+            .enter()
+            .append("circle")
+            .transition()
+            .duration(500)
+            .attr("cx",function(d){ return d.values.x })
+            .attr("cy",function(d){ return d.values.y })
+            .attr("r",function(d){ return radius(d.values.circlesize) });
+
+    }; // end plot points
+         
+        d3.csv("./graphdata/sara_lived_worked_new.csv", function(d) {
+          d['circlesize'] = +d['circlesize'];
+          return d;            
+        }, plot_points);
+
+    }; // end of draw function
+        
+      </script>
+</head>
+ 
+    
+<body>
+        
+<!--        OVERALL WRAPPER -->        
+<div id="wrapper">
+        
+    <div id="header">
+    <h1 id="headtitle"><a href="./index.html" style="text-decoration:none">Sara <br> Maria.</a></h1>
+    </div>
+        
+    <!--        MENU -->
+    <nav id="menu">
+            <ul style="list-style-type:none">
+                <li><a href="./time.html">Time</a></li>
+                <li><a href="./place.html" style="color:#ffc2cc">Place</a></li>
+                <li><a href="./input.html">Input</a></li>
+                <li><a href="./output.html">Output</a></li>
+            </ul>
+        </nav>
+
+    <!--        MAIN CONTENT -->
+    <div id="section">
+
+        <div id="livedworked">
+            <h3> Dots on a shpere.</h3>
+            <!--Based on examples of MBostock and JCaplewski -->
+            <!-- http://bl.ocks.org/jczaplew/6457917
+            http://mbostock.github.io/d3/talk/20111018/azimuthal.html
+            -->
+            <p> I have always wanted to have a large, printed map of the earth, with little flags at all locations I've traveled to, lived in, and enjoyed. I also wanted it to be a map with the North and South Pole switched, just to see if and how that impacts <a href="http://www.bbc.com/future/story/20160614-maps-have-north-at-the-top-but-it-couldve-been-different" target="blank"> the world view.</a> I couldn't really find a good printed version of the flipped-poles map, so I drew a digital version instead. You can drag it around and point the poles into any direction.</p>
+            
+        <div id="spacer"></div>  
+            
+            <figure style="width:100%">   
+                <div id="globe">
+                     <script type="text/javascript">
+                    /*     Use D3 to load the GeoJSON file     */
+                        d3.json("./graphdata/world_countries.json", draw);
+                    </script>
+                  </div> <!-- End of Globe figure-->
+            <figcaption>Places I've visited, been born in, lived in, worked in, enjoyed, and traveled through. 
+                 <br></figcaption></figure>
+
+        </div> 
+        <div id="spacer"></div>  
+<p>On this map, the whole earth is projected onto a disc using the <a href="https://en.wikipedia.org/wiki/Lambert_azimuthal_equal-area_projection">Lambert azimuthal equal-area projection</a>. Inspired by work of <a href="http://mbostock.github.io/d3/talk/20111018/azimuthal.html" target="blank">
+                Mike Bostock</a> and <a href="http://bl.ocks.org/jczaplew/6457917" target="blank">John Caplewski</a>.</p>
+        <div id="largespacer"></div>  
+        
+        <div id="footer">
+     <small><a href="https://pages.github.com" target="_blank"> Hosted on GitHub Pages </a>| <a href="https://sara-maria.github.io/">Sara Maria 2016</a> | <a href="mailto:sara.sprinkhuizen@gmail.com">Write a note</a> </small>
+</div>
+    </div>    
+   
+    <script src="javascripts/scale.fix.js"></script>
+    <script src="javascripts/jQuery.js"></script>
+    
+</body>
+</html>
