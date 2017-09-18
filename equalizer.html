@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+	<html>
+	  <head>
+        <!-- Declare the character set of the document -->
+        <meta charset="UTF-8">
+        <!-- Support IE9-IE10 -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- Set the viewport -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Page Info -->
+        <title>Equalizer creations</title>
+        <meta name="author" content="Sara Maria Sprinkhuizen">
+        <meta name="description" content="Trying out variations on the equalizer theme.">
+<!--        <meta property="og:image" content="">-->
+<!--        <meta name="keywords" content="equalizer,audio,visualization,creations">-->
+<!--	    <link rel="stylesheet" href="./css/style.css" />-->
+	  </head>
+
+	  <body>
+          <style>
+/*
+                    *{
+                        border: 1px solid #e5e5e5 !important;
+                        }
+              
+*/
+              
+            #radius{
+                display: inline-block;
+                background-color: #444; 
+/*                background-color: "white"; */
+                }
+
+            #paths {
+                display: inline-block;
+                }
+          </style>
+          
+<!--------------------------------------------------------------------------->
+<!--    Based on work from Garry Smith -->
+<!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
+<!--------------------------------------------------------------------------->
+          
+        <audio id="audioElement" src="./jazzyjeff_biotabeat1.wav"></audio>
+        
+<!--        Buttons for interactivity with music  -->
+        <div>
+          <button onclick="document.getElementById('audioElement').play()">Play the Audio</button>
+          <button onclick="document.getElementById('audioElement').pause()">Pause the Audio</button>
+        </div>  
+
+<!--          Set up audio feature extraction -->
+        <script>
+            var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            var audioElement = document.getElementById('audioElement');
+            var audioSrc = audioCtx.createMediaElementSource(audioElement);
+            var analyser = audioCtx.createAnalyser();
+
+            // Bind our analyser to the media element source.
+            audioSrc.connect(analyser);
+            audioSrc.connect(audioCtx.destination);
+        </script>
+
+
+<!--////////////////////////////////////////////////////////////////////////////////-->
+<!--          Build website structure-->
+	    <div id="radius">
+                    <svg width="500" height="500">
+            
+<!--           ADDING GLOW EFFECTS-->
+<!--           From: https://stackoverflow.com/questions/9630008/how-can-i-create-a-glow-around-a-rectangle-with-svg-->
+<!--           https://jsfiddle.net/g57red1p/-->
+                        
+                         <defs>
+                          <!-- We set the filter effect area to be really big to guarantee we see it all... -->
+                          <filter id="white-glow" x="-5000%" y="-5000%" width="10000%" height="10000%">
+                              <feFlood result="flood" flood-color="#ffffff" flood-opacity="1"></feFlood>
+                              <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in"></feComposite>
+                              <feMorphology in="mask" result="dilated" operator="dilate" radius="2"></feMorphology>
+                              <feGaussianBlur in="dilated" result="blurred" stdDeviation="5"></feGaussianBlur>
+                              <feMerge>
+                                  <feMergeNode in="blurred"></feMergeNode>
+                                  <feMergeNode in="SourceGraphic"></feMergeNode>
+                              </feMerge>
+                          </filter>
+
+                          <!-- The only difference in this filter is its "flood-color" -->
+                          <filter id="yellow-glow" x="-5000%" y="-5000%" width="10000%" height="10000%">
+                              <feFlood result="flood" flood-color="#ffffea" flood-opacity=".8"></feFlood>
+                              <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in"></feComposite>
+                              <feMorphology in="mask" result="dilated" operator="dilate" radius="2.5"></feMorphology>
+                              <feGaussianBlur in="dilated" result="blurred" stdDeviation="3.5"></feGaussianBlur>
+                              <feMerge>
+                                  <feMergeNode in="blurred"></feMergeNode>
+                                  <feMergeNode in="SourceGraphic"></feMergeNode>
+                              </feMerge>
+                          </filter>
+
+                        </defs>
+            
+            
+                    </svg>
+        </div>
+        <div id="paths">
+        </div>
+
+<!--////////////////////////////////////////////////////////////////////////////////-->
+
+          
+          
+          
+<!--////////////////////////////////////////////////////////////////////////////////-->
+<!--          CIRCLES WITH CHANGING RADIUS-->
+<!--          // from https://bl.ocks.org/mbostock/2d466ec3417722e3568cd83fc35338e3-->
+<!--////////////////////////////////////////////////////////////////////////////////-->
+<!--        <script src="https://d3js.org/d3.v4.min.js"></script>-->
+          <script src="./d3.v4.min.js" charset="utf-8"></script>
+          
+<!--          Javascript etc-->
+	    <script src="./jquery.min.js"></script>
+	    <script src="./equalizer-circular-app.js"></script>
+	  </body>
+	</html>
