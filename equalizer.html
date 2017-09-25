@@ -1,20 +1,38 @@
 <!DOCTYPE html>
 	<html>
 	  <head>
-        <!-- Declare the character set of the document -->
+         <!-- Declare the character set of the document -->
         <meta charset="UTF-8">
-        <!-- Support IE9-IE10 -->
+         <!-- Support IE9-IE10 -->
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <!-- Set the viewport -->
+          <!-- Set the viewport -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <!-- Page Info -->
-        <title>Equalizer creations</title>
+        <title>Biota Beats</title>
         <meta name="author" content="Sara Maria Sprinkhuizen">
-        <meta name="description" content="Trying out variations on the equalizer theme.">
-<!--        <meta property="og:image" content="">-->
-<!--        <meta name="keywords" content="equalizer,audio,visualization,creations">-->
-<!--	    <link rel="stylesheet" href="./css/style.css" />-->
+        <meta name="description" content="Biota Beats - A microbial record player developed by the EMW Street Bio team.">
+<!--        <meta property="og:image" content="./images/circular-equalizer.png">-->
+        <meta name="keywords" content="Biota,Beats,microbiome,microbiota,bacteria,EMW,Street,Bio,record,player,DJ,music,art,data">
+        
+            <!-- Styling -->
+<!--            <link href="./stylesheets/style.css" rel="stylesheet">   -->
+        
+             <!-- Javascripts -->
+            <script src="./js/d3.v4.min.js" charset="utf-8"></script>
+            <script src="./js/jquery.min.js"></script>
+           
+
+        <!--------------------------------------------------------------------------->
+        <!--    MUSIC EQUALIZER                                   ------------------->            
+        <!--    Based on work from Garry Smith                                     -->
+        <!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
+        <!--------------------------------------------------------------------------->  
+        <!-- Prepare audioelements to be called later:-->
+                <audio id="audioElement" src="./audio/jazzyjeff_biotabeat1.wav"></audio>
+        <!-- Prepare general audioelement to hold the audiofiles later:        -->
+                <audio id="audioElementWrapper" class="audiobutton" src="" type="audio/mpeg"></audio>
+        <!--------------------------------------------------------------------------->  
 	  </head>
 
 	  <body>
@@ -23,102 +41,190 @@
                     *{
                         border: 1px solid #e5e5e5 !important;
                         }
-              
 */
               
             #radius{
                 display: inline-block;
                 background-color: #444; 
-/*                background-color: "white"; */
                 }
 
-            #paths {
-                display: inline-block;
+            #petricircle {
+                position:absolute;
+                z-index: 1; 
                 }
+              
+              .arc path {
+                    stroke: #444;
+/*                    fill:"none";*/
+                }
+
+              
           </style>
           
-<!--------------------------------------------------------------------------->
-<!--    Based on work from Garry Smith -->
-<!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
-<!--------------------------------------------------------------------------->
-          
-        <audio id="audioElement" src="./jazzyjeff_biotabeat1.wav"></audio>
-        
-<!--        Buttons for interactivity with music  -->
-        <div>
-          <button onclick="document.getElementById('audioElement').play()">Play the Audio</button>
-          <button onclick="document.getElementById('audioElement').pause()">Pause the Audio</button>
-        </div>  
+            <!--------------------------------------------------------------------------->
+            <!--    Based on work from Garry Smith -->
+            <!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
+            <!--------------------------------------------------------------------------->
+            <!--        Buttons for interactivity with music  -->
+                    <div>
+                      <button onclick="document.getElementById('audioElement').play()">Play the Audio</button>
+                      <button onclick="document.getElementById('audioElement').pause()">Pause the Audio</button>
+                    </div>  
 
-<!--          Set up audio feature extraction -->
+            <!--          Set up audio feature extraction -->
+                    <script>
+                        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                        var audioElement = document.getElementById('audioElement');
+                        var audioSrc = audioCtx.createMediaElementSource(audioElement);
+                        var analyser = audioCtx.createAnalyser();
+
+                        // Bind our analyser to the media element source.
+                        audioSrc.connect(analyser);
+                        audioSrc.connect(audioCtx.destination);
+                    </script>
+
+
+        <!--////////////////////////////////////////////////////////////////////////////////-->
+        <!--          Build website structure-->
+        <!--////////////////////////////////////////////////////////////////////////////////-->
+        <div id="wrapper">
+            <!--    Main content of vis            -->  
+            <div id="content">
+                <!--    Main svg container              -->  
+                <svg id="colonies" width="800" height="800">
+                            <!--           ADDING GLOW EFFECTS-->
+                            <!--           From: https://stackoverflow.com/questions/9630008/how-can-i-create-a-glow-around-a-rectangle-with-svg-->
+                            <!--           https://jsfiddle.net/g57red1p/-->
+                                <defs>
+                                  <!-- Filter effect area is set really big to guarantee we see it all... -->
+                                  <!-- Control filter color with "flood-color" -->
+                                  <filter id="yellow-glow" x="-5000%" y="-5000%" width="10000%" height="10000%">
+<!--                                      <feFlood result="flood" flood-color="#ffffea" flood-opacity=".8"></feFlood>-->
+                                      <feFlood result="flood" flood-color="#6c6c1c" flood-opacity=".8"></feFlood>
+                                      <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in"></feComposite>
+                                      <feMorphology in="mask" result="dilated" operator="dilate" radius="2.5"></feMorphology>
+<!--                                      <feGaussianBlur in="dilated" result="blurred" stdDeviation="3.5"></feGaussianBlur>-->
+                                      <feGaussianBlur in="dilated" result="blurred" stdDeviation="5.5"></feGaussianBlur>
+                                      <feMerge>
+                                          <feMergeNode in="blurred"></feMergeNode>
+                                          <feMergeNode in="SourceGraphic"></feMergeNode>
+                                      </feMerge>
+                                  </filter>
+                                </defs>
+                </svg> <!-- end colonies svg-->
+            </div>  <!-- end content-->
+        </div> <!-- end wrapper-->
+          
+        <!--          End website structure-->
+        <!--////////////////////////////////////////////////////////////////////////////////-->
+
+          
+          
+<!--       // 2. Kick off equalizer visualization! --------------------------------->
+          <script src="./js/equalizer-circular-app.js"></script>
+
+          
+        <!--////////////////////////////////////////////////////////////////////////////////-->
+        <!--          Javascript etc-->
         <script>
-            var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            var audioElement = document.getElementById('audioElement');
-            var audioSrc = audioCtx.createMediaElementSource(audioElement);
-            var analyser = audioCtx.createAnalyser();
+              //////////////////////////////////////////////////////////////////////////
+              //   Define function to grow bacterial colonies with (called at the end)//
+              //////////////////////////////////////////////////////////////////////////
+              function growcolonies(dataset) {
+                    var cx = 400;//half width
+                    var cy = 400;//half height
+                    var radiusmax = 195;
 
-            // Bind our analyser to the media element source.
-            audioSrc.connect(analyser);
-            audioSrc.connect(audioCtx.destination);
-        </script>
+                    var svg = d3.select("body").select("#wrapper").select("#content").select("#colonies");
+                    var colonygroup = svg.append("g");
+                    var colcircles = colonygroup.selectAll('circle.col')
+                            .data(dataset)  
+                            .enter().append("circle").classed('col', true)
+                            .attr("fill","#e8e891")
+                            .attr("opacity", .8)    
+                            .attr("stroke", "#444")
+                            .attr("stroke-width", 1)    
+                            .attr("cx", function(d){
+                                return cx + radiusmax*d.xc;
+                                })
+                            .attr("cy", function(d){
+                                    return cy + radiusmax*d.yc;
+                                })
+                            .attr("r", function(d){
+                                    return d.radcol;
+                                })
+                };  // end of growcolonies
+              
+              //////////////////////////////////////////////////////////////////////////
+              //////////////////// DRAW PETRI DISC PLUS CIRCULAR BANDS    //////////////
+              //////////////////////////////////////////////////////////////////////////	
+                 function drawDisc() {
+                        var cx = 400;//half width
+                        var cy = 400;//half heigth
+                        var rmax = 39;    
+                        var sections = 5; 
+                        var radiusmax = 195;
+                        var N = Array.from({length: sections}, (q, radiusmax) => radiusmax+1);
+                        for(var i=0; i<N.length; i++) { N[i] *= rmax;}
+                        var radius = N;
 
+                        // Create concentric circles to serve as background:    
+                        var petridisc = d3.select("body").select("#wrapper").select("#content")
+                                        .select("#colonies")
+                        var discgroup = petridisc.append("g");
+                        var petridisc = discgroup.selectAll('circle')
+                            .data(radius)
+                            .enter().append('circle')
+                            .attr('class','petricircle')
+                            .attr('cx', cx)
+                            .attr('cy', cy)
+                            .attr('r', function(d) { return d; })
+                            .attr('fill', 'none')
+//                            .attr('fill', '#3b2e2e')
+//                            .attr("opacity", .8)
+                            .attr("stroke", "grey")
+                            .attr("stroke-width", 1);
 
-<!--////////////////////////////////////////////////////////////////////////////////-->
-<!--          Build website structure-->
-	    <div id="radius">
-                    <svg width="500" height="500">
+                      //////////////////////////////////////////////////////////////////////////
+                      //////////////////// DRAW SWAB SECTIONS ("Pie slices") ///////////////////
+                      //////////////////////////////////////////////////////////////////////////	
+                        var Discdata = [1,1,1,1,1]; // width of each element
+
+                        var svg = d3.select("body").select("#wrapper").select("#content").select("svg"),
+                            width = +svg.attr("width"),
+                            height = +svg.attr("height"),
+                            g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+                        var pie = d3.pie();
+                        var path = d3.arc()
+                            .outerRadius(radiusmax)
+                            .innerRadius(0);
+
+                        var arc = g.selectAll(".arc")
+                            .data(pie(Discdata))
+                            .enter().append("g")
+                            .attr("class", "arc");
+
+                            arc.append("path")
+                              .attr("d", path)
+                              .attr("fill", "none");
+                };  // end of drawDisc
             
-<!--           ADDING GLOW EFFECTS-->
-<!--           From: https://stackoverflow.com/questions/9630008/how-can-i-create-a-glow-around-a-rectangle-with-svg-->
-<!--           https://jsfiddle.net/g57red1p/-->
-                        
-                         <defs>
-                          <!-- We set the filter effect area to be really big to guarantee we see it all... -->
-                          <filter id="white-glow" x="-5000%" y="-5000%" width="10000%" height="10000%">
-                              <feFlood result="flood" flood-color="#ffffff" flood-opacity="1"></feFlood>
-                              <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in"></feComposite>
-                              <feMorphology in="mask" result="dilated" operator="dilate" radius="2"></feMorphology>
-                              <feGaussianBlur in="dilated" result="blurred" stdDeviation="5"></feGaussianBlur>
-                              <feMerge>
-                                  <feMergeNode in="blurred"></feMergeNode>
-                                  <feMergeNode in="SourceGraphic"></feMergeNode>
-                              </feMerge>
-                          </filter>
+            // 1. Load Colony Coordinate data and PLOT these! -------------------------------
+            d3.csv("./data/dj_jeff_out_edited.csv",function(d){ 
+//                debugger;
+                // transform the data here
+                d['xc']=+d["xc"];
+                d['yc']=+d["yc"];
+                d['radcol']=+d["radcol"];
 
-                          <!-- The only difference in this filter is its "flood-color" -->
-                          <filter id="yellow-glow" x="-5000%" y="-5000%" width="10000%" height="10000%">
-                              <feFlood result="flood" flood-color="#ffffea" flood-opacity=".8"></feFlood>
-                              <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in"></feComposite>
-                              <feMorphology in="mask" result="dilated" operator="dilate" radius="2.5"></feMorphology>
-                              <feGaussianBlur in="dilated" result="blurred" stdDeviation="3.5"></feGaussianBlur>
-                              <feMerge>
-                                  <feMergeNode in="blurred"></feMergeNode>
-                                  <feMergeNode in="SourceGraphic"></feMergeNode>
-                              </feMerge>
-                          </filter>
-
-                        </defs>
-            
-            
-                    </svg>
-        </div>
-        <div id="paths">
-        </div>
-
-<!--////////////////////////////////////////////////////////////////////////////////-->
+                growcolonies(d)
+                
+                }, );//d3.csv
+                   
+            drawDisc();       
+          </script>
 
           
-          
-          
-<!--////////////////////////////////////////////////////////////////////////////////-->
-<!--          CIRCLES WITH CHANGING RADIUS-->
-<!--          // from https://bl.ocks.org/mbostock/2d466ec3417722e3568cd83fc35338e3-->
-<!--////////////////////////////////////////////////////////////////////////////////-->
-<!--        <script src="https://d3js.org/d3.v4.min.js"></script>-->
-          <script src="./d3.v4.min.js" charset="utf-8"></script>
-          
-<!--          Javascript etc-->
-	    <script src="./jquery.min.js"></script>
-	    <script src="./equalizer-circular-app.js"></script>
 	  </body>
 	</html>
