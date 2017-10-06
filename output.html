@@ -83,6 +83,14 @@
           display: table;
         }
 
+        div.panel {
+                padding: 0 1px;
+                background-color: white;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+            }
+        
         .imglink{border: none;}
         /* END of projects overview section style*/
 /*
@@ -129,18 +137,6 @@
             color:#ffc2cc;
             }
 
-        div.panel {
-                padding: 0 1px;
-                background-color: white;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease-out;
-            }
-
-
-        
-        
-        
     </style>
 </head>
  
@@ -293,7 +289,7 @@
 </div>   <!-- End of section div-->
     
 <div id="footer">
-     <small><a href="https://pages.github.com" target="_blank"> Hosted on GitHub Pages </a>| <a href="https://sara-maria.github.io/">Sara Maria 2016</a> | <a href="mailto:sara.sprinkhuizen@gmail.com">Write me a note</a> </small>
+     <small><a href="https://pages.github.com" target="_blank"> Hosted on GitHub Pages </a>| <a href="https://sara-maria.github.io/">Sara Maria 2017</a> | <a href="mailto:sara.sprinkhuizen@gmail.com">Write me a note</a> </small>
 </div>
         
 </div> <!-- End of wrapper div-->
@@ -303,18 +299,18 @@
     <script>
         var acc = document.getElementsByClassName("accordion");
         var i;
-
          for (i = 0; i < acc.length; i++) {
           acc[i].onmouseenter = function() {
                     var panel = this.nextElementSibling;
                     panel.style.maxHeight = panel.scrollHeight + "px"; // fold out the panel!
                 } //end mouseenter
              }; //end for loop
-          
-         for (i = 0; i < acc.length; i++) {
-          acc[i].onmouseleave = function() {
-            var panel = this.nextElementSibling;
-              console.log(panel)
+
+        // once folded-out, the panel should stay until user leaves full "card" environment
+        var card = document.getElementsByClassName("card");
+         for (i = 0; i < card.length; i++) {
+          card[i].onmouseleave = function() {
+            var panel = this.lastElementChild;
              panel.style.maxHeight = null; // remove panel
           } //end mouseleave
         }; //end for loop
