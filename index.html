@@ -10,8 +10,11 @@
     <!-- Page description -->
     <meta name="Collection of creations by Sara Sprinkhuizen.">
 
-   <!-- Keywords  -->
+    <!-- Keywords  -->
     <meta name="keywords" content="Sara,Maria,Sprinkhuizen,MRI,Thermometry,Physics,Data,Visualization,Science,Design">
+
+    <!-- Image  -->      
+    <meta property="og:image" content="./images/saramaria_thumb.png">
 
     <!-- Set the viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -128,7 +131,7 @@ function plot_points(data) {
             // remove old circles
               var circles = svg.selectAll("circle")
                                 .data(data, key_func)
-              debugger;
+//              debugger;
                circles.exit().remove();
 
             // now add circles at new locations to map
