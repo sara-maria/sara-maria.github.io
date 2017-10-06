@@ -173,12 +173,10 @@
                 <div class="column">
                 <div class="card">
                     <button class="accordion"><a class="imglink" href="http://biotabeats.org/visualization.html" target="blank">
-                        <img class="accordion" src="./images/output-biotabeats.png" alt="Biota Beats" style="width:100%">
-                    </a>
+                        <img class="accordion" src="./images/output-biotabeats.png" alt="Biota Beats" style="width:100%"></a>
                     <h3>Music from Bacteria</h3></button>
                     <div class="containeroutput panel">
                         <p>I could not believe my luck when I learned about <a href="http://biotabeats.org/visualization.html" target="blank">Biota Beats</a>. This project brings together art, science, and the communication of ideas through visuals. On top of that, it is all about the microbiome! Very happy to be involved with the amazing, mutlidisciplinary <a href="http://www.emwbookstore.com/street-bio/" target="blank">Street Bio team at EMW</a> in Cambridge, USA.</p>
-                        
                     </div>
                  </div>
               </div>
@@ -295,7 +293,7 @@
 </div>   <!-- End of section div-->
     
 <div id="footer">
-     <small><a href="https://pages.github.com" target="_blank"> Hosted on GitHub Pages </a>| <a href="https://sara-maria.github.io/">Sara Maria 2016</a> | <a href="mailto:sara.sprinkhuizen@gmail.com">Write a note</a> </small>
+     <small><a href="https://pages.github.com" target="_blank"> Hosted on GitHub Pages </a>| <a href="https://sara-maria.github.io/">Sara Maria 2016</a> | <a href="mailto:sara.sprinkhuizen@gmail.com">Write me a note</a> </small>
 </div>
         
 </div> <!-- End of wrapper div-->
@@ -306,18 +304,21 @@
         var acc = document.getElementsByClassName("accordion");
         var i;
 
-        for (i = 0; i < acc.length; i++) {
+         for (i = 0; i < acc.length; i++) {
           acc[i].onmouseenter = function() {
-//            this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    panel.style.maxHeight = panel.scrollHeight + "px"; // fold out the panel!
+                } //end mouseenter
+             }; //end for loop
+          
+         for (i = 0; i < acc.length; i++) {
+          acc[i].onmouseleave = function() {
             var panel = this.nextElementSibling;
-            if (panel.style.maxHeight){
-              panel.style.maxHeight = null;
-            } else {
-              panel.style.maxHeight = panel.scrollHeight + "px";
-            } 
-          } //end mouseover
-        }
-</script>
+              console.log(panel)
+             panel.style.maxHeight = null; // remove panel
+          } //end mouseleave
+        }; //end for loop
+    </script>
     
     <script src="javascripts/scale.fix.js"></script>
     
