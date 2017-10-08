@@ -12,155 +12,230 @@
         <title>Biota Beats</title>
         <meta name="author" content="Sara Maria Sprinkhuizen">
         <meta name="description" content="Biota Beats - A microbial record player developed by the EMW Street Bio team.">
-<!--        <meta property="og:image" content="./images/circular-equalizer.png">-->
+        <meta property="og:image" content="./images/circular-equalizer.png">
         <meta name="keywords" content="Biota,Beats,microbiome,microbiota,bacteria,EMW,Street,Bio,record,player,DJ,music,art,data">
         
-            <!-- Styling -->
-<!--            <link href="./stylesheets/style.css" rel="stylesheet">   -->
-        
-             <!-- Javascripts -->
-            <script src="./js/d3.v4.min.js" charset="utf-8"></script>
-            <script src="./js/jquery.min.js"></script>
+         <!-- Javascripts -->
+        <script src="./js/d3.v4.min.js" charset="utf-8"></script>
            
-
         <!--------------------------------------------------------------------------->
         <!--    MUSIC EQUALIZER                                   ------------------->            
         <!--    Based on work from Garry Smith                                     -->
         <!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
         <!--------------------------------------------------------------------------->  
         <!-- Prepare audioelements to be called later:-->
-                <audio id="audioElement" src="./audio/jazzyjeff_biotabeat1.wav"></audio>
+<!--                <audio id="audioElement" src="./audio/jazzyjeff_biotabeat1.wav"></audio>-->
+                <audio id="audioElement" src="./audio/linda.mp3"></audio>
         <!-- Prepare general audioelement to hold the audiofiles later:        -->
                 <audio id="audioElementWrapper" class="audiobutton" src="" type="audio/mpeg"></audio>
         <!--------------------------------------------------------------------------->  
 	  </head>
 
 	  <body>
-          <style>
-/*
-                    *{
-                        border: 1px solid #e5e5e5 !important;
-                        }
-*/
-              
-            #radius{
-                display: inline-block;
-                background-color: #444; 
+        <style>
+        #radius{
+            display: inline-block;
+            background-color: #444; 
+            }
+
+        #petricircle {
+            position:absolute;
+            z-index: 1; 
+            }
+
+          .arc path {
+                stroke: #444;
+            }
+            
+/*          // z-axes positioning of the 3 parts of the vis*/
+            .red, .green, .blue {
+                  position: absolute;
+/*                  text-align: center;*/
                 }
 
-            #petricircle {
-                position:absolute;
-                z-index: 1; 
+/*            //dish*/
+                .red { 
+                  z-index: 1;
                 }
-              
-              .arc path {
-                    stroke: #444;
-/*                    fill:"none";*/
+            
+/*            //colonies*/
+                .green {
+                  z-index: 2;
                 }
 
-              
-          </style>
-          
-            <!--------------------------------------------------------------------------->
-            <!--    Based on work from Garry Smith -->
-            <!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
-            <!--------------------------------------------------------------------------->
-            <!--        Buttons for interactivity with music  -->
-                    <div>
-                      <button onclick="document.getElementById('audioElement').play()">Play the Audio</button>
-                      <button onclick="document.getElementById('audioElement').pause()">Pause the Audio</button>
-                    </div>  
+/*            //equalizer - needs to be *behind* all other layers*/
+                .blue {
+                  z-index: -1;
+                }
+        </style>
 
-            <!--          Set up audio feature extraction -->
-                    <script>
-                        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                        var audioElement = document.getElementById('audioElement');
-                        var audioSrc = audioCtx.createMediaElementSource(audioElement);
-                        var analyser = audioCtx.createAnalyser();
 
-                        // Bind our analyser to the media element source.
-                        audioSrc.connect(analyser);
-                        audioSrc.connect(audioCtx.destination);
-                    </script>
+        <!--          Set up audio feature extraction -->
+        <script>
+            var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            var audioElement = document.getElementById('audioElement');
+            var audioSrc = audioCtx.createMediaElementSource(audioElement);
+            var analyser = audioCtx.createAnalyser();
+
+            // Bind our analyser to the media element source.
+            audioSrc.connect(analyser);
+            audioSrc.connect(audioCtx.destination);
+        </script>
 
 
         <!--////////////////////////////////////////////////////////////////////////////////-->
         <!--          Build website structure-->
         <!--////////////////////////////////////////////////////////////////////////////////-->
-        <div id="wrapper">
-            <!--    Main content of vis            -->  
-            <div id="content">
-                <!--    Main svg container              -->  
-                <svg id="colonies" width="800" height="800">
-                            <!--           ADDING GLOW EFFECTS-->
-                            <!--           From: https://stackoverflow.com/questions/9630008/how-can-i-create-a-glow-around-a-rectangle-with-svg-->
-                            <!--           https://jsfiddle.net/g57red1p/-->
-                                <defs>
-                                  <!-- Filter effect area is set really big to guarantee we see it all... -->
-                                  <!-- Control filter color with "flood-color" -->
-                                  <filter id="yellow-glow" x="-5000%" y="-5000%" width="10000%" height="10000%">
-<!--                                      <feFlood result="flood" flood-color="#ffffea" flood-opacity=".8"></feFlood>-->
-                                      <feFlood result="flood" flood-color="#6c6c1c" flood-opacity=".8"></feFlood>
-                                      <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in"></feComposite>
-                                      <feMorphology in="mask" result="dilated" operator="dilate" radius="2.5"></feMorphology>
-<!--                                      <feGaussianBlur in="dilated" result="blurred" stdDeviation="3.5"></feGaussianBlur>-->
-                                      <feGaussianBlur in="dilated" result="blurred" stdDeviation="5.5"></feGaussianBlur>
-                                      <feMerge>
-                                          <feMergeNode in="blurred"></feMergeNode>
-                                          <feMergeNode in="SourceGraphic"></feMergeNode>
-                                      </feMerge>
-                                  </filter>
-                                </defs>
-                </svg> <!-- end colonies svg-->
-            </div>  <!-- end content-->
-        </div> <!-- end wrapper-->
+        <!--------------------------------------------------------------------------->
+            <!--    Based on work from Garry Smith -->
+            <!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
+            <!--------------------------------------------------------------------------->
+            <!--        Buttons for interactivity with music  -->
+            <div>
+              <button onclick="document.getElementById('audioElement').play(); launchequalizer(); ripple(dataset);">Play!</button>
+              <button onclick="document.getElementById('audioElement').pause()">Pause</button>
+<!--              <button id="clickMe" onclick="launchequalizer();">Click me</button>-->
+<!--              <button id="ripple" onclick="ripple(dataset);">Ripple</button>-->
+<!--              <button id="ripple" onclick=" recursive_ripple(dataset);">Ripple</button>-->
+            </div>  
+
           
+          <div id="wrapper">
+              <!--    Petri dish           -->  
+              <div id="dish">
+                    <svg class="red" id="petridish" width="800" height="800" />
+              </div> <!-- end dish div-->
+              
+              <!--    Bacterial colonies           -->  
+              <div id="colonies">
+                    <svg class="green" id="col" width="800" height="800" />
+              </div> <!-- end colonies div-->
+              
+              <!--    Radial equalizer           -->  
+              <div id="content">
+                    <svg class="blue" id="equalizer" width="800" height="800">
+                    <!--           ADDING GLOW EFFECTS-->
+                    <!--           From: https://stackoverflow.com/questions/9630008/how-can-i-create-a-glow-around-a-rectangle-with-svg-->
+                    <!--           https://jsfiddle.net/g57red1p/-->
+                        <defs>
+                          <!-- Control filter color with "flood-color" -->
+                          <filter id="yellow-glow" x="-5000%" y="-5000%" width="10000%" height="10000%">
+                              <feFlood result="flood" flood-color="#6c6c1c" flood-opacity=".8"></feFlood>
+                              <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in"></feComposite>
+                              <feMorphology in="mask" result="dilated" operator="dilate" radius="2.5"></feMorphology>
+                              <feGaussianBlur in="dilated" result="blurred" stdDeviation="5.5"></feGaussianBlur>
+                              <feMerge>
+                                  <feMergeNode in="blurred"></feMergeNode>
+                                  <feMergeNode in="SourceGraphic"></feMergeNode>
+                              </feMerge>
+                          </filter>
+                        </defs>
+                    </svg> <!-- end colonies svg-->
+            </div>  <!-- end content div-->
+        </div> <!-- end wrapper-->
+        <!--////////////////////////////////////////////////////////////////////////////////-->
         <!--          End website structure-->
         <!--////////////////////////////////////////////////////////////////////////////////-->
-
           
-          
-<!--       // 2. Kick off equalizer visualization! --------------------------------->
-          <script src="./js/equalizer-circular-app.js"></script>
-
           
         <!--////////////////////////////////////////////////////////////////////////////////-->
         <!--          Javascript etc-->
         <script>
-              //////////////////////////////////////////////////////////////////////////
-              //   Define function to grow bacterial colonies with (called at the end)//
-              //////////////////////////////////////////////////////////////////////////
-              function growcolonies(dataset) {
-                    var cx = 400;//half width
-                    var cy = 400;//half height
-                    var radiusmax = 195;
+            
+            var samplebins = 230;
+            var frequencyData = new Uint8Array(samplebins+1); //add 1 to ensure circle "closes"!
+            
+            ///// START EQUALIZER DISC VIS /////////////////////////////////////////
+            
+                // Now CPU test without JQUERY:
+                function launchequalizer() {
+                    
+                ////////////////  CIRCULAR EQUALIZER BY MANIPULATING THE RADIUS of CIRCLES
+                //<!--////////////////////////////////////////////////////////////////////////////////-->
+                //<!--     CIRCLES WITH CHANGING RADIUS-->
+                //<!--     // based on https://bl.ocks.org/mbostock/2d466ec3417722e3568cd83fc35338e3-->
+                //<!--////////////////////////////////////////////////////////////////////////////////-->
 
-                    var svg = d3.select("body").select("#wrapper").select("#content").select("#colonies");
-                    var colonygroup = svg.append("g");
-                    var colcircles = colonygroup.selectAll('circle.col')
-                            .data(dataset)  
-                            .enter().append("circle").classed('col', true)
-                            .attr("fill","#e8e891")
-                            .attr("opacity", .8)    
-                            .attr("stroke", "#444")
-                            .attr("stroke-width", 1)    
-                            .attr("cx", function(d){
-                                return cx + radiusmax*d.xc;
-                                })
-                            .attr("cy", function(d){
-                                    return cy + radiusmax*d.yc;
-                                })
-                            .attr("r", function(d){
-                                    return d.radcol;
-                                })
-                };  // end of growcolonies
-              
+                    var svg = d3.select("#equalizer"),
+                                width = +svg.attr("width"),
+                                height = +svg.attr("height"),
+                                angles = d3.range(0, 2 * Math.PI, Math.PI /( 0.5*(samplebins) ) ); //ensure same (-1) or smaller number as frequency array!
+
+                    //Append a radialGradient element to the defs and give it a unique id
+                    //  From: https://www.visualcinnamon.com/2016/05/data-based-svg-gradient-d3.html
+                    var defs = svg.append("defs");    
+                    var radialGradient = defs.append("radialGradient")
+                        .attr("id", "radial-gradient")
+                        .attr("cx", "50%")    //The x-center of the gradient, same as a typical SVG circle
+                        .attr("cy", "50%")    //The y-center of the gradient
+                        .attr("r", "50%");   //The radius of the gradient, an offset of 100% ends where you've set this radius
+
+                    //Add colors to make the gradient appear like a Sun:
+                    //  From: https://www.visualcinnamon.com/2016/05/data-based-svg-gradient-d3.html
+                    //    mycolor = d3.rgb("#E0B463"); // "Sun" (with 1 lighter and 1.75 darker)
+                    mycolor = d3.rgb("#3a1c05"); // "Sun" (with 1 lighter and 1.75 darker)
+                    radialGradient.append("stop")
+                        .attr("offset", "0%")
+                        .attr("stop-color", mycolor.brighter(3));
+                    radialGradient.append("stop")
+                        .attr("offset", "50%")
+                        .attr("stop-color", mycolor);
+                    radialGradient.append("stop")
+                        .attr("offset", "90%")
+                        .attr("stop-color", mycolor.darker(2)); 
+
+                // NOW DRAW THIS CIRCLE EQUALIZER!
+//                    var freqscale = d3.scaleLinear()
+                    var freqscale = d3.scalePow()
+                                        .exponent(2)
+                                        .domain([0,200])  //frequencies go from 0 to 255;
+                                        .range([0,100]); //output range
+
+                    var path = svg.append("g")
+                            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+                            .style("fill", "url(#radial-gradient)")  // GRADIENT
+//                            .style("filter", "url(#yellow-glow)")  // GLOW! SOMEHOW DOES NOT WORK......
+                            .attr("stroke-linejoin", "round")
+                            .selectAll("path")
+                            .data([1])
+                            .enter().append("path")
+                            .datum(function(d, i) {
+                              return d3.radialLine()
+                                  .curve(d3.curveLinearClosed)
+                                  .angle(function(a) { return a; })
+                                  .radius(function(a,i) {
+                                        return 195 + freqscale(frequencyData[Math.round(a*.5*samplebins/Math.PI)]) ;
+                                        });
+                                }); //end datum
+
+                                    d3.timer(function() {
+                                            path.attr("d", function(d) {
+                                                        return d(angles);
+                                            });
+                                    });   
+                    
+                    
+                    // Time to play! /////////////////////////////////////////
+                    // Continuously loop and update chart with frequency data.
+                    function renderChart() {
+                           requestAnimationFrame(renderChart);
+                           // Copy frequency data to frequencyData array.
+                           analyser.getByteFrequencyData(frequencyData);
+                        }; //renderchart
+                    // Run the loop
+                    renderChart();  
+
+
+                    
+        }; //end launchequalizer (instead of jquery document ready function)
+
+            
               //////////////////////////////////////////////////////////////////////////
               //////////////////// DRAW PETRI DISC PLUS CIRCULAR BANDS    //////////////
               //////////////////////////////////////////////////////////////////////////	
                  function drawDisc() {
-                        var cx = 400;//half width
-                        var cy = 400;//half heigth
+                        var cx = 0;//400;//half width
+                        var cy = 0;//400;//half heigth
                         var rmax = 39;    
                         var sections = 5; 
                         var radiusmax = 195;
@@ -169,9 +244,9 @@
                         var radius = N;
 
                         // Create concentric circles to serve as background:    
-                        var petridisc = d3.select("body").select("#wrapper").select("#content")
-                                        .select("#colonies")
-                        var discgroup = petridisc.append("g");
+                        var petridisc = d3.select("body").select("#wrapper").select("#dish").select("#petridish")
+                        var discgroup = petridisc.append("g")
+                        .attr("transform", "translate(" + 400 + "," + 400 + ")");;
                         var petridisc = discgroup.selectAll('circle')
                             .data(radius)
                             .enter().append('circle')
@@ -180,8 +255,6 @@
                             .attr('cy', cy)
                             .attr('r', function(d) { return d; })
                             .attr('fill', 'none')
-//                            .attr('fill', '#3b2e2e')
-//                            .attr("opacity", .8)
                             .attr("stroke", "grey")
                             .attr("stroke-width", 1);
 
@@ -190,10 +263,13 @@
                       //////////////////////////////////////////////////////////////////////////	
                         var Discdata = [1,1,1,1,1]; // width of each element
 
-                        var svg = d3.select("body").select("#wrapper").select("#content").select("svg"),
-                            width = +svg.attr("width"),
-                            height = +svg.attr("height"),
-                            g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+                        var svg = d3.select("body").select("#wrapper").select("#dish").select("#petridish")
+//                        ,
+//                            width = +svg.attr("width"),
+//                            height = +svg.attr("height"),
+                            g = svg.append("g")
+//                            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+                            .attr("transform", "translate(" + 400 + "," + 400 + ")");
 
                         var pie = d3.pie();
                         var path = d3.arc()
@@ -209,21 +285,198 @@
                               .attr("d", path)
                               .attr("fill", "none");
                 };  // end of drawDisc
+                    
+
             
+            //////////////////////////////////////////////////////////////////////////
+              //   Define function to grow bacterial colonies with (called at the end)//
+              //////////////////////////////////////////////////////////////////////////
+              function growcolonies(dataset) {
+                    var cx = 400;//half width
+                    var cy = 400;//half height
+                    var radiusmax = 195;
+
+                    var svg = d3.select("body").select("#wrapper").select("#colonies").select("#col");
+                    var colonygroup = svg.append("g");
+                    var colcircles = colonygroup.selectAll('circle.col')
+                            .data(dataset)  
+                            .enter().append("circle").classed('col', true)
+                            .attr("fill","#e8e891")
+                            .attr("opacity", .8)    
+                            .attr("stroke", "#444")
+                            .attr("stroke-width", .1)    
+                            .attr("cx", function(d){
+                                return cx + radiusmax*d.xc;
+                                })
+                            .attr("cy", function(d){
+                                    return cy + radiusmax*d.yc;
+                                })
+                            .attr("r", function(d){
+                                    return d.radcol;
+                                })
+                    
+                };  // end of growcolonies
+              
+            
+            
+            ///////// RIPPLES! /////////////////////////////////////////////////////////////
+            ///////// RIPPLES! /////////////////////////////////////////////////////////////
+            ///////// RIPPLES! /////////////////////////////////////////////////////////////
+                   
+
+//                    function recursive_ripple() {
+//                        thisarcsel.style("fill",highlightfillcolor1)
+//                                .style("stroke",highlightstrokecolor)
+//
+//                        thisarcsel.transition()
+//                            .duration(heartbeatduration1)
+//                            .style("fill",highlightfillcolor2)
+//                            .attr("stroke-width", 1)
+//                            .ease('sin-in')
+//                            .transition()
+//                            .duration(heartbeatduration2)
+//                            .style("fill",highlightfillcolor1)
+//                            .attr('stroke-width', 4)
+//                            .ease('bounce-in')
+//                            .each("end", recursive_ripple);
+//                    }
+//            
+            
+            
+            function ripple() {    
+                    var cx = 400;//half width
+                    var cy = 400;//half height
+                    var radiusmax = 195;
+                    
+                    var rippleradius = 2;
+                    var nr_ripples = 4;
+
+                    var ripple_color = "#E0B463"; //"#3a1c05";
+                    var svg = d3.select("body").select("#wrapper").select("#colonies").select("#col");
+                    
+                        for (var i = 1; i <= nr_ripples; ++i) {
+                            var ripplegroup = svg.append("g");
+                            
+                            
+/////////////////////////////// Ripple by radius of bacterial colony:
+//                            var ripples = ripplegroup.selectAll('circle.rip')
+//                                        .data(dataset)  
+//                                        .enter().append("circle").classed('rip', true)
+//                                        .attr("cx", function(d){
+//                                            return cx + radiusmax*d.xc;
+//                                            })
+//                                        .attr("cy", function(d){
+//                                                return cy + radiusmax*d.yc;
+//                                            })
+//                                        .transition()
+//                                                    .delay(function(d){
+//                                                        return Math.pow(i, 2) * 200 + 300*(d.radcol);})
+//                                                    .duration(function(d){
+//                                                        return 300*d.radcol;})
+//                                                    .ease(d3.easeSin).attr("r", function(d){
+//                                                return d.radcol;})
+//                                        .style("stroke", d3.rgb(ripple_color).brighter(2))
+//                                        .style("fill", "none")
+//                                        .style("stroke-opacity", 0.9);
+//                                //Now all dependencies on i:
+//                                         ripples.style("stroke-width", 3 / (i))
+//                                                .transition()
+////                                                    .delay(Math.pow(i, 2) * 200)
+//                                                    .delay(function(d){
+//                                                        return Math.pow(i, 2) * 200 + 300*(d.radcol);})
+////                                                    .duration(1500)
+//                                                    .duration(function(d){
+//                                                        return 300*d.radcol;})
+//                                                    .ease(d3.easeSin)
+//                                                .attr("r", function(d){
+//                                                        return 1.4*rippleradius*d.radcol;})
+//                                                .style("stroke-opacity", 0)
+//                                                .on("end", function () {
+//                                                    d3.select(this)
+//                                                    .remove();
+//                                                });
+                                  
+/////////////////////////////// Ripple by radial distance from center of disc:
+        var ripples = ripplegroup.selectAll('circle.rip')
+                        .data(dataset)  
+                        .enter().append("circle").classed('rip', true)
+                        .attr("cx", function(d){
+                            return cx + radiusmax*d.xc;
+                            })
+                        .attr("cy", function(d){
+                                return cy + radiusmax*d.yc;
+                            })
+//                                        .transition()
+//                                                    .delay(function(d){
+//                                                        return Math.pow(i, 2) * 200 + 300*(d.radnorm);})
+//                                                    .duration(function(d){
+//                                                        return 300*d.radnorm;})
+//                                                    .ease(d3.easeSin).attr("r", function(d){
+//                                                return d.radcol;})
+                        .style("stroke", d3.rgb(ripple_color).brighter(2))
+                        .style("fill", "none")
+                        .style("stroke-opacity", 0.9);
+                //Now all dependencies on i:
+                         ripples.style("stroke-width", 3 / (i))
+                                .transition()
+//                                                    .delay(Math.pow(i, 2) * 200)
+                                    .delay(function(d){ //delay over all ripples of a single colony! adds in distance of colony center parameter
+                                        return  (Math.pow(i, 2)*200  + 28000*d.radnorm);}) //radnorm max = 1
+//                                                    .duration(1500)
+                                    .duration(function(d){ //duration of full ripple over all colonies
+                                        return 10000*d.radnorm;})
+//                                                        return 11000;})
+                                    .ease(d3.easeSin)
+                                .attr("r", function(d){
+//                                                        return 2.4*rippleradius*d.radcol;})
+                                        return 7*rippleradius;})
+                                .style("stroke-opacity", 0)
+                                .on("end", function () {
+                                    d3.select(this)
+                                    .remove();
+                                });
+
+                        }; // end for over all ripples
+                    
+                    }; // end of ripple
+                    
+                    
+            
+            
+            
+                    
+                    
+            ///////////////////////////////////////////////////////////////////////////////////        
             // 1. Load Colony Coordinate data and PLOT these! -------------------------------
-            d3.csv("./data/dj_jeff_out_edited.csv",function(d){ 
+            
+            var dataset;
+
+            
+//            d3.csv("./data/dj_jeff_out_edited.csv",function(d){ 
+            d3.csv("./data/linda_out_edited.csv",function(d){ 
 //                debugger;
                 // transform the data here
                 d['xc']=+d["xc"];
                 d['yc']=+d["yc"];
                 d['radcol']=+d["radcol"];
+                d['radnorm']=+d["radnorm"];
 
-                growcolonies(d)
                 
+                dataset = d;
+                
+                growcolonies(d)
+//                ripple()
                 }, );//d3.csv
                    
-            drawDisc();       
-          </script>
+            drawDisc();
+
+            setTimeout(function(){
+                    console.log(dataset);
+                    },200);
+                   
+//        }; //end launchequalizer (instead of jquery document ready function)
+
+  </script>
 
           
 	  </body>
