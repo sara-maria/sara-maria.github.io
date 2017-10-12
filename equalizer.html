@@ -12,7 +12,7 @@
         <title>Biota Beats</title>
         <meta name="author" content="Sara Maria Sprinkhuizen">
         <meta name="description" content="Biota Beats - A microbial record player developed by the EMW Street Bio team.">
-        <meta property="og:image" content="./images/circular-equalizer.png">
+        <meta property="og:image" content="./BB_images/linda-eq-screenshot.png">
         <meta name="keywords" content="Biota,Beats,microbiome,microbiota,bacteria,EMW,Street,Bio,record,player,DJ,music,art,data">
         
         <!-- Javascripts -->
@@ -24,11 +24,7 @@
         <!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
         <!--------------------------------------------------------------------------->  
         <!-- Prepare audioelements to be called later:-->
-<!--                <audio id="audioElement" src="./audio/jazzyjeff_biotabeat1.wav"></audio>-->
-          
                 <audio id="audioElement" src="./audio/Linda_3bu.mp3"></audio>
-<!--                <audio id="audioElement" src="./audio/LINDA_SYMPHONY_full_buildup.wav"></audio>-->
-<!--                <audio id="audioElement" src="./audio/Linda.mp3"></audio>-->
         <!-- Prepare general audioelement to hold the audiofiles later:        -->
                 <audio id="audioElementWrapper" class="audiobutton" src="" type="audio/mpeg"></audio>
         <!--------------------------------------------------------------------------->  
@@ -36,67 +32,32 @@
 
 	  <body>
         <style>
-            
             body{
-/*                background-color: "red";*/
                 background-color: #f2edf7;
-            }
-            
-            
-            
-/*             NOTE: overflow visible!*/
-            
+                }
             
             #wrapper{
                 height: 800px;
-/*                background-color: "red";*/
-            }
+                }
             
-/*
-            *{
-            border: 1px solid gray !important;
-            }
-            
-*/
-            
-            .shadowfilter {
-/*    -webkit-filter: drop-shadow(12px 12px 7px rgba(218, 189, 219, 0.5));*/
-/*     filter: drop-shadow(12px 12px 7px rgba(218, 189, 219, 0.5));*/
-}
+            #equalizer {
+                overflow:visible
+                }
 
-            
-            
-            
-            #slider {
-    opacity:1;
-    transition: opacity 1s; 
-}
-            
-    #equalizer {
-            overflow:visible
-            }
-
-#slider.fade {
-    opacity:0;
-}
-            
-            
-        #BiotaBody {
+            #BiotaBody {
                 margin-top: 180px;
                 height: 660px;
                 width: 800px;
                 position:absolute;
                 z-index: -2; /*    //needs to be all the way to the back */
-            }
+                }
             
-        #ear {
+            #ear {
                 position: absolute;
                 left: 0;
-                stroke: red;
-                fill: red;
                 z-index: 2;    
 /*            //needs to be all the way to the back */
-            }
+                }
             
         #radius{
             display: inline-block;
@@ -134,111 +95,9 @@
                   z-index: -1;
                 }
             
-            
-/*            Try  moving of bacterial elements     */
-            /* initial state */
-  #Play {
-      margin-bottom: 70px;
-/*    position: relative;*/
-/*    height: 400px;*/
-/*    background: #0c0440 url(/images/outerspace.jpg);*/
-/*    color: #fff;*/
-  }
-            
-  div.bacteriaone {
-    position: absolute;
-    bottom: 30%; /*210px;*/
-    left: 610px;
-    -webkit-transition: 3s ease-in;
-    -moz-transition: 3s ease-in;
-    -o-transition: 3s ease-in;
-    transition: 3s ease-in;
-  }
-            
-  div.bacteriatwo {
-    position: absolute;
-    bottom: 700px;
-    left: 280px;
-    -webkit-transition: 3s ease-in;
-    -moz-transition: 3s ease-in;
-    -o-transition: 3s ease-in;
-    transition: 3s ease-in;
-  }
-  
-            
-  div.bacteriaone div.one {
-    width: 92px;
-    height: 55px;
-/*    background: url(./BB_images/separate_biome_from_body.png) no-repeat;*/
-    background: url(./BB_images/bac1.png) no-repeat;
-    -webkit-transition: 4s ease-in-out;
-    -moz-transition: 4s ease-in-out;
-    -o-transition: 4s ease-in-out;
-    transition: 4s ease-in-out;
-      opacity: 1;
-  }
-            
- div.bacteriaone div.two {
-    width: 52px;
-    height: 55px;
-/*    background: url(./BB_images/separate_biome_from_body.png) no-repeat;*/
-    background: url(./BB_images/bac2.png) no-repeat;
-    -webkit-transition: 4s ease-in-out;
-    -moz-transition: 4s ease-in-out;
-    -o-transition: 4s ease-in-out;
-    transition: 4s ease-in-out;
-      opacity: 1;
-  }
-
-            
-div.bacteriatwo div.four {
-    width: 92px;
-    height: 55px;
-/*    background: url(./BB_images/separate_biome_from_body.png) no-repeat;*/
-    background: url(./BB_images/bac4.png) no-repeat;
-    -webkit-transition: 4s ease-in-out;
-    -moz-transition: 4s ease-in-out;
-    -o-transition: 4s ease-in-out;
-    transition: 4s ease-in-out;
-      opacity: 1;
-  }
-            
- div.bacteriatwo div.five {
-    width: 52px;
-    height: 55px;
-/*    background: url(./BB_images/separate_biome_from_body.png) no-repeat;*/
-    background: url(./BB_images/bac5.png) no-repeat;
-    -webkit-transition: 4s ease-in-out;
-    -moz-transition: 4s ease-in-out;
-    -o-transition: 4s ease-in-out;
-    transition: 4s ease-in-out;
-      opacity: 1;
-  }
-
-            
-  /* hover final state */
-  #Play:hover div.bacteriaone {
-    -webkit-transform: translate(540px,200px);
-    -moz-transform: translate(540px,200px);
-    -o-transform: translate(540px,200px);
-    -ms-transform: translate(540px,200px);
-    transform: translate(540px,200px);
-      
-      opacity: 0;
-  }
-         
-   /* hover final state */
-  #Play:hover div.bacteriatwo {
-    -webkit-transform: translate(50px,-200px);
-    -moz-transform: translate(50px,-200px);
-    -o-transform: translate(50px,-200px);
-    -ms-transform: translate(50px,-200px);
-    transform: translate(50px,-200px);
-      
-      opacity: 0;
-  }
-           
-            
+              #Play {
+                  margin-bottom: 70px;
+              }
             
         </style>
 
@@ -267,13 +126,6 @@ div.bacteriatwo div.four {
             <div id="Play">
               <button onclick="document.getElementById('audioElement').play(); launchequalizer(); slideShow(); rippleall()">Play!</button>
               <button onclick="document.getElementById('audioElement').pause()">Pause music</button>
-<!--              <button onclick="document.getElementById('audioElement').mute()">Mute</button>-->
-<!--              <button id="clickMe" onclick="launchequalizer();">Click me</button>-->
-<!--              <button id="ripple" onclick="setTimeout(ripple(dataset), 10000);">Ripple</button>-->
-
-              
-                
-                
             </div>  
 
           
@@ -281,9 +133,8 @@ div.bacteriatwo div.four {
               
               <div id="BiotaBody">                        
                     <!--  Slideshow of BODY BB_images-->
-                    <svg id="ear"><img id="slider" src="./BB_images/linda_bw.png" width="100%" class="shadowfilter"></svg>
+                    <svg id="ear"><img id="slider" src="./BB_images/linda_bw.png" width="100%"></svg>
               </div>
-              
               
               <!--              THE NEXT THREE DIVS ARE POSITIONED ON TOP OF EACH OTHER!-->
               <!--    Petri dish           -->  
@@ -299,24 +150,6 @@ div.bacteriatwo div.four {
               <!--    Radial equalizer           -->  
               <div id="content">
                     <svg class="blue" id="equalizer" width="1200" height="700">
-                    <!--           ADDING GLOW EFFECTS-->
-                    <!--           From: https://stackoverflow.com/questions/9630008/how-can-i-create-a-glow-around-a-rectangle-with-svg-->
-                    <!--           https://jsfiddle.net/g57red1p/-->
-<!--
-                        <defs>
-                           Control filter color with "flood-color" 
-                          <filter id="yellow-glow" x="-5000%" y="-5000%" width="10000%" height="10000%">
-                              <feFlood result="flood" flood-color="#6c6c1c" flood-opacity=".8"></feFlood>
-                              <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in"></feComposite>
-                              <feMorphology in="mask" result="dilated" operator="dilate" radius="2.5"></feMorphology>
-                              <feGaussianBlur in="dilated" result="blurred" stdDeviation="5.5"></feGaussianBlur>
-                              <feMerge>
-                                  <feMergeNode in="blurred"></feMergeNode>
-                                  <feMergeNode in="SourceGraphic"></feMergeNode>
-                              </feMerge>
-                          </filter>
-                        </defs>
--->
                     </svg> <!-- end colonies svg-->
             </div>  <!-- end content div-->
         </div> <!-- end wrapper-->
@@ -331,19 +164,11 @@ div.bacteriatwo div.four {
         <script>
             var radius_all = 240; //radius of circular-equalizer and petri-disc
             var cx = 250;    //x center of circular-equalizer and petri-disc
-            var cy = -20;      //y center of circular-equalizer and petri-disc
+            var cy = -5;      //y center of circular-equalizer and petri-disc
             
             var samplebins = 230; //# of bins or equalizer
             var frequencyData = new Uint8Array(samplebins+1); //add 1 to ensure circle "closes"!
-            
-            //locations of ripples on biota body of LINDA
-            var width_ripple=800, height_ripple=1200;
-            var xear=210, year=125;
-            var xmouth=280, ymouth=165;
-            var xfingers=695, yfingers=450;
-            var xscalp=284, yscalp=60;
-            var xelbow=500, yelbow=430;
-            
+
             // colors!
             //for equalizer background:
             var mycolor = d3.rgb("rgba(57, 16, 92, 0.35)"); // "Sun" (with 1 lighter and 1.75 darker)
@@ -351,19 +176,8 @@ div.bacteriatwo div.four {
             var colonyfillcolor = "#d0a5a5"; // "#e8e891" //fill
             var colonystrokecolor = "#444";//stroke
             
-            
-            
-            //clickable biota-body
-             var svg = d3.select("#ear")
-             svg.attr("x", xear)
-                .attr("y", year)
-                .attr("width", width_ripple)
-                .attr("height", height_ripple);
 
-            
-            
             ///// START EQUALIZER DISC VIS /////////////////////////////////////////
-                // Now CPU test without JQUERY:
                 function launchequalizer() {
                     
                 ////////////////  CIRCULAR EQUALIZER BY MANIPULATING THE RADIUS of CIRCLES
@@ -400,22 +214,7 @@ div.bacteriatwo div.four {
                         .attr("offset", "90%")
                         .attr("stop-color", mycolor.darker(2)); 
                         
-                    
-//                    // ADD GLOW! (makes it too slow.....)
-//                    var filter = defs.append("filter")
-//                                .attr("id","glow");
-//                            filter.append("feGaussianBlur")
-//                                .attr("stdDeviation","5.5")
-//                                .attr("result","coloredBlur");
-//                            var feMerge = filter.append("feMerge");
-//                            feMerge.append("feMergeNode")
-//                                .attr("in","coloredBlur");
-//                            feMerge.append("feMergeNode")
-//                                .attr("in","SourceGraphic");
-//                            
-                    
                 // NOW DRAW THIS CIRCLE EQUALIZER!
-//                    var freqscale = d3.scaleLinear()
                     var freqscale = d3.scalePow()
                                         .exponent(2)
                                         .domain([0,200])  //frequencies go from 0 to 255;
@@ -424,14 +223,12 @@ div.bacteriatwo div.four {
                     var path = svg.append("g")
                             .attr("transform", "translate(" + xshift + "," + yshift + ")")
                             .style("fill", "url(#radial-gradient)")  // GRADIENT
-//                            .style("filter", "url(#glow)")  // GLOW! SOMEHOW DOES NOT WORK......
                             .attr("stroke-linejoin", "round")
                             .selectAll("path")
                             .data([1])
                             .enter().append("path")
                             .datum(function(d, i) {
                               return d3.radialLine()
-//                                  .curve(d3.curveLinearClosed)
                                   .curve(d3.curveCatmullRom)
                                   .angle(function(a) { return a; })
                                   .radius(function(a,i) {
@@ -479,7 +276,6 @@ div.bacteriatwo div.four {
                         var discgroup = petridisc.append("g")
                             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
                      
-//                        .attr("transform", "translate(" + 400 + "," + 400 + ")");
                         var petridisc = discgroup.selectAll('circle')
                             .data(radius)
                             .enter().append('circle')
@@ -521,9 +317,8 @@ div.bacteriatwo div.four {
                               .attr("fill", "none");
                 };  // end of drawDisc
                     
-
             
-            //////////////////////////////////////////////////////////////////////////
+              //////////////////////////////////////////////////////////////////////////
               //   Define function to grow bacterial colonies with (called at the end)//
               //////////////////////////////////////////////////////////////////////////
               function growcolonies(dataset) {
@@ -561,7 +356,7 @@ div.bacteriatwo div.four {
             ///////// RIPPLES! /////////////////////////////////////////////////////////////
             ///////// RIPPLES! /////////////////////////////////////////////////////////////
             ///////// RIPPLES! /////////////////////////////////////////////////////////////
-function rippleall() {    
+            function rippleall() {    
                     var radiusmax = radius_all;
                     var rippleradius = 1;
                     var nr_ripples = 3;
@@ -577,10 +372,8 @@ function rippleall() {
 
                 /////////////////////////////// Ripple by radial distance from center of disc:
                     var ripples = ripplegroup.selectAll('circle.rip')
-                        .data(dataset) //.filter(function(d){   return d.SECTOR === 2})) 
+                        .data(dataset) 
                         .enter().append("circle").classed('rip', true)
-//                        .filter(function(d) { return d.SECTOR == 2 })
-//                        .filter(function(d) { return d.SECTOR == 2 || d.SECTOR == 3 || d.SECTOR == 1})
                         .attr("cx", function(d){
                             return cx + radiusmax*d.xc;
                             })
@@ -603,7 +396,6 @@ function rippleall() {
                     //Now all dependencies on i:
                          ripples.style("stroke-width", 3 / (i))
                                 .transition()
-//                                    .delay(Math.pow(i, 2) * 100)
                                     .duration(function(d){ //duration of full ripple over all colonies
                                         return 500*d.radnorm;})
                                     .ease(d3.easeSin)
@@ -638,10 +430,9 @@ function rippleall() {
 
                 /////////////////////////////// Ripple by radial distance from center of disc:
                     var ripples = ripplegroup.selectAll('circle.rip')
-                        .data(dataset) //.filter(function(d){   return d.SECTOR === 2})) 
+                        .data(dataset) 
                         .enter().append("circle").classed('rip', true)
                         .filter(function(d) { return d.SECTOR == 2 })
-//                        .filter(function(d) { return d.SECTOR == 2 || d.SECTOR == 3 || d.SECTOR == 1})
                         .attr("cx", function(d){
                             return cx + radiusmax*d.xc;
                             })
@@ -702,9 +493,8 @@ function rippleall() {
 
                 /////////////////////////////// Ripple by radial distance from center of disc:
                     var ripples = ripplegroup.selectAll('circle.rip')
-                        .data(dataset) //.filter(function(d){   return d.SECTOR === 2})) 
+                        .data(dataset)
                         .enter().append("circle").classed('rip', true)
-//                        .filter(function(d) { return d.SECTOR == 2 })
                         .filter(function(d) { return d.SECTOR == 2 || d.SECTOR == 3})
                         .attr("cx", function(d){
                             return cx + radiusmax*d.xc;
@@ -764,7 +554,7 @@ function ripple230() {
 
                 /////////////////////////////// Ripple by radial distance from center of disc:
                     var ripples = ripplegroup.selectAll('circle.rip')
-                        .data(dataset) //.filter(function(d){   return d.SECTOR === 2})) 
+                        .data(dataset)  
                         .enter().append("circle").classed('rip', true)
                         .filter(function(d) { return d.SECTOR == 2 || d.SECTOR == 3 || d.SECTOR == 0})
                         .attr("cx", function(d){
@@ -778,7 +568,6 @@ function ripple230() {
                                                     .delay(function(d){
                                                         return Math.pow(i, 2)*500 + 500*(d.radcol);})
                                                     .duration(function(d){
-//                                                        return 300*d.radnorm;})
                                                         return 300*d.radcol;})
                                                     .ease(d3.easeSin).attr("r", function(d){
                                                         return d.radcol;})
@@ -824,9 +613,8 @@ function ripple230() {
 
                 /////////////////////////////// Ripple by radial distance from center of disc:
                     var ripples = ripplegroup.selectAll('circle.rip')
-                        .data(dataset) //.filter(function(d){   return d.SECTOR === 2})) 
+                        .data(dataset) 
                         .enter().append("circle").classed('rip', true)
-//                        .filter(function(d) { return d.SECTOR == 2 })
                         .filter(function(d) { return d.SECTOR == 2 || d.SECTOR == 3 || d.SECTOR == 0 || d.SECTOR == 4})
                         .attr("cx", function(d){
                             return cx + radiusmax*d.xc;
@@ -854,7 +642,6 @@ function ripple230() {
                                     .delay(Math.pow(i, 2) * 200)
                                     .duration(function(d){ //duration of full ripple over all colonies
                                         return 7000*d.radnorm;})
-//                                                        return 11000;})
                                     .ease(d3.easeSin)
                                 .attr("r", function(d){
                                         return 7*rippleradius;})
@@ -887,9 +674,8 @@ function ripple230() {
 
                 /////////////////////////////// Ripple by radial distance from center of disc:
                     var ripples = ripplegroup.selectAll('circle.rip')
-                        .data(dataset) //.filter(function(d){   return d.SECTOR === 2})) 
+                        .data(dataset) 
                         .enter().append("circle").classed('rip', true)
-//                        .filter(function(d) { return d.SECTOR == 2 })
                         .filter(function(d) { return d.SECTOR == 1 || d.SECTOR == 3 })
                         .attr("cx", function(d){
                             return cx + radiusmax*d.xc;
@@ -902,7 +688,6 @@ function ripple230() {
                                                     .delay(function(d){
                                                         return Math.pow(i, 2)*500 + 500*(d.radcol);})
                                                     .duration(function(d){
-//                                                        return 300*d.radnorm;})
                                                         return 300*d.radcol;})
                                                     .ease(d3.easeSin).attr("r", function(d){
                                                 return d.radcol;})
@@ -917,7 +702,6 @@ function ripple230() {
                                     .delay(Math.pow(i, 2) * 200)
                                     .duration(function(d){ //duration of full ripple over all colonies
                                         return 10000*d.radnorm;})
-//                                                        return 11000;})
                                     .ease(d3.easeSin)
                                 .attr("r", function(d){
                                         return 7*rippleradius;})
@@ -948,9 +732,8 @@ function ripple01234() {
 
                 /////////////////////////////// Ripple by radial distance from center of disc:
                     var ripples = ripplegroup.selectAll('circle.rip')
-                        .data(dataset) //.filter(function(d){   return d.SECTOR === 2})) 
+                        .data(dataset) 
                         .enter().append("circle").classed('rip', true)
-//                        .filter(function(d) { return d.SECTOR == 2 })
                         .filter(function(d) { return d.SECTOR == 0 || d.SECTOR == 1 || d.SECTOR == 2 || d.SECTOR == 3 || d.SECTOR == 4 })
                         .attr("cx", function(d){
                             return cx + radiusmax*d.xc;
@@ -963,7 +746,6 @@ function ripple01234() {
                                                     .delay(function(d){
                                                         return Math.pow(i, 2)*500 + 500*(d.radcol);})
                                                     .duration(function(d){
-//                                                        return 300*d.radnorm;})
                                                         return 300*d.radcol;})
                                                     .ease(d3.easeSin).attr("r", function(d){
                                                 return d.radcol;})
@@ -977,7 +759,6 @@ function ripple01234() {
                                     .delay(Math.pow(i, 2) * 200)
                                     .duration(function(d){ //duration of full ripple over all colonies
                                         return 10000*d.radnorm;})
-//                                                        return 11000;})
                                     .ease(d3.easeSin)
                                 .attr("r", function(d){
                                         return 7*rippleradius;})
@@ -1000,9 +781,7 @@ function ripple01234() {
             var dataset;
 
             
-//            d3.csv("./data/dj_jeff_out_edited.csv",function(d){ 
             d3.csv("./data/linda_out_edited.csv",function(d){ 
-//                debugger;
                 // transform the data here
                 d['xc']=+d["xc"];
                 d['yc']=+d["yc"];
@@ -1013,25 +792,14 @@ function ripple01234() {
                 dataset = d;
                 
                 growcolonies(d)
-//                ripple()
                 }, );//d3.csv
                    
             drawDisc();
 
-            setTimeout(function(){
-                    console.log(dataset);
-                    },200);
-                   
-//        }; //end launchequalizer (instead of jquery document ready function)
-
-            
-            
-
        ///////////////////////////////////////////////////////////////////////////////////        
        ///////////////////////////////////////////////////////////////////////////////////        
-         
 
-//SLIDE SHOW: in order of appearance in FINAL SYMPHONY:
+        //SLIDE SHOW: in order of appearance in FINAL SYMPHONY:
         var imgArraySlideshow = [
             './BB_images/linda_bw.png',
             './BB_images/linda_mouth.png',
@@ -1046,9 +814,6 @@ function ripple01234() {
         imgDurationArray = [3800,8000,8000,8000,8000,16000,16000,8000,8000,8000,8000];
 
         function slideShow() {
-            
-//            var slider = document.getElementById('slider');
-//            slider.classList.toggle('fade');
                     
                 document.getElementById('slider').src = imgArraySlideshow[curIndexslide]; //show image
                 timeout = setTimeout("slideShow()", imgDurationArray[curIndexslide]);
@@ -1060,14 +825,7 @@ function ripple01234() {
                     document.getElementById('slider').src = "./BB_images/linda_c.png"; } 
             };
 
-
-            
-            
-            
-            
-            
   </script>
-
           
 	  </body>
 	</html>

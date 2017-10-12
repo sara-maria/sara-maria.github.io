@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+	<html>
+	  <head>
+         <!-- Declare the character set of the document -->
+        <meta charset="UTF-8">
+         <!-- Support IE9-IE10 -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <!-- Set the viewport -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Page Info -->
+        <title>Biota Beats</title>
+        <meta name="author" content="Sara Maria Sprinkhuizen">
+        <meta name="description" content="Biota Beats - A microbial record player developed by the EMW Street Bio team.">
+        <meta property="og:image" content="./BB_images/jeff-eq-screenshot.png">
+        <meta name="keywords" content="Biota,Beats,microbiome,microbiota,bacteria,EMW,Street,Bio,record,player,DJ,music,art,data">
+        
+        <!-- Javascripts -->
+        <script src="./js/d3.v4.min.js" charset="utf-8"></script>
+           
+        <!--------------------------------------------------------------------------->
+        <!--    MUSIC EQUALIZER                                   ------------------->            
+        <!--    Based on work from Garry Smith                                     -->
+        <!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
+        <!--------------------------------------------------------------------------->  
+        <!-- Prepare audioelements to be called later:-->
+                <audio id="audioElement" src="./audio/jazzyjeff_biotabeat1.wav"></audio>
+          
+<!--                <audio id="audioElement" src="./audio/LINDA_SYMPHONY_FINAL.wav"></audio>-->
+<!--                <audio id="audioElement" src="./audio/Linda.mp3"></audio>-->
+        <!-- Prepare general audioelement to hold the audiofiles later:        -->
+                <audio id="audioElementWrapper" class="audiobutton" src="" type="audio/mpeg"></audio>
+        <!--------------------------------------------------------------------------->  
+	  </head>
+
+	  <body>
+        <style>
+            body{
+                background-color: #f2edf7;
+                }
+            
+            #wrapper{
+                height: 800px;
+                }
+            
+            #equalizer {
+                overflow:visible
+                }
+
+            #BiotaBody {
+                margin-top: 180px;
+                height: 660px;
+                width: 800px;
+                position:absolute;
+                z-index: -2; /*    //needs to be all the way to the back */
+                }
+            
+            #ear {
+                position: absolute;
+                left: 0;
+                z-index: 2;    
+/*            //needs to be all the way to the back */
+                }
+            
+        #radius{
+            display: inline-block;
+            background-color: #444; 
+            }
+
+        #petricircle {
+            position:absolute;
+            z-index: 1; 
+            }
+
+          .arc path {
+                stroke: #444;
+            }
+
+            
+/*          // z-axes positioning of the 3 parts of the vis*/
+            .red, .green, .blue {
+                  position: absolute;
+/*                  text-align: center;*/
+                }
+
+/*            //dish*/
+                .red { 
+                  z-index: 1;
+                }
+            
+/*            //colonies*/
+                .green {
+                  z-index: 2;
+                }
+
+/*            //equalizer - needs to be *behind* all other layers*/
+                .blue {
+                  z-index: -1;
+                }
+            
+              #Play {
+                  margin-bottom: 70px;
+              }
+            
+        </style>
+
+
+        <!--          Set up audio feature extraction -->
+        <script>
+            var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            var audioElement = document.getElementById('audioElement');
+            var audioSrc = audioCtx.createMediaElementSource(audioElement);
+            var analyser = audioCtx.createAnalyser();
+
+            // Bind our analyser to the media element source.
+            audioSrc.connect(analyser);
+            audioSrc.connect(audioCtx.destination);
+        </script>
+
+
+        <!--////////////////////////////////////////////////////////////////////////////////-->
+        <!--          Build website structure-->
+        <!--////////////////////////////////////////////////////////////////////////////////-->
+        <!--------------------------------------------------------------------------->
+            <!--    Based on work from Garry Smith -->
+            <!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
+            <!--------------------------------------------------------------------------->
+            <!--        Buttons for interactivity with music  -->
+            <div id="Play">
+              <button onclick="document.getElementById('audioElement').play(); launchequalizer(); ripple(); single_loc_ripple();">Play!</button>
+              <button onclick="document.getElementById('audioElement').pause()">Pause music</button>
+            </div>  
+
+          
+          <div id="wrapper">
+              
+              <div id="BiotaBody">                        
+                    <svg id="ear"><img id="slider" src="./BB_images/jeff_small.png" width="100%"></svg>
+              </div>
+              
+              <!--              THE NEXT THREE DIVS ARE POSITIONED ON TOP OF EACH OTHER!-->
+              <!--    Petri dish           -->  
+              <div id="dish">
+                    <svg class="red" id="petridish" width="1200" height="700" />
+              </div> <!-- end dish div-->
+              
+              <!--    Bacterial colonies           -->  
+              <div id="colonies">
+                    <svg class="green" id="col" width="1200" height="700" />
+              </div> <!-- end colonies div-->
+              
+              <!--    Radial equalizer           -->  
+              <div id="content">
+                    <svg class="blue" id="equalizer" width="1200" height="700">
+                    </svg> <!-- end colonies svg-->
+            </div>  <!-- end content div-->
+        </div> <!-- end wrapper-->
+          
+        <!--////////////////////////////////////////////////////////////////////////////////-->
+        <!--          End website structure-->
+        <!--////////////////////////////////////////////////////////////////////////////////-->
+          
+          
+        <!--////////////////////////////////////////////////////////////////////////////////-->
+        <!--          Javascript etc-->
+        <script>
+            var radius_all = 200; //radius of circular-equalizer and petri-disc
+            var cx = 250;    //x center of circular-equalizer and petri-disc
+            var cy = -5;      //y center of circular-equalizer and petri-disc
+            
+            var samplebins = 230; //# of bins or equalizer
+            var frequencyData = new Uint8Array(samplebins+1); //add 1 to ensure circle "closes"!
+            
+            //locations of ripples on biota body
+            var width_ripple=800, height_ripple=1200;
+            var xear=210, year=125;
+            var xmouth=284, ymouth=160;
+            var xhands=680, yhands=450;
+            
+            // colors!
+            //for equalizer background:
+            var mycolor = d3.rgb("rgba(57, 16, 92, 0.35)"); // "Sun" (with 1 lighter and 1.75 darker)
+            // for colonies:
+            var colonyfillcolor = "#d0a5a5"; // "#e8e891" //fill
+            var colonystrokecolor = "#444";//stroke
+            
+            //clickable biota-body
+             var svg = d3.select("#ear")
+             svg.attr("x", xear)
+                .attr("y", year)
+                .attr("width", width_ripple)
+                .attr("height", height_ripple);
+
+            
+            
+            ///// START EQUALIZER DISC VIS /////////////////////////////////////////
+                function launchequalizer() {
+                    
+                ////////////////  CIRCULAR EQUALIZER BY MANIPULATING THE RADIUS of CIRCLES
+                //<!--////////////////////////////////////////////////////////////////////////////////-->
+                //<!--     CIRCLES WITH CHANGING RADIUS-->
+                //<!--     // based on https://bl.ocks.org/mbostock/2d466ec3417722e3568cd83fc35338e3-->
+                //<!--////////////////////////////////////////////////////////////////////////////////-->
+
+                    var svg = d3.select("#equalizer"),
+                                width = +svg.attr("width"),
+                                height = +svg.attr("height"),
+                                angles = d3.range(0, 2 * Math.PI, Math.PI /( 0.5*(samplebins) ) ); //ensure same (-1) or smaller number as frequency array!
+                        var xshift = width/2 + cx;
+                        var yshift = height/2 + cy;
+                    
+                    //Append a radialGradient element to the defs and give it a unique id
+                    //  From: https://www.visualcinnamon.com/2016/05/data-based-svg-gradient-d3.html
+                    var defs = svg.append("defs");    
+                    var radialGradient = defs.append("radialGradient")
+                        .attr("id", "radial-gradient")
+                        .attr("cx", "50%")    //The x-center of the gradient, same as a typical SVG circle
+                        .attr("cy", "50%")    //The y-center of the gradient
+                        .attr("r", "50%");   //The radius of the gradient, an offset of 100% ends where you've set this radius
+                    //Add colors to make the gradient appear like a Sun:
+                    //  From: https://www.visualcinnamon.com/2016/05/data-based-svg-gradient-d3.html
+                    radialGradient.append("stop")
+                        .attr("offset", "0%")
+                        .attr("stop-color", mycolor.brighter(3));
+                    radialGradient.append("stop")
+                        .attr("offset", "50%")
+                        .attr("stop-color", mycolor);
+                    radialGradient.append("stop")
+                        .attr("offset", "90%")
+                        .attr("stop-color", mycolor.darker(2)); 
+
+                // NOW DRAW THIS CIRCLE EQUALIZER!
+                    var freqscale = d3.scalePow()
+                                        .exponent(2)
+                                        .domain([0,200])  //frequencies go from 0 to 255;
+                                        .range([0,100]); //output range
+
+                    var path = svg.append("g")
+                            .attr("transform", "translate(" + xshift + "," + yshift + ")")
+                            .style("fill", "url(#radial-gradient)")  // GRADIENT
+//                            .style("filter", "url(#yellow-glow)")  // GLOW! SOMEHOW DOES NOT WORK......
+                            .attr("stroke-linejoin", "round")
+                            .selectAll("path")
+                            .data([1])
+                            .enter().append("path")
+                            .datum(function(d, i) {
+                              return d3.radialLine()
+//                                  .curve(d3.curveLinearClosed)
+                                    .curve(d3.curveCatmullRom)
+                                  .angle(function(a) { return a; })
+                                  .radius(function(a,i) {
+                                        return radius_all + freqscale(frequencyData[Math.round(a*.5*samplebins/Math.PI)]) ;
+                                        });
+                                }); //end datum
+
+                                    d3.timer(function() {
+                                            path.attr("d", function(d) {
+                                                        return d(angles);
+                                            });
+                                    });   
+                    
+                    
+                    // Time to play! /////////////////////////////////////////
+                    // Continuously loop and update chart with frequency data.
+                    function renderChart() {
+                           requestAnimationFrame(renderChart);
+                           // Copy frequency data to frequencyData array.
+                           analyser.getByteFrequencyData(frequencyData);
+                        }; //renderchart
+                    // Run the loop
+                    renderChart();  
+                    
+        }; //end launchequalizer (instead of jquery document ready function)
+
+            
+              //////////////////////////////////////////////////////////////////////////
+              //////////////////// DRAW PETRI DISC PLUS CIRCULAR BANDS    //////////////
+              //////////////////////////////////////////////////////////////////////////	
+                 function drawDisc() {
+
+                        var sections = 5; 
+                        var rmax = radius_all/sections;    
+                        var radiusmax = radius_all;
+                        var N = Array.from({length: sections}, (q, radiusmax) => radiusmax+1);
+                        for(var i=0; i<N.length; i++) { N[i] *= rmax;}
+                        var radius = N;
+
+                        // Create concentric circles to serve as background:    
+                        var petridisc = d3.select("body").select("#wrapper").select("#dish").select("#petridish"),
+                            width = +petridisc.attr("width"),
+                            height = +petridisc.attr("height")
+
+                        var discgroup = petridisc.append("g")
+                            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+                     
+//                        .attr("transform", "translate(" + 400 + "," + 400 + ")");
+                        var petridisc = discgroup.selectAll('circle')
+                            .data(radius)
+                            .enter().append('circle')
+                            .attr('class','petricircle')
+                            .attr('cx', cx)
+                            .attr('cy', cy)
+                            .attr('r', function(d) { return d; })
+                            .attr('fill', 'none')
+                            .attr("stroke", "grey")
+                            .attr("stroke-width", 1);
+
+                      //////////////////////////////////////////////////////////////////////////
+                      //////////////////// DRAW SWAB SECTIONS ("Pie slices") ///////////////////
+                      //////////////////////////////////////////////////////////////////////////	
+                        var Discdata = [1,1,1,1,1]; // width of each element
+
+                        var svg = d3.select("body").select("#wrapper").select("#dish").select("#petridish"),
+                            width = +svg.attr("width"),
+                            height = +svg.attr("height");
+
+                        var xshift = width/2 + cx;
+                        var yshift = height/2 + cy;
+                     
+                        g = svg.append("g")
+                            .attr("transform", "translate(" + xshift + "," + yshift + ")");
+
+                        var pie = d3.pie();
+                        var path = d3.arc()
+                            .outerRadius(radiusmax)
+                            .innerRadius(0);
+
+                        var arc = g.selectAll(".arc")
+                            .data(pie(Discdata))
+                            .enter().append("g")
+                            .attr("class", "arc");
+
+                            arc.append("path")
+                              .attr("d", path)
+                              .attr("fill", "none");
+                };  // end of drawDisc
+                    
+
+            
+              //////////////////////////////////////////////////////////////////////////
+              //   Define function to grow bacterial colonies with (called at the end)//
+              //////////////////////////////////////////////////////////////////////////
+              function growcolonies(dataset) {
+
+                    var radiusmax = radius_all;
+
+                    var svg = d3.select("body").select("#wrapper").select("#colonies").select("#col"),
+                            width = +svg.attr("width"),
+                            height = +svg.attr("height");
+                    
+                  var colonygroup = svg.append("g")
+                                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+                    
+                  var colcircles = colonygroup.selectAll('circle.col')
+                            .data(dataset)  
+                            .enter().append("circle").classed('col', true)
+                            .attr("fill",colonyfillcolor)
+                            .attr("opacity", .8)    
+                            .attr("stroke", colonystrokecolor)
+                            .attr("stroke-width", .1)    
+                            .attr("cx", function(d){
+                                return cx + radiusmax*d.xc;
+                                })
+                            .attr("cy", function(d){
+                                    return cy + radiusmax*d.yc;
+                                })
+                            .attr("r", function(d){
+                                    return d.radcol;
+                                })
+                    
+                };  // end of growcolonies
+              
+            
+            
+            ///////// RIPPLES! /////////////////////////////////////////////////////////////
+            ///////// RIPPLES! /////////////////////////////////////////////////////////////
+            ///////// RIPPLES! /////////////////////////////////////////////////////////////
+            
+            function ripple() {    
+                    var radiusmax = radius_all;
+                    var rippleradius = 2;
+                    var nr_ripples = 4;
+
+                    var ripple_color = "#E0B463"; //"#3a1c05";
+                    var svg = d3.select("body").select("#wrapper").select("#colonies").select("#col")
+                                                width = +svg.attr("width"),
+                                                height = +svg.attr("height");
+                
+                        for (var i = 1; i <= nr_ripples; ++i) {
+                            var ripplegroup = svg.append("g")
+                                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");  
+
+                        /////////////////////////////// Ripple by radial distance from center of disc:
+                        var ripples = ripplegroup.selectAll('circle.rip')
+                        .data(dataset)  
+                        .enter().append("circle").classed('rip', true)
+                        .attr("cx", function(d){
+                            return cx + radiusmax*d.xc;
+                            })
+                        .attr("cy", function(d){
+                                return cy + radiusmax*d.yc;
+                            })
+                                                                        .transition()
+                                                    .delay(function(d){
+                                                        return Math.pow(i, 2)*100 + 50*(d.radcol);})
+                                                    .duration(function(d){
+                                                        return 30*d.radcol;})
+                                                    .ease(d3.easeSin).attr("r", function(d){
+                                                return d.radcol;})
+                        .style("stroke", d3.rgb(ripple_color).brighter(2))
+                        .style("fill", "none")
+                        .style("stroke-opacity", 0.9);
+                
+                            //Now all dependencies on i:
+                         ripples.style("stroke-width", 3 / (i))
+                                .transition()
+                                    .delay(function(d){ //delay over all ripples of a single colony! adds in distance of colony center parameter
+                                        return  (Math.pow(i, 2)*200  + 1000*d.radnorm);}) //radnorm max = 1
+                                    .duration(function(d){ //duration of full ripple over all colonies
+                                        return 10000*d.radnorm;})
+                                    .ease(d3.easeSin)
+                                .attr("r", function(d){
+                                        return 7*rippleradius;})
+                                .style("stroke-opacity", 0)
+                                .on("end", function () {
+                                    d3.select(this)
+                                    .remove();
+                                });
+
+                        }; // end for over all ripples
+                    
+                
+                setTimeout(ripple, 8000);
+                
+                    }; // end of ripple
+                    
+            
+            ///////// BODY RIPPLES! /////////////////////////////////////////////////////////////
+            
+            function single_loc_ripple() {    
+                    var rippleradius = 55;
+                    var nr_ripples = 6;
+                    var ripple_color = "#444"; //"#3a1c05";
+                    var svg = d3.select("body").select("#wrapper").select("#BiotaBody").select("#ear")
+                    
+                   //EAR 
+                    for (var i = 1; i <= nr_ripples; ++i) {
+		            var circle = svg.append("circle")
+		                    .attr("cx", xear)
+		                    .attr("cy", year)
+		                    .attr("r", 0)
+		                    .style("stroke", ripple_color)
+		                    .style("stroke-opacity", .9)
+		                    .style("stroke-width", 5 / (i))
+		                    .style("fill", "#fff")
+                            .style("opacity", .4)
+		                    .transition()
+		                        .delay(Math.pow(i, 2) * 100)
+		                        .duration(2000)
+		                        .ease(d3.easeQuad)
+		                    .attr("r", rippleradius)
+		                    .style("stroke-opacity", 0.1)
+		                    .on("end", function () {
+		                        d3.select(this)
+                                .remove();
+		                    });
+		              };
+                
+                //MOUTH
+                 for (var i = 1; i <= nr_ripples; ++i) {
+		            var circle = svg.append("circle")
+		                    .attr("cx", xmouth)
+		                    .attr("cy", ymouth)
+		                    .attr("r", 0)
+		                    .style("stroke", ripple_color)
+		                    .style("stroke-opacity", .9)
+		                    .style("stroke-width", 5 / (i))
+		                    .style("fill", "#fff")
+                            .style("opacity", .4)
+		                    .transition()
+		                        .delay(Math.pow(i, 2) * 120)
+		                        .duration(2000)
+		                        .ease(d3.easeQuad)
+		                    .attr("r", rippleradius)
+		                    .style("stroke-opacity", 0.1)
+		                    .on("end", function () {
+		                        d3.select(this)
+                                .remove();
+		                    });
+		              };
+                
+                //HANDS
+                 for (var i = 1; i <= nr_ripples; ++i) {
+		            var circle = svg.append("circle")
+		                    .attr("cx", xhands)
+		                    .attr("cy", yhands)
+		                    .attr("r", 0)
+		                    .style("stroke", ripple_color)
+		                    .style("stroke-opacity", .9)
+		                    .style("stroke-width", 5 / (i))
+		                    .style("fill", "#fff")
+                            .style("opacity", .4)
+		                    .transition()
+		                        .delay(Math.pow(i, 2) * 150)
+		                        .duration(2000)
+		                        .ease(d3.easeQuad)
+		                    .attr("r", 1.7*rippleradius)
+		                    .style("stroke-opacity", 0.1)
+		                    .on("end", function () {
+		                        d3.select(this)
+                                .remove();
+		                    });
+		              };
+                
+                    }; // end of ripple
+                    
+            
+            
+            
+                    
+                    
+            ///////////////////////////////////////////////////////////////////////////////////        
+            // 1. Load Colony Coordinate data and PLOT these! -------------------------------
+            
+            var dataset;
+
+            
+            d3.csv("./data/dj_jeff_out_edited.csv",function(d){ 
+                // transform the data here
+                d['xc']=+d["xc"];
+                d['yc']=+d["yc"];
+                d['radcol']=+d["radcol"];
+                d['radnorm']=+d["radnorm"];
+
+                dataset = d;
+                
+                growcolonies(d)
+                }, );//d3.csv
+                   
+            drawDisc();
+
+            setTimeout(function(){
+                    console.log(dataset);
+                    },200);
+                   
+  </script>
+
+          
+	  </body>
+	</html>
