@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+         <!-- Declare the character set of the document -->
+        <meta charset="UTF-8">
+         <!-- Support IE9-IE10 -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <!-- Set the viewport -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Page Info -->
+        <title>Biota Beats - iGEM - UNIVERSE </title>
+        <meta name="author" content="Sara Maria Sprinkhuizen">
+        <meta name="description" content="Biota Beats - A microbial record player developed by the EMW Street Bio team.">
+<!--        <meta property="og:image" content="./images/igem-screenshot.png">-->
+        <meta name="keywords" content="Biota,Beats,iGEM,UNIVERSE,microbiome,microbiota,bacteria,EMW,Street,Bio,record,player,DJ,music,art,data">
+
+        <!-- Javascripts -->
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+    
+    <style>
+
+            body {
+                overflow:visible;
+                background: #131314;
+            }
+
+
+            circle {
+                fill: rgb(66, 88, 103);
+                stroke: #222124;
+                stroke-width: 0.4;
+/*                opacity: 0.5;*/
+            }
+            
+            .circlehighlight {
+                fill: rgb(255, 255, 193);
+                stroke: rgb(255, 255, 193);
+                stroke-width: 4;
+                stroke-opacity: 0.6;
+                opacity: 0.8;
+            }
+
+            h2 {
+                font-family:futura;
+                font-weight: 100;
+                text-align: center;
+                font-size:4em;
+                color:rgb(211, 208, 116);
+            }    
+                
+    </style>
+    
+    <script type="text/javascript">  
+    
+    function draw(geo_data) {
+        "use strict";
+        var margin = 0,
+            width = 1400 - margin,
+            height = 600 - margin;
+
+        d3.select("body")
+            .append("h2")
+            .text("UNIVERSE")
+          
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", width + margin)
+            .attr("height", height + margin);
+        
+        var projection = d3.geo.orthographic()
+                            .scale(270)
+                            .translate([width / 2, height / 2])
+                    .clipAngle(90) //THIS LINE MAKES GLOBE NON TRANSPARENT!!! http://bl.ocks.org/PatrickStotz/1f19b3e4cb848100ffd7
+//                    .precision(0.2);  // what is this for?
+          
+        var pathproj = d3.geo.path().projection(projection);
+
+                
+        var svg = d3.select("svg");
+        var mycolor = d3.rgb("rgb(131, 150, 125)"); // "Sun" (with 1 lighter and 1.75 darker)
+        var defs = svg.append("defs");    
+                    var radialGradient = defs.append("radialGradient")
+                        .attr("id", "radial-gradient")
+                        .attr("cx", "50%")    //The x-center of the gradient, same as a typical SVG circle
+                        .attr("cy", "50%")    //The y-center of the gradient
+                        .attr("r", "50%");   //The radius of the gradient, an offset of 100% ends where you've set this radius
+                    //Add colors to make the gradient appear like a Sun:
+                    //  From: https://www.visualcinnamon.com/2016/05/data-based-svg-gradient-d3.html
+                    radialGradient.append("stop")
+                        .attr("offset", "0%")
+                        .attr("stop-color", mycolor.brighter(1));
+                    radialGradient.append("stop")
+                        .attr("offset", "50%")
+                        .attr("stop-color", mycolor);
+                    radialGradient.append("stop")
+                        .attr("offset", "90%")
+                        .attr("stop-color", mycolor.darker(3)); 
+
+        
+        var g = svg.append("g");
+        // drawing dark grey sphere as landmass
+            g.append("path")
+               .datum({type: "Sphere"})
+               .attr("class", "sphere")
+               .attr("d", pathproj)
+//               .attr("fill", "#10100f");
+               .attr("fill", "url(#radial-gradient)");
+
+        // drawing worldmap
+        var map = svg.append('g').selectAll('path')
+                     .attr("class", "fill")
+                     .data(geo_data.features)
+                     .enter()
+                     .append('path')
+                     .attr('d', pathproj)
+                     .style('fill', '#313328') //country fill
+                     .style('stroke', '#061206')
+                     .style('stroke-width', .5)
+                     .style('opacity',.8);
+          
+        
+
+//////////////////////////////////////////////////////////////////////////////////////        
+//        # test with second spere
+//        var projection2 = d3.geo.orthographic()
+//                            .scale(170)
+//                            .translate([width / 2, height / 1.7]);
+//        var path2 = d3.geo.path().projection(projection2);
+//        
+//         var svg2 = d3.select("body").select("svg")
+//            .append('g');
+//        
+//        var map2 = svg2.selectAll('path')
+//                     .data(geo_data.features)
+//                     .enter()
+//                     .append('path')
+//                    .attr('d', path2);
+//        map2.style('fill', '#a3a0a0')
+//            .style('stroke', '#444')
+//            .style('stroke-width', 0.2)
+//            .style('opacity',.4);
+//        
+//////////////////////////////////////////////////////////////////////////////////////        
+        
+        
+    function plot_points(data) {  //draw circles logic
+        
+        var coords = data.map(function(d) { return projection([+d.lon, +d.lat]) });
+        var center_x = coords.map(function(d){ return d[0] });
+        var center_y = coords.map(function(d){ return d[1] });
+
+        // now add to map!
+        svg.append('g')
+            .attr("class","bubble")
+            .selectAll("circle")
+            .data(data, function(d,i){ return d.id })
+            .enter()
+            .append("circle")
+            .transition()
+            .duration(500)
+            .attr("cx",function(d,i){ return center_x[i] })
+            .attr("cy",function(d,i){ return center_y[i] })
+            .attr("r",4)
+
+        
+////////////////////////////////////////////////////////////////////////////////////////////////////                         
+//        Spinning the globe:
+        var time = Date.now();
+        var rotate = [0, 0];
+        var velocity = [.015, -0];
+        
+        
+        d3.timer(t => {
+
+        // get current time
+      var dt = Date.now() - time;
+
+      // get the new position from modified projection function
+
+                  
+                  
+//                Define new projection over a rotating path
+                  projection.rotate([t * 0.015, Math.sin(t * 0.0005) * 45]); //original spinning
+                
+                  //different way of rotating:
+//                  projection.rotate([rotate[0] + velocity[0] * dt, rotate[1] + velocity[1] * dt]);
+
+//                Add new projection to the map
+                  map.attr('d', pathproj)
+
+
+                    //now new, rotated projection of circles locations:  
+                        var coords = data.map(function(d) { return projection([+d.lon, +d.lat]) });
+                        var center_x = coords.map(function(d){ return d[0] });
+                        var center_y = coords.map(function(d){ return d[1] });
+
+                    var circles = svg.select(".bubble").selectAll("circle")
+                                    .attr("cx",function(d,i){ return center_x[i] })
+                                    .attr("cy",function(d,i){ return center_y[i] })
+                   }); // end timer spinning globe
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////                         
+////        Marking the cities one by one:
+              var city_idx = 0; //data.id starts at 1        
+              var city_play = setInterval(function() {
+                  
+                  
+                  city_idx++;
+//                  debugger;
+//                  Every 300 msec: highlight a new city:
+                    var filtered = data.filter(function(d) {
+                            return d.id === city_idx;
+                        });  
+                  
+                    //new colors at selected circles' locations:  
+                    var circles = svg.select(".bubble").selectAll("circle")
+                                    .data(filtered,  function(d,i){ return d.id })
+                                    .classed("circlehighlight",true)
+                                    .transition()
+                                    .attr("r",15);
+                    
+                  
+                        if(city_idx>=geo_data.length){
+                                clearInterval(city_play) // this terminates the calls to the update function within the setInterval function.
+                        }
+                  
+                    
+                   }, 300); // end timer city play
+////////////////////////////////////////////////////////////////////////////////////////////////////
+      
+    }; // end plot_points function
+        
+        
+        
+        
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+        // loading igem data 
+        d3.csv("./igem_data/igem_team_data_and_gps.csv", function(d) {
+          d['id'] = +d['id'];
+          d['lat'] = +d['lat'];
+          d['lon'] = +d['lon'];
+          return d;
+        }, plot_points);
+          
+          
+}; // end of draw function
+        
+        
+         
+        
+      </script>
+  </head>
+    
+    
+<body>
+  <script type="text/javascript">
+
+      d3.json("./graphdata/worldmapdata/world_countries.json", function(error, geo_data) {
+//          console.log(geo_data)
+            draw(geo_data)
+            });
+ 
+  </script>
+</body>
+</html>
