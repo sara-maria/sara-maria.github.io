@@ -23,7 +23,8 @@
             body {
                 overflow:visible;
                 background: #131314;
-            }
+                position: relative;
+                }
 
 
             circle {
@@ -42,22 +43,33 @@
             }
 
             h2 {
+                position: absolute;
+                left: 0;
+    top: 0%;
+    width: 100%;
+    text-align: center;
                 font-family:futura;
                 font-weight: 100;
                 text-align: center;
                 font-size:4em;
                 color:rgb(211, 208, 116);
             }    
-                
+        
+        
+    .stars {
+      fill: #fff;
+      stroke: none;
+    }
+      
     </style>
     
     <script type="text/javascript">  
+        var margin = 0,
+            width = 1800 - margin,
+            height = 1000 - margin;
     
     function draw(geo_data) {
         "use strict";
-        var margin = 0,
-            width = 1400 - margin,
-            height = 600 - margin;
 
         d3.select("body")
             .append("h2")
@@ -67,6 +79,69 @@
             .append("svg")
             .attr("width", width + margin)
             .attr("height", height + margin);
+        
+        
+        ////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+//<!--    STAR MAKING SCRIPT!-->
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+// From: http://bl.ocks.org/tommyogden/25e565c0a3305644d983
+(function() {
+
+  var num_stars = 500;
+
+  var x = d3.scale.linear()
+      .range([0, width])
+      .domain([0, 1]);
+
+  var y = d3.scale.linear()
+      .range([height, 0])
+      .domain([0, 1]);
+
+  // Select SVG and make star group
+  var svg = d3.select("body").select("svg")
+    .append("g")
+
+  var data_xyr = d3.range(num_stars)
+                  .map(function() { return [Math.random(), Math.random(), 1.7*Math.random()]; });
+//  var data_r = d3.range(num_stars)
+//                  .map(function() { return [Math.random()]; });
+
+  var circles = svg.selectAll(".circle")
+    .data(data_xyr)
+    .enter().append("circle")
+      .attr("class","stars")
+      .attr("cx", function (d) { return x(d[0]); } )
+      .attr("cy", function (d) { return y(d[1]); } )
+      .attr("r", function (d) { return (d[2]); });
+    
+// Twinkle script from: http://blockbuilder.org/pmplewa/0e36cce6c9c5edb31e18d41ad1f82c4e */
+    d3.selectAll(".stars")
+        .each(function() {
+          var circle = d3.select(this);
+          (function twinkle() {
+            circle.transition()
+              .duration(100 + 480 * Math.random())
+              .ease("linear")
+              .attr("opacity", 0.5 + 0.5 * Math.random())
+              .each("end", twinkle);
+          })();
+        });
+
+})();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         var projection = d3.geo.orthographic()
                             .scale(270)
@@ -232,8 +307,14 @@
       
     }; // end plot_points function
         
+
+
         
-        
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+//<!--    END OF STAR MAKING SCRIPT!-->
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
         
 ////////////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -262,7 +343,16 @@
 //          console.log(geo_data)
             draw(geo_data)
             });
- 
+      
+      
   </script>
+    
+
+    
+    
+    
+    
+    
+    
 </body>
 </html>
