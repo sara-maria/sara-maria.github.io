@@ -25,9 +25,6 @@
         <!--------------------------------------------------------------------------->  
         <!-- Prepare audioelements to be called later:-->
                 <audio id="audioElement" src="./audio/jazzyjeff_biotabeat1.wav"></audio>
-          
-<!--                <audio id="audioElement" src="./audio/LINDA_SYMPHONY_FINAL.wav"></audio>-->
-<!--                <audio id="audioElement" src="./audio/Linda.mp3"></audio>-->
         <!-- Prepare general audioelement to hold the audiofiles later:        -->
                 <audio id="audioElementWrapper" class="audiobutton" src="" type="audio/mpeg"></audio>
         <!--------------------------------------------------------------------------->  
@@ -36,7 +33,7 @@
 	  <body>
         <style>
             body{
-                background-color: #f2edf7;
+                background-color: #dde0de;
                 }
             
             #wrapper{
@@ -75,7 +72,6 @@
           .arc path {
                 stroke: #444;
             }
-
             
 /*          // z-axes positioning of the 3 parts of the vis*/
             .red, .green, .blue {
@@ -179,9 +175,11 @@
             
             // colors!
             //for equalizer background:
-            var mycolor = d3.rgb("rgba(57, 16, 92, 0.35)"); // "Sun" (with 1 lighter and 1.75 darker)
+//            var mycolor = d3.rgb("rgba(57, 16, 92, 0.35)"); // "Sun" (with 1 lighter and 1.75 darker)
+            var mycolor = d3.rgb("#333933"); // "Sun" (with 1 lighter and 1.75 darker)
             // for colonies:
-            var colonyfillcolor = "#d0a5a5"; // "#e8e891" //fill
+//            var colonyfillcolor = "#d0a5a5"; // "#e8e891" //fill
+            var colonyfillcolor = "#e8ebb3"; // "#e8e891" //fill
             var colonystrokecolor = "#444";//stroke
             
             //clickable biota-body
@@ -193,9 +191,7 @@
 
             
             
-            ///// START EQUALIZER DISC VIS /////////////////////////////////////////
-                function launchequalizer() {
-                    
+                     
                 ////////////////  CIRCULAR EQUALIZER BY MANIPULATING THE RADIUS of CIRCLES
                 //<!--////////////////////////////////////////////////////////////////////////////////-->
                 //<!--     CIRCLES WITH CHANGING RADIUS-->
@@ -259,7 +255,9 @@
                                             });
                                     });   
                     
-                    
+              ///// START EQUALIZER DISC VIS /////////////////////////////////////////
+                function launchequalizer() {
+                 
                     // Time to play! /////////////////////////////////////////
                     // Continuously loop and update chart with frequency data.
                     function renderChart() {
@@ -430,7 +428,7 @@
                         }; // end for over all ripples
                     
                 
-                setTimeout(ripple, 8000);
+                setTimeout(ripple, 10000);
                 
                     }; // end of ripple
                     
@@ -511,7 +509,7 @@
                                 .remove();
 		                    });
 		              };
-                
+                 setTimeout(single_loc_ripple, 10000);
                     }; // end of ripple
                     
             
