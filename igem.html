@@ -20,11 +20,27 @@
     
     <style>
 
-            body {
+              body {
                 overflow:visible;
                 background: #131314;
                 position: relative;
                 }
+
+        #MotherEarth {
+                margin-top: 180px;
+                height: 660px;
+                width: 800px;
+                position:absolute;
+                z-index: -2; /*    //needs to be all the way to the back */
+                }
+            
+            #tmp {
+                position: absolute;
+                left: 0;
+                z-index: 2;    
+/*            //needs to be all the way to the back */
+                }
+        
 
 
             circle {
@@ -151,9 +167,14 @@
           
         var pathproj = d3.geo.path().projection(projection);
 
-                
+        
+         var earthcolor = d3.rgb("rgb(105, 113, 142)"); // Earth (with 1 lighter and 1.75 darker)
+       var countryfillcolor = d3.rgb("rgb(84, 94, 139)"); // "Sun" (with 1 lighter and 1.75 darker)
+       var countrystrokecolor = d3.rgb("rgb(25, 64, 224)"); // "Sun" (with 1 lighter and 1.75 darker)
+      
+        
+        
         var svg = d3.select("svg");
-        var mycolor = d3.rgb("rgb(131, 150, 125)"); // "Sun" (with 1 lighter and 1.75 darker)
         var defs = svg.append("defs");    
                     var radialGradient = defs.append("radialGradient")
                         .attr("id", "radial-gradient")
@@ -164,13 +185,13 @@
                     //  From: https://www.visualcinnamon.com/2016/05/data-based-svg-gradient-d3.html
                     radialGradient.append("stop")
                         .attr("offset", "0%")
-                        .attr("stop-color", mycolor.brighter(1));
+                        .attr("stop-color", earthcolor.brighter(1));
                     radialGradient.append("stop")
                         .attr("offset", "50%")
-                        .attr("stop-color", mycolor);
+                        .attr("stop-color", earthcolor);
                     radialGradient.append("stop")
                         .attr("offset", "90%")
-                        .attr("stop-color", mycolor.darker(3)); 
+                        .attr("stop-color", earthcolor.darker(3)); 
 
         
         var g = svg.append("g");
@@ -189,8 +210,8 @@
                      .enter()
                      .append('path')
                      .attr('d', pathproj)
-                     .style('fill', '#313328') //country fill
-                     .style('stroke', '#061206')
+                     .style('fill', countryfillcolor) //country fill
+                     .style('stroke', countrystrokecolor)
                      .style('stroke-width', .5)
                      .style('opacity',.8);
           
@@ -337,6 +358,12 @@
     
     
 <body>
+    
+    <div id="MotherEarth">                        
+                    <svg id="tmp"><img src="./images/motherearth.png" width="150%"></svg>
+      </div>
+    
+    
   <script type="text/javascript">
 
       d3.json("./graphdata/world_countries.json", function(error, geo_data) {
