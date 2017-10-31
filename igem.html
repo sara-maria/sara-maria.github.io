@@ -12,169 +12,166 @@
         <title>Biota Beats - iGEM - UNIVERSE </title>
         <meta name="author" content="Sara Maria Sprinkhuizen">
         <meta name="description" content="Biota Beats - A microbial record player developed by the EMW Street Bio team.">
-<!--        <meta property="og:image" content="./images/igem-screenshot.png">-->
+        <meta property="og:image" content="./images/motherearth_small.png">
         <meta name="keywords" content="Biota,Beats,iGEM,UNIVERSE,microbiome,microbiota,bacteria,EMW,Street,Bio,record,player,DJ,music,art,data">
 
         <!-- Javascripts -->
         <script src="http://d3js.org/d3.v3.min.js"></script>
     
+    
     <style>
-
-              body {
+        body {
                 overflow:visible;
                 background: #131314;
                 position: relative;
                 }
 
         #MotherEarth {
-                margin-top: 180px;
                 height: 660px;
                 width: 800px;
-                position:absolute;
-                z-index: -2; /*    //needs to be all the way to the back */
+                position:relative;
                 }
             
-            #tmp {
-                position: absolute;
+        #image {
+                padding-top: 140px;
+                padding-left: 80px;
+                position: relative;
                 left: 0;
-                z-index: 2;    
-/*            //needs to be all the way to the back */
+                z-index: -2; /*her hand behind the earth*/ 
                 }
         
-
-
-            circle {
-                fill: rgb(66, 88, 103);
-                stroke: #222124;
-                stroke-width: 0.4;
-/*                opacity: 0.5;*/
-            }
-            
-            .circlehighlight {
-                fill: rgb(255, 255, 193);
-                stroke: rgb(255, 255, 193);
-                stroke-width: 4;
-                stroke-opacity: 0.6;
-                opacity: 0.8;
-            }
-
-            h2 {
+/*        svg index -1 to ensure overlap with the image divs etc*/
+        svg {
                 position: absolute;
                 left: 0;
-    top: 0%;
-    width: 100%;
-    text-align: center;
+                top: 0;
+                z-index: -1;
+            }
+
+        .city {
+                fill: rgb(255, 255, 193);
+                stroke: rgb(142, 142, 21);
+                stroke-width: 0.4;
+            }
+            
+        .highlight {
+                fill: rgb(205, 39, 235);
+                stroke: rgb(226, 47, 211);
+/*                stroke-width: 4;*/
+/*                stroke-opacity: 0.6;*/
+/*                opacity: 0.8;*/
+            }
+
+         h2 {
+                position: absolute;
+                left: 0;
+                top: 0%;
+                width: 100%;
+                text-align: center;
                 font-family:futura;
                 font-weight: 100;
                 text-align: center;
-                font-size:4em;
+                font-size: 4em;
                 color:rgb(211, 208, 116);
             }    
         
-        
-    .stars {
-      fill: #fff;
-      stroke: none;
-    }
+        .stars {
+            }
       
     </style>
     
     <script type="text/javascript">  
         var margin = 0,
             width = 1800 - margin,
-            height = 1000 - margin;
+            height = 1100 - margin;
     
     function draw(geo_data) {
-        "use strict";
-
-        d3.select("body")
-            .append("h2")
-            .text("UNIVERSE")
+    
+        d3.select("body").select("#content").append("h2")
+            .text("U N I V E R S E")
           
-        var svg = d3.select("body")
-            .append("svg")
+        var svg = d3.select("body").select("#content").select("svg")
             .attr("width", width + margin)
             .attr("height", height + margin);
         
         
-        ////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-//<!--    STAR MAKING SCRIPT!-->
-////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-// From: http://bl.ocks.org/tommyogden/25e565c0a3305644d983
-(function() {
+                ////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////
+                //   STAR MAKING SCRIPT!
+                //   From: http://bl.ocks.org/tommyogden/25e565c0a3305644d983
+                ////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////
+                (function() {
 
-  var num_stars = 500;
+                  var num_stars = 750;
 
-  var x = d3.scale.linear()
-      .range([0, width])
-      .domain([0, 1]);
+                  var x = d3.scale.linear()
+                      .range([0, width])
+                      .domain([0, 1]);
 
-  var y = d3.scale.linear()
-      .range([height, 0])
-      .domain([0, 1]);
+                  var y = d3.scale.linear()
+                      .range([height, 0])
+                      .domain([0, 1]);
 
-  // Select SVG and make star group
-  var svg = d3.select("body").select("svg")
-    .append("g")
+                  // Select SVG and make star group
+                  var svg = d3.select("body").select("svg")
+                            .append("g")
 
-  var data_xyr = d3.range(num_stars)
-                  .map(function() { return [Math.random(), Math.random(), 1.7*Math.random()]; });
-//  var data_r = d3.range(num_stars)
-//                  .map(function() { return [Math.random()]; });
+                  var data_xyr = d3.range(num_stars)
+                                  .map(function() { return [Math.random(), Math.random(), 2.9*Math.random()]; });
+                    
+                  var color = d3.scale.linear()
+                                    .domain([0,250,500,750])
+                                    .interpolate(d3.interpolateRgb)
+                                    .range([d3.rgb("rgb(255, 255, 131)"), d3.rgb("#9bf2f2"), d3.rgb("rgb(255, 255, 214)"), d3.rgb('#fff')]);
 
-  var circles = svg.selectAll(".circle")
-    .data(data_xyr)
-    .enter().append("circle")
-      .attr("class","stars")
-      .attr("cx", function (d) { return x(d[0]); } )
-      .attr("cy", function (d) { return y(d[1]); } )
-      .attr("r", function (d) { return (d[2]); });
-    
-// Twinkle script from: http://blockbuilder.org/pmplewa/0e36cce6c9c5edb31e18d41ad1f82c4e */
-    d3.selectAll(".stars")
-        .each(function() {
-          var circle = d3.select(this);
-          (function twinkle() {
-            circle.transition()
-              .duration(100 + 480 * Math.random())
-              .ease("linear")
-              .attr("opacity", 0.5 + 0.5 * Math.random())
-              .each("end", twinkle);
-          })();
-        });
+                  var circles = svg.selectAll("circle")
+                    .data(data_xyr)
+                    .enter().append("circle")
+                      .attr("class","stars")
+                      .attr("cx", function (d) { return x(d[0]); } )
+                      .attr("cy", function (d) { return y(d[1]); } )
+                      .style("fill",function(d,i){return color(i);})
+                      .attr("r", function (d) { return d[2]; })
 
-})();
+                    //Twinkle script from: http://blockbuilder.org/pmplewa/0e36cce6c9c5edb31e18d41ad1f82c4e */
+                    d3.selectAll(".stars")
+                        .each(function() {
+                          var circle = d3.select(this);
+                          (function twinkle() {
+                            circle.transition()
+                              .duration(100 + 480 * Math.random())
+                              .ease("linear")
+                              .attr("opacity", 0.3 + 0.8 * Math.random())
+                              .each("end", twinkle);
+                          })();
+                        });
+
+                })();
+                ////////////////////////////////////////////////////////////////////////////
+                //<!--   END STAR MAKING SCRIPT!-->
+                ////////////////////////////////////////////////////////////////////////////
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        // DRAW GLOBE
+        // used: http://bl.ocks.org/PatrickStotz/1f19b3e4cb848100ffd7
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////
         
         var projection = d3.geo.orthographic()
-                            .scale(270)
-                            .translate([width / 2, height / 2])
-                    .clipAngle(90) //THIS LINE MAKES GLOBE NON TRANSPARENT!!! http://bl.ocks.org/PatrickStotz/1f19b3e4cb848100ffd7
-//                    .precision(0.2);  // what is this for?
+                            .scale(370)
+                            .translate([320+width / 2, 50+height / 2])
+                            .clipAngle(90) //THIS LINE MAKES GLOBE NON TRANSPARENT!!! http://bl.ocks.org/PatrickStotz/1f19b3e4cb848100ffd7
+        //                  .precision(0.2);  // what is this for?
           
-        var pathproj = d3.geo.path().projection(projection);
-
-        
-         var earthcolor = d3.rgb("rgb(105, 113, 142)"); // Earth (with 1 lighter and 1.75 darker)
+         var pathproj = d3.geo.path().projection(projection);
+          
+       var earthcolor = d3.rgb("rgb(105, 113, 142)"); // Earth (with 1 lighter and 1.75 darker)
        var countryfillcolor = d3.rgb("rgb(84, 94, 139)"); // "Sun" (with 1 lighter and 1.75 darker)
        var countrystrokecolor = d3.rgb("rgb(25, 64, 224)"); // "Sun" (with 1 lighter and 1.75 darker)
-      
-        
-        
-        var svg = d3.select("svg");
+       
         var defs = svg.append("defs");    
                     var radialGradient = defs.append("radialGradient")
                         .attr("id", "radial-gradient")
@@ -192,18 +189,16 @@
                     radialGradient.append("stop")
                         .attr("offset", "90%")
                         .attr("stop-color", earthcolor.darker(3)); 
-
         
+        // drawing "3D sphere" as landmass
         var g = svg.append("g");
-        // drawing dark grey sphere as landmass
             g.append("path")
                .datum({type: "Sphere"})
                .attr("class", "sphere")
                .attr("d", pathproj)
-//               .attr("fill", "#10100f");
                .attr("fill", "url(#radial-gradient)");
 
-        // drawing worldmap
+        // drawing the worldmap
         var map = svg.append('g').selectAll('path')
                      .attr("class", "fill")
                      .data(geo_data.features)
@@ -214,144 +209,99 @@
                      .style('stroke', countrystrokecolor)
                      .style('stroke-width', .5)
                      .style('opacity',.8);
-          
         
+                /////////////////////////////////////////////////////////////////////////////////
+                //draw, spin, and highlight the cities on the world
+                function plot_points(data) {  
+        
+                    // Add city points to map!
+                    // New attempt: JSON object (instead of circles) for points allowed to be clipped at "backside" of earth:
+                    svg.append('g')
+                    .selectAll("path")
+                        .data(data,function(d,i){ return d.id })    
+                        .enter()
+                        .append("path")
+                        .datum(function(d) { 
+                                return {
+                                    type: "Point",
+                                    coordinates: [d.lon, d.lat],
+                                    class: "nohighlight"
+                                }; })
+                        .attr("class","city")
+                        .attr("d", pathproj);
 
-//////////////////////////////////////////////////////////////////////////////////////        
-//        # test with second spere
-//        var projection2 = d3.geo.orthographic()
-//                            .scale(170)
-//                            .translate([width / 2, height / 1.7]);
-//        var path2 = d3.geo.path().projection(projection2);
-//        
-//         var svg2 = d3.select("body").select("svg")
-//            .append('g');
-//        
-//        var map2 = svg2.selectAll('path')
-//                     .data(geo_data.features)
-//                     .enter()
-//                     .append('path')
-//                    .attr('d', path2);
-//        map2.style('fill', '#a3a0a0')
-//            .style('stroke', '#444')
-//            .style('stroke-width', 0.2)
-//            .style('opacity',.4);
-//        
-//////////////////////////////////////////////////////////////////////////////////////        
-        
-        
-    function plot_points(data) {  //draw circles logic
-        
-        var coords = data.map(function(d) { return projection([+d.lon, +d.lat]) });
-        var center_x = coords.map(function(d){ return d[0] });
-        var center_y = coords.map(function(d){ return d[1] });
-
-        // now add to map!
-        svg.append('g')
-            .attr("class","bubble")
-            .selectAll("circle")
-            .data(data, function(d,i){ return d.id })
-            .enter()
-            .append("circle")
-            .transition()
-            .duration(500)
-            .attr("cx",function(d,i){ return center_x[i] })
-            .attr("cy",function(d,i){ return center_y[i] })
-            .attr("r",4)
-
-        
-////////////////////////////////////////////////////////////////////////////////////////////////////                         
-//        Spinning the globe:
-        var time = Date.now();
-        var rotate = [0, 0];
-        var velocity = [.015, -0];
-        
-        
-        d3.timer(t => {
-
-        // get current time
-      var dt = Date.now() - time;
-
-      // get the new position from modified projection function
-
-                  
-                  
-//                Define new projection over a rotating path
-                  projection.rotate([t * 0.015, Math.sin(t * 0.0005) * 45]); //original spinning
+                // Control the radius of the circles!
+                pathproj.pointRadius(function(d,i) { 
+                        return d.class==="nohighlight" ? 4 : 20;
+                    });
                 
-                  //different way of rotating:
-//                  projection.rotate([rotate[0] + velocity[0] * dt, rotate[1] + velocity[1] * dt]);
-
-//                Add new projection to the map
-                  map.attr('d', pathproj)
-
-
-                    //now new, rotated projection of circles locations:  
-                        var coords = data.map(function(d) { return projection([+d.lon, +d.lat]) });
-                        var center_x = coords.map(function(d){ return d[0] });
-                        var center_y = coords.map(function(d){ return d[1] });
-
-                    var circles = svg.select(".bubble").selectAll("circle")
-                                    .attr("cx",function(d,i){ return center_x[i] })
-                                    .attr("cy",function(d,i){ return center_y[i] })
-                   }); // end timer spinning globe
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////                         
-////        Marking the cities one by one:
-              var city_idx = 0; //data.id starts at 1        
-              var city_play = setInterval(function() {
-                  
-                  
-                  city_idx++;
-//                  debugger;
-//                  Every 300 msec: highlight a new city:
-                    var filtered = data.filter(function(d) {
-                            return d.id === city_idx;
-                        });  
-                  
-                    //new colors at selected circles' locations:  
-                    var circles = svg.select(".bubble").selectAll("circle")
-                                    .data(filtered,  function(d,i){ return d.id })
-                                    .classed("circlehighlight",true)
-                                    .transition()
-                                    .attr("r",15);
-                    
-                  
-                        if(city_idx>=geo_data.length){
-                                clearInterval(city_play) // this terminates the calls to the update function within the setInterval function.
-                        }
-                  
-                    
-                   }, 300); // end timer city play
-////////////////////////////////////////////////////////////////////////////////////////////////////
       
-    }; // end plot_points function
-        
+               
+                ////////////////////////////////////////////////////////////////////////////////////////////////////                         
+                //        Spinning the globe:
+
+                function spinning_globe(){
+
+                var time = Date.now();
+                var rotate = [0, 0];
+                var velocity = [.015, -0];
 
 
+                d3.timer(t => {
+
+                    // get current time
+                    var dt = Date.now() - time;
+                          //Define new projection over a rotating path
+                          projection.rotate([t * 0.015, Math.sin(t * 0.0005) * 45]); //original spinning
+
+                          //Add new projection to the map
+                          map.attr('d', pathproj)
+
+                          // Spin city locations: Method with JSON path element - only requires this line:
+                          svg.selectAll("path.city").attr("d", pathproj);
+
+                           }); // end timer spinning globe
+
+                }; // end spinning globe
+
+                spinning_globe();
+                ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            
+            
+                    ////////////////////////////////////////////////////////////////////////////////////////////////////                         
+//                    ////        HIGHLIGHTING the cities one by one:
+//                      var city_idx = 0; //data.id starts at 1        
+////                      //Every 300 msec: highlight a new city:
+//                      var city_play = setInterval(function() {
+//                                city_idx++;
+//                                var filtered = data.filter(function(d) {
+//                                                    return d.id === city_idx;
+//                                                });  
+//                          
+
+////                                //Stop when all cities are highlighted
+//                                if(city_idx>=geo_data.length){
+//                                                clearInterval(city_play) //terminates calls to update function within setInterval function.
+//                                        };
+//                           }, 300); // end timer city play setInterval
+
+
+                
+                
+                }; // end plot_points function
         
-//////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-//<!--    END OF STAR MAKING SCRIPT!-->
-////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-        
-////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
         // loading igem data 
-        d3.csv("./igem_data/igem_team_data_and_gps.csv", function(d) {
+        d3.csv("./data/igem/igem_team_data_and_gps.csv", function(d) {
           d['id'] = +d['id'];
           d['lat'] = +d['lat'];
           d['lon'] = +d['lon'];
           return d;
         }, plot_points);
           
-          
-}; // end of draw function
-        
-        
-         
+    }; // end of draw function
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
         
       </script>
   </head>
@@ -359,27 +309,21 @@
     
 <body>
     
-    <div id="MotherEarth">                        
-                    <svg id="tmp"><img src="./images/motherearth.png" width="150%"></svg>
-      </div>
-    
+    <div id="content">
+        <svg></svg>
+        <div id="MotherEarth">                        
+    <!--        <svg id="image"><img src="./images/motherearth.png" width="150%"></svg>-->
+            <img id="image" src="./images/motherearth.png" width="150%"></img>
+        </div>
+    </div>
     
   <script type="text/javascript">
 
-      d3.json("./graphdata/world_countries.json", function(error, geo_data) {
-//          console.log(geo_data)
+      d3.json("./data/worldmapdata/world_countries.json", function(error, geo_data) {
             draw(geo_data)
             });
       
-      
   </script>
-    
-
-    
-    
-    
-    
-    
     
 </body>
 </html>
