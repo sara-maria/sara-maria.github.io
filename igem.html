@@ -52,17 +52,18 @@
                 fill: rgb(255, 255, 193);
                 stroke: rgb(142, 142, 21);
                 stroke-width: 0.4;
+                opacity: 0.4;
             }
             
         .highlight {
-                fill: rgb(205, 39, 235);
-                stroke: rgb(226, 47, 211);
-/*                stroke-width: 4;*/
-/*                stroke-opacity: 0.6;*/
-/*                opacity: 0.8;*/
+                fill: rgb(39, 235, 227);
+                stroke: rgb(39, 235, 227);
+                stroke-width: 4;
+                opacity: 1;
             }
 
          h2 {
+                letter-spacing: 2em;
                 position: absolute;
                 left: 0;
                 top: 0%;
@@ -74,9 +75,6 @@
                 font-size: 4em;
                 color:rgb(211, 208, 116);
             }    
-        
-        .stars {
-            }
       
     </style>
     
@@ -88,7 +86,7 @@
     function draw(geo_data) {
     
         d3.select("body").select("#content").append("h2")
-            .text("U N I V E R S E")
+            .text("UNIVERSE")
           
         var svg = d3.select("body").select("#content").select("svg")
             .attr("width", width + margin)
@@ -96,10 +94,8 @@
         
         
                 ////////////////////////////////////////////////////////////////////////////
-                ////////////////////////////////////////////////////////////////////////////
                 //   STAR MAKING SCRIPT!
                 //   From: http://bl.ocks.org/tommyogden/25e565c0a3305644d983
-                ////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////
                 (function() {
 
@@ -118,7 +114,7 @@
                             .append("g")
 
                   var data_xyr = d3.range(num_stars)
-                                  .map(function() { return [Math.random(), Math.random(), 2.9*Math.random()]; });
+                                  .map(function() { return [Math.random(), Math.random(), 2*Math.random()]; });
                     
                   var color = d3.scale.linear()
                                     .domain([0,250,500,750])
@@ -160,17 +156,10 @@
         /////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////
         
-        var projection = d3.geo.orthographic()
-                            .scale(370)
-                            .translate([320+width / 2, 50+height / 2])
-                            .clipAngle(90) //THIS LINE MAKES GLOBE NON TRANSPARENT!!! http://bl.ocks.org/PatrickStotz/1f19b3e4cb848100ffd7
-        //                  .precision(0.2);  // what is this for?
-          
-         var pathproj = d3.geo.path().projection(projection);
-          
-       var earthcolor = d3.rgb("rgb(105, 113, 142)"); // Earth (with 1 lighter and 1.75 darker)
-       var countryfillcolor = d3.rgb("rgb(84, 94, 139)"); // "Sun" (with 1 lighter and 1.75 darker)
-       var countrystrokecolor = d3.rgb("rgb(25, 64, 224)"); // "Sun" (with 1 lighter and 1.75 darker)
+                
+        var earthcolor = d3.rgb("rgb(105, 113, 142)"); 
+        var countryfillcolor = d3.rgb("rgb(84, 94, 139)"); 
+        var countrystrokecolor = d3.rgb("rgb(25, 64, 224)"); 
        
         var defs = svg.append("defs");    
                     var radialGradient = defs.append("radialGradient")
@@ -178,7 +167,7 @@
                         .attr("cx", "50%")    //The x-center of the gradient, same as a typical SVG circle
                         .attr("cy", "50%")    //The y-center of the gradient
                         .attr("r", "50%");   //The radius of the gradient, an offset of 100% ends where you've set this radius
-                    //Add colors to make the gradient appear like a Sun:
+                    //Add colors to make the gradient appear like a Globe:
                     //  From: https://www.visualcinnamon.com/2016/05/data-based-svg-gradient-d3.html
                     radialGradient.append("stop")
                         .attr("offset", "0%")
@@ -189,6 +178,15 @@
                     radialGradient.append("stop")
                         .attr("offset", "90%")
                         .attr("stop-color", earthcolor.darker(3)); 
+        
+          var projection = d3.geo.orthographic()
+                            .scale(370)
+                            .translate([360+width / 2, 50+height / 2])
+                            .clipAngle(90) //THIS LINE MAKES GLOBE NON TRANSPARENT!!! http://bl.ocks.org/PatrickStotz/1f19b3e4cb848100ffd7
+                          //.precision(0.2);  // what is this for?
+          
+          var pathproj = d3.geo.path().projection(projection);
+
         
         // drawing "3D sphere" as landmass
         var g = svg.append("g");
@@ -205,7 +203,7 @@
                      .enter()
                      .append('path')
                      .attr('d', pathproj)
-                     .style('fill', countryfillcolor) //country fill
+                     .style('fill', countryfillcolor)
                      .style('stroke', countrystrokecolor)
                      .style('stroke-width', .5)
                      .style('opacity',.8);
@@ -221,21 +219,14 @@
                         .data(data,function(d,i){ return d.id })    
                         .enter()
                         .append("path")
-                        .datum(function(d) { 
+                        .datum(function(d) { console.log(d); //team names and places
                                 return {
                                     type: "Point",
-                                    coordinates: [d.lon, d.lat],
-                                    class: "nohighlight"
+                                    coordinates: [d.lon, d.lat]
                                 }; })
                         .attr("class","city")
                         .attr("d", pathproj);
 
-                // Control the radius of the circles!
-                pathproj.pointRadius(function(d,i) { 
-                        return d.class==="nohighlight" ? 4 : 20;
-                    });
-                
-      
                
                 ////////////////////////////////////////////////////////////////////////////////////////////////////                         
                 //        Spinning the globe:
@@ -244,16 +235,15 @@
 
                 var time = Date.now();
                 var rotate = [0, 0];
-                var velocity = [.015, -0];
-
+                var velocity = [.02, -0];
 
                 d3.timer(t => {
-
                     // get current time
                     var dt = Date.now() - time;
                           //Define new projection over a rotating path
-                          projection.rotate([t * 0.015, Math.sin(t * 0.0005) * 45]); //original spinning
-
+                          //projection.rotate([t * 0.015, Math.sin(t * 0.0005) * 45]); //"wobble" spinning
+                          projection.rotate([rotate[0] + velocity[0] * dt, rotate[1] + velocity[1] * dt]);
+                    
                           //Add new projection to the map
                           map.attr('d', pathproj)
 
@@ -270,23 +260,37 @@
             
             
                     ////////////////////////////////////////////////////////////////////////////////////////////////////                         
-//                    ////        HIGHLIGHTING the cities one by one:
-//                      var city_idx = 0; //data.id starts at 1        
-////                      //Every 300 msec: highlight a new city:
-//                      var city_play = setInterval(function() {
-//                                city_idx++;
-//                                var filtered = data.filter(function(d) {
-//                                                    return d.id === city_idx;
-//                                                });  
-//                          
+                    ////        HIGHLIGHTING the cities one by one:
+                    var city_idx = 0; //data.id starts at 1        
+                    //Every 300 msec: highlight a new city:
+                    var city_play = setInterval(function() {
+                        city_idx++;
+                        // Control the radius of ALL circles!
+                        pathproj.pointRadius(function(d,i) { 
+                            //your biz logic 
+                            if (i < city_idx){
+                              return 12
+                            } else 
+                              return 4
+                        });
 
-////                                //Stop when all cities are highlighted
-//                                if(city_idx>=geo_data.length){
-//                                                clearInterval(city_play) //terminates calls to update function within setInterval function.
-//                                        };
-//                           }, 300); // end timer city play setInterval
+                        //select all elements with class city
+                        d3.selectAll(".city").attr("class", 
+                            function(d, i){
+                            if (i < city_idx){
+                              return "city highlight"
+                            } else 
+                              return "city"
+                          }).attr("d", pathproj);
 
 
+                        var len =  d3.selectAll(".city").data().length;
+                        console.log(city_idx, len)
+                        //Stop when all cities are highlighted
+                        if(city_idx>=len){
+                            clearInterval(city_play) //terminates calls to update function within setInterval function.
+                            };
+                      }, 300);
                 
                 
                 }; // end plot_points function
@@ -302,28 +306,22 @@
           
     }; // end of draw function
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-        
       </script>
   </head>
     
     
 <body>
-    
     <div id="content">
         <svg></svg>
         <div id="MotherEarth">                        
-    <!--        <svg id="image"><img src="./images/motherearth.png" width="150%"></svg>-->
             <img id="image" src="./images/motherearth.png" width="150%"></img>
         </div>
     </div>
     
-  <script type="text/javascript">
-
+    <script type="text/javascript">
       d3.json("./graphdata/world_countries.json", function(error, geo_data) {
             draw(geo_data)
             });
-      
-  </script>
-    
+    </script>
 </body>
 </html>
