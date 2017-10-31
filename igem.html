@@ -293,7 +293,7 @@
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         // loading igem data 
-        d3.csv("./data/igem/igem_team_data_and_gps.csv", function(d) {
+        d3.csv("./igem_data/igem_team_data_and_gps.csv", function(d) {
           d['id'] = +d['id'];
           d['lat'] = +d['lat'];
           d['lon'] = +d['lon'];
@@ -319,7 +319,7 @@
     
   <script type="text/javascript">
 
-      d3.json("./data/worldmapdata/world_countries.json", function(error, geo_data) {
+      d3.json("./graphdata/world_countries.json", function(error, geo_data) {
             draw(geo_data)
             });
       
