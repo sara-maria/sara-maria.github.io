@@ -49,16 +49,16 @@
             }
 
         .city {
-                fill: rgb(255, 255, 193);
-                stroke: rgb(142, 142, 21);
-                stroke-width: 0.4;
-                opacity: 0.4;
+                fill: rgb(38, 255, 223);
+                stroke: rgb(123, 123, 113);
+                stroke-width: 1;
+                opacity: 0.6;
             }
             
         .highlight {
-                fill: rgb(39, 235, 227);
-                stroke: rgb(39, 235, 227);
-                stroke-width: 4;
+                fill: rgb(248, 248, 158);
+                stroke: rgb(242, 242, 167);
+                stroke-width: 12;
                 opacity: 1;
             }
 
@@ -179,13 +179,16 @@
                         .attr("offset", "90%")
                         .attr("stop-color", earthcolor.darker(3)); 
         
-          var projection = d3.geo.orthographic()
+        var rotate = [90, 0];
+        var projection = d3.geo.orthographic()
                             .scale(370)
                             .translate([360+width / 2, 50+height / 2])
                             .clipAngle(90) //THIS LINE MAKES GLOBE NON TRANSPARENT!!! http://bl.ocks.org/PatrickStotz/1f19b3e4cb848100ffd7
                           //.precision(0.2);  // what is this for?
-          
+                            .rotate([rotate[0], rotate[1]]);
+        
           var pathproj = d3.geo.path().projection(projection);
+                            
 
         
         // drawing "3D sphere" as landmass
@@ -210,20 +213,25 @@
         
                 /////////////////////////////////////////////////////////////////////////////////
                 //draw, spin, and highlight the cities on the world
-                function plot_points(data) {  
         
-                    // Add city points to map!
+        
+        
+        
+            function plot_points(data) {  
+        
+                // Add city points to map!
                     // New attempt: JSON object (instead of circles) for points allowed to be clipped at "backside" of earth:
                     svg.append('g')
                     .selectAll("path")
                         .data(data,function(d,i){ return d.id })    
                         .enter()
                         .append("path")
-                        .datum(function(d) { console.log(d); //team names and places
-                                return {
-                                    type: "Point",
-                                    coordinates: [d.lon, d.lat]
-                                }; })
+                        .datum(function(d) {return d3.geo.circle().origin([d.lon, d.lat]).angle(.5)()}) //flat projected discs
+//                        .datum(function(d) { console.log(d); //team names and places in disc-circles
+//                                return {
+//                                    type: "Point",
+//                                    coordinates: [d.lon, d.lat]
+//                                }; })
                         .attr("class","city")
                         .attr("d", pathproj);
 
@@ -234,8 +242,7 @@
                 function spinning_globe(){
 
                 var time = Date.now();
-                var rotate = [0, 0];
-                var velocity = [.02, -0];
+                var velocity = [-.002, -0];
 
                 d3.timer(t => {
                     // get current time
@@ -283,9 +290,12 @@
                               return "city"
                           }).attr("d", pathproj);
 
-
+                        
+//                           d3.selectAll(".city highlight").data().datum(function(d) {return d3.geo.circle().angle(30)()}) 
+                           
+                           
                         var len =  d3.selectAll(".city").data().length;
-                        console.log(city_idx, len)
+//                        console.log(city_idx, len)
                         //Stop when all cities are highlighted
                         if(city_idx>=len){
                             clearInterval(city_play) //terminates calls to update function within setInterval function.
@@ -297,7 +307,9 @@
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         // loading igem data 
-        d3.csv("./igem_data/igem_team_data_and_gps.csv", function(d) {
+//        d3.csv("./data/igem/igem_team_data_and_gps.csv", function(d) {
+//        d3.csv("./data/igem/igem_team_gps_sorted_by_country.csv", function(d) {
+        d3.csv("./igem_data/igem_team_gps_sorted_by_lon-lat.csv", function(d) {
           d['id'] = +d['id'];
           d['lat'] = +d['lat'];
           d['lon'] = +d['lon'];
