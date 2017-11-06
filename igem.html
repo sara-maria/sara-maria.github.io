@@ -17,7 +17,12 @@
 
         <!-- Javascripts -->
         <script src="http://d3js.org/d3.v3.min.js"></script>
-    
+    <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+<script>
+
+var q = d3.queue();
+
+</script>
     
     <style>
         body {
@@ -30,6 +35,8 @@
                 height: 660px;
                 width: 800px;
                 position:relative;
+            padding-top: 50px;
+            padding-left: 25px;
                 }
             
         #image {
@@ -63,7 +70,7 @@
             }
 
          h2 {
-                letter-spacing: 2em;
+                letter-spacing: 4em;
                 position: absolute;
                 left: 0;
                 top: 0%;
@@ -75,12 +82,22 @@
                 font-size: 4em;
                 color:rgb(211, 208, 116);
             }    
-      
+        
+        
+/*        For body part highlighting stars: */
+        .node {
+            fill: #f8f0f0;
+            stroke: #fff;
+            stroke-width: 0;
+            stroke-opacity: 0.3;
+            }
+
+        
     </style>
     
     <script type="text/javascript">  
         var margin = 0,
-            width = 1800 - margin,
+            width = 1900 - margin,
             height = 1100 - margin;
     
     function draw(geo_data) {
@@ -99,7 +116,7 @@
                 ////////////////////////////////////////////////////////////////////////////
                 (function() {
 
-                  var num_stars = 750;
+                  var num_stars = 550;
 
                   var x = d3.scale.linear()
                       .range([0, width])
@@ -141,7 +158,7 @@
                               .attr("opacity", 0.3 + 0.8 * Math.random())
                               .each("end", twinkle);
                           })();
-                        });
+                        }); //end twinkle
 
                 })();
                 ////////////////////////////////////////////////////////////////////////////
@@ -182,9 +199,9 @@
         var rotate = [90, 0];
         var projection = d3.geo.orthographic()
                             .scale(370)
-                            .translate([360+width / 2, 50+height / 2])
+                            .translate([360+width / 2, 100+height / 2])
                             .clipAngle(90) //THIS LINE MAKES GLOBE NON TRANSPARENT!!! http://bl.ocks.org/PatrickStotz/1f19b3e4cb848100ffd7
-                          //.precision(0.2);  // what is this for?
+                          .precision(0.2)  // what is this for?
                             .rotate([rotate[0], rotate[1]]);
         
           var pathproj = d3.geo.path().projection(projection);
@@ -215,10 +232,7 @@
                 //draw, spin, and highlight the cities on the world
         
         
-        
-        
             function plot_points(data) {  
-        
                 // Add city points to map!
                     // New attempt: JSON object (instead of circles) for points allowed to be clipped at "backside" of earth:
                     svg.append('g')
@@ -247,6 +261,7 @@
                 d3.timer(t => {
                     // get current time
                     var dt = Date.now() - time;
+                          
                           //Define new projection over a rotating path
                           //projection.rotate([t * 0.015, Math.sin(t * 0.0005) * 45]); //"wobble" spinning
                           projection.rotate([rotate[0] + velocity[0] * dt, rotate[1] + velocity[1] * dt]);
@@ -305,11 +320,149 @@
                 
                 }; // end plot_points function
         
+        
+        
+        
+            ////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////Group clusters of stars on body parts of mother earth
+            ////////To ighlight the swabbed body parts during music!
+            //////// Based on:  http://blockbuilder.org/mbostock/1021953    
+            ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // locations of the nodes:
+            // ear: 
+        var earx = 370, eary = 390, ear2x = 525, ear2y = 390;
+            // mouth:
+        var mouthx = 450, mouthy = 435;
+            // hand:
+        var handx = 490, handy = 750, hand2x = 900, hand2y = 580;
+            // belly:
+        var bellyx = 465, bellyy = 660;
+            // feet:
+        var feetx = 550, feety = 960;
+        
+        
+        
+        var focieall = [{x: earx, y: eary}, {x: ear2x, y: ear2y}, {x: mouthx, y: mouthy}, {x: handx, y: handy}, {x: hand2x, y: hand2y}, {x: bellyx, y: bellyy}, {x: feetx, y: feety} ];
+        var focieear = [{x: earx, y: eary}, {x: ear2x, y: ear2y}];
+        var fociemouth = [{x: mouthx, y: mouthy}];
+        var fociehands = [{x: handx, y: handy}, {x: hand2x, y: hand2y}];
+        var fociebelly = [{x: bellyx, y: bellyy}];
+        var fociefeet = [{x: feetx, y: feety} ];
+
+        
+        
+        function allstars(foci, delay, callback) {
+             
+            var counter = 0;
+            
+            setTimeout(function() {
+            
+            callback(null);
+               
+
+        
+            var nodes = [];
+//                foci = [{x: earx, y: eary}, {x: ear2x, y: ear2y}, {x: mouthx, y: mouthy}, {x: handx, y: handy}, {x: hand2x, y: hand2y}, {x: bellyx, y: bellyy}, {x: feetx, y: feety} ];
+
+            var force = d3.layout.force()
+                .nodes(nodes)
+                .links([])
+//            .linkStrength(0.9)
+//            .linkDistance(1)
+//            .charge(2000)
+                .gravity(0)
+            .friction(0.4) // I added
+                .size([width, height])
+                .on("tick", tick);
+
+            var node = svg.selectAll("circle");
+
+            function tick(e) {
+              var k = .5 * e.alpha; // k is important parameter in determining speed and distance of particles
+
+                // Push nodes toward their designated focus.
+              nodes.forEach(function(o, i) {
+                o.y += (foci[o.id].y - o.y) * k;
+                o.x += (foci[o.id].x - o.x) * k;
+              });
+
+              node
+                  .attr("cx", function(d) { return d.x; })
+                  .attr("cy", function(d) { return d.y; });
+            };
+            
+            var IntervalId = setInterval(function(){
+                
+              counter++;
+                
+              nodes.push({id: ~~(Math.random() * foci.length)}); // ~~ is: Math.floor
+              force.start();
+
+                node = node.data(nodes);
+                var rscale = d3.scale.linear()
+                            .domain([0,1])
+                            .range([2,8])
+                
+              node.enter().append("circle")
+                  .attr("class", "node")
+                  .attr("cx", function(d) { return d.x; })
+                  .attr("cy", function(d) { return d.y; })
+//                  .attr("r", 3)
+                  .attr("r", function(d,i) { return rscale(Math.random());})
+//                  .style("fill", function(d,i) { return color(d.id); })
+//                  .style("stroke", function(d) { return d3.rgb(fill(d.id)).darker(2); })
+                  .call(force.drag);
+                
+                    //Twinkle script from: http://blockbuilder.org/pmplewa/0e36cce6c9c5edb31e18d41ad1f82c4e */
+                    d3.selectAll(".node")
+                        .each(function() {
+                          var circle = d3.select(this);                           
+                          (function twinkle() {
+                            circle.transition()
+                              .duration(100 + 480 * Math.random())
+                              .ease("linear")
+                              .attr("opacity", 0.3 + 0.99 * Math.random())
+                              .each("end", twinkle);
+                          })();
+                        }); //end twinkle
+                      
+//                console.log(counter);
+                
+                
+                if (counter>50){clearInterval(IntervalId)};
+                    
+                }, 100); //repeat interval every 100msec
+             
+                
+                
+            }, delay);
+        };
+        
+//        allstars(focieear);
+//        allstars(fociefeet);
+//        
+        d3.queue()
+            .defer(allstars,focieear, 100)
+            .defer(allstars,fociebelly, 10000)
+            .defer(allstars,fociefeet, 20000)
+            .defer(allstars,fociemouth, 30000)
+            .defer(allstars,fociehands, 40000)
+//            .defer(allstars,focieear, 100, 100)
+//            .defer(allstars,fociebelly, 10000, 80)
+//            .defer(allstars,fociefeet, 20000, 100)
+//            .defer(allstars,fociemouth, 30000, 30)
+//            .defer(allstars,fociehands, 40000, 100)
+            .await(function(error) {
+              if (error) throw error;
+              console.log("Goodbye!");
+            });
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         // loading igem data 
 //        d3.csv("./data/igem/igem_team_data_and_gps.csv", function(d) {
 //        d3.csv("./data/igem/igem_team_gps_sorted_by_country.csv", function(d) {
-        d3.csv("./igem_data/igem_team_gps_sorted_by_lon-lat.csv", function(d) {
+        d3.csv("./data/igem/igem_team_gps_sorted_by_lon-lat.csv", function(d) {
           d['id'] = +d['id'];
           d['lat'] = +d['lat'];
           d['lon'] = +d['lon'];
@@ -318,6 +471,10 @@
           
     }; // end of draw function
     ////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        
+        
+        
       </script>
   </head>
     
@@ -331,9 +488,10 @@
     </div>
     
     <script type="text/javascript">
-      d3.json("./graphdata/world_countries.json", function(error, geo_data) {
+      d3.json("./data/worldmapdata/world_countries.json", function(error, geo_data) {
             draw(geo_data)
             });
+        
     </script>
 </body>
 </html>
