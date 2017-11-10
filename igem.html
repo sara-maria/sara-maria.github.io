@@ -16,12 +16,47 @@
         <meta name="keywords" content="Biota,Beats,iGEM,UNIVERSE,microbiome,microbiota,bacteria,EMW,Street,Bio,record,player,DJ,music,art,data">
 
         <!-- Javascripts -->
-        <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+<!--        <script src="http://d3js.org/d3.v3.min.js"></script>-->
+  <script src="./js/d3.v4.min.js"></script>
+          <script>
+            d3version4 = d3
+            window.d3 = null
+          </script>
+    <script src="./js/d3.v3.js.min"></script>
+          <script>
+            d3version3 = d3
+            window.d3 = null
+            // test it worked
+            console.log('v3', d3version3.version)
+            console.log('v4', d3version4.version)
+  </script>
+    
+    
+        <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+
+        <!--------------------------------------------------------------------------->
+        <!--    MUSIC EQUALIZER                                   ------------------->            
+        <!--    Based on work from Garry Smith                                     -->
+        <!--    https://www.bignerdranch.com/blog/music-visualization-with-d3-js/  -->
+        <!--------------------------------------------------------------------------->  
+        <!-- Prepare audioelements to be called later:-->
+                <audio id="audioElement" src="./audio/Linda_3bu.mp3"></audio>
+        <!-- Prepare general audioelement to hold the audiofiles later:        -->
+                <audio id="audioElementWrapper" class="audiobutton" src="" type="audio/mpeg"></audio>
+        <!--------------------------------------------------------------------------->  
+    
+    
+    
 <script>
+    
+    // load both d3's - v3 and v4
+var d3 = d3version3;
+var d4 = d3version4;
 
-var q = d3.queue();
+var q = d4.queue();
 
+//var q = d3_queue.queue();
+    
 </script>
     
     <style>
@@ -35,8 +70,9 @@ var q = d3.queue();
                 height: 660px;
                 width: 800px;
                 position:relative;
-            padding-top: 50px;
-            padding-left: 25px;
+                padding-top: 50px;
+                padding-left: 0px;
+            margin-left: -100px;
                 }
             
         #image {
@@ -54,6 +90,13 @@ var q = d3.queue();
                 top: 0;
                 z-index: -1;
             }
+        
+        #equalizer {
+/*                position: absolute;*/
+/*                bottom: 1;*/
+             z-index: -3;
+            }
+        
 
         .city {
                 fill: rgb(38, 255, 223);
@@ -63,14 +106,14 @@ var q = d3.queue();
             }
             
         .highlight {
-                fill: rgb(248, 248, 158);
-                stroke: rgb(242, 242, 167);
-                stroke-width: 12;
+                fill: rgb(182, 255, 254);
+                stroke: rgb(182, 255, 254);
+                stroke-width: 8;
                 opacity: 1;
             }
 
          h2 {
-                letter-spacing: 3em;
+                letter-spacing: 2em;
                 position: absolute;
                 left: 0;
                 top: 0%;
@@ -84,16 +127,21 @@ var q = d3.queue();
             }    
         
         
-/*        For body part highlighting stars: */
+/*
+        For body part highlighting stars: 
         .node {
             fill: #f8f0f0;
             stroke: #fff;
             stroke-width: 0;
             stroke-opacity: 0.3;
             }
+*/
 
         
     </style>
+    
+   
+    
     
     <script type="text/javascript">  
         var margin = 0,
@@ -196,13 +244,13 @@ var q = d3.queue();
                         .attr("offset", "90%")
                         .attr("stop-color", earthcolor.darker(3)); 
         
-        var rotate = [90, 0];
+        var rotatestart = [-64.65468685242146, -16.70390981044291]; //starting rotation (Bolivia)
         var projection = d3.geo.orthographic()
                             .scale(370)
                             .translate([360+width / 2, 100+height / 2])
                             .clipAngle(90) //THIS LINE MAKES GLOBE NON TRANSPARENT!!! http://bl.ocks.org/PatrickStotz/1f19b3e4cb848100ffd7
                           .precision(0.2)  // what is this for?
-                            .rotate([rotate[0], rotate[1]]);
+                            .rotate([rotatestart[0], rotatestart[1]]);
         
           var pathproj = d3.geo.path().projection(projection);
                             
@@ -227,7 +275,8 @@ var q = d3.queue();
                      .style('stroke', countrystrokecolor)
                      .style('stroke-width', .5)
                      .style('opacity',.8);
-        
+  
+  
                 /////////////////////////////////////////////////////////////////////////////////
                 //draw, spin, and highlight the cities on the world
         
@@ -240,230 +289,248 @@ var q = d3.queue();
                         .data(data,function(d,i){ return d.id })    
                         .enter()
                         .append("path")
-                        .datum(function(d) {return d3.geo.circle().origin([d.lon, d.lat]).angle(.5)()}) //flat projected discs
-//                        .datum(function(d) { console.log(d); //team names and places in disc-circles
-//                                return {
-//                                    type: "Point",
-//                                    coordinates: [d.lon, d.lat]
-//                                }; })
+                        .attr("id", function(d, i) { return ("city" + d.play_order); }) //make sure this line is at this location! Not lower!
+//                        .datum(function(d) {return d3.geo.circle().origin([d.lon, d.lat]).angle(.5)()}) //**flat projected discs**
+                        .datum(function(d) { console.log(d); //team names and places in **full-sphere-circles**
+                                return {
+                                    type: "Point",
+                                    coordinates: [d.lon, d.lat]
+                                }; })
                         .attr("class","city")
                         .attr("d", pathproj);
 
                
                 ////////////////////////////////////////////////////////////////////////////////////////////////////                         
                 //        Spinning the globe:
+//                        var rotateSA = [70, 20]; // rotation
+//                        var rotateAF = [120, 20]; // rotation
+//                        var velocity = [-.002, -0];
 
-                function spinning_globe(){
-
-                var time = Date.now();
-                var velocity = [-.002, -0];
-
-                d3.timer(t => {
-                    // get current time
-                    var dt = Date.now() - time;
-                          
-                          //Define new projection over a rotating path
-                          //projection.rotate([t * 0.015, Math.sin(t * 0.0005) * 45]); //"wobble" spinning
-                          projection.rotate([rotate[0] + velocity[0] * dt, rotate[1] + velocity[1] * dt]);
+                
+//                function spinning_globe_one_SA(){
+//                        var time = Date.now();
+//                        
+//                    d3.timer(t => {
+//                            // get current time
+//                            var dt = Date.now() - time;
+//
+//                                  //Define new projection over a rotating path
+//                                  //projection.rotate([t * 0.015, Math.sin(t * 0.0005) * 45]); //"wobble" spinning
+//                                  projection.rotate([rotateSA[0] + velocity[0] * dt, rotateSA[1] + velocity[1] * dt]);
+//
+//                                  //Add new projection to the map
+//                                  map.attr('d', pathproj)
+//
+//                                  // Spin city locations: Method with JSON path element - only requires this line:
+//                                  svg.selectAll("path.city").attr("d", pathproj);
+//
+//                                   }); // end timer spinning globe
+//
+//                     setTimeout(spinning_globe_one_AF, 3000);
+//                    
+//                }; // end spinning globe
+//                
+//                function spinning_globe_one_AF(){
+//                        var time = Date.now();
+//
+//                    d3.timer(t => {
+//                            // get current time
+//                            var dt = Date.now() - time;
+//
+//                                  //Define new projection over a rotating path
+//                                  projection.rotate([rotateAF[0] + velocity[0] * dt, rotateAF[1] + velocity[1] * dt]);
+//
+//                                  //Add new projection to the map
+//                                  map.attr('d', pathproj)
+//
+//                                  // Spin city locations: Method with JSON path element - only requires this line:
+//                                  svg.selectAll("path.city").attr("d", pathproj);
+//
+//                                   }); // end timer spinning globe
+//
+//                        }; // end spinning globe
+//
+//                
+//                 spinning_globe_one_SA();
+                
+               
+//debugger;
+//                p = d3.geo.centroid();
+//                p1 = [-74.43056901476115, -9.147133411473273]; // Peru
+                 p1 = [-64.65468685242146, -16.70390981044291]; //Bolivia
+                p2 = [20.36766786572091, 6.546760194961047]; // Central African Republic
+               p3 =  [-103.57252850555344, 44.755730084019724]; //united states
+//                p3 = [-96.39596519140764, 60.47689325835007];//Canada
+                p4 = [79.53991712385442, 22.819169766890205]; // India
+                p5 = [10.270397238293342, 51.07744409277562]; // Germany
+//                p5 = [31.450458412816488, 4/8.998431770508454]; // Ukraine
+                p6 = [134.31409394005195, -25.7631300367722]; //Australia
+                
+                //Globe rotating
+                function rotateglobe(p, delay, callback){
                     
-                          //Add new projection to the map
-                          map.attr('d', pathproj)
-
-                          // Spin city locations: Method with JSON path element - only requires this line:
-                          svg.selectAll("path.city").attr("d", pathproj);
-
-                           }); // end timer spinning globe
-
-                }; // end spinning globe
-
-                spinning_globe();
+                    setTimeout(function() {
+                        (function transition() {
+                      d3.transition()
+                      .duration(2500)
+                      .tween("rotate", function() {
+                        var r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
+                        return function(t) {
+                          projection.rotate(r(t));
+                          svg.selectAll("path").attr("d", pathproj)
+                        };
+                      })
+                      })();
+                        
+                        
+                        callback(null);
+                      }, delay);
+                    
+                };
+                
+//                    q.defer(rotateglobe, p1, 10)
+//                     .defer(rotateglobe, p2, 8000)
+//                    .defer(rotateglobe, p3, 12000)
+//                    .defer(rotateglobe, p4, 16000)
+//                    .defer(rotateglobe, p5, 20000)
+//                    .defer(rotateglobe, p6, 24000)
+//                        .await(function(error) {
+//                          if (error) throw error;
+//                          console.log("Goodbye!");
+//                        });
+//    
+                
                 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
             
             
                     ////////////////////////////////////////////////////////////////////////////////////////////////////                         
-                    ////        HIGHLIGHTING the cities one by one:
-                    var city_idx = 0; //data.id starts at 1        
-                    //Every 300 msec: highlight a new city:
-                    var city_play = setInterval(function() {
-                        city_idx++;
-                        // Control the radius of ALL circles!
-                        pathproj.pointRadius(function(d,i) { 
-                            //your biz logic 
-                            if (i < city_idx){
-                              return 12
-                            } else 
-                              return 4
-                        });
-
-                        //select all elements with class city
-                        d3.selectAll(".city").attr("class", 
-                            function(d, i){
-                            if (i < city_idx){
-                              return "city highlight"
-                            } else 
-                              return "city"
-                          }).attr("d", pathproj);
-
+//                    ////        HIGHLIGHTING the cities one by one:
+//                    var city_idx = 0; //data.id starts at 1        
+//                    //Every 300 msec: highlight a new city:
+//                    var city_play = setInterval(function() {
+//                        city_idx++;
+//
+//                                debugger;
+//                        //Select all elements with class city
+//                        d3.selectAll(".city")
+//                            .attr("class", 
+//                                function(d, i){
+//                                if (i < city_idx){
+//                                  return "city highlight"
+//                                } else 
+//                                  return "city"
+//                              })
+////                        .attr("d", pathproj);   //only needed when you choose point circles instead of discs.
+//
+//                        
+//                        var len =  d3.selectAll(".city").data().length;
+////                        console.log(city_idx, len)
+//                        //Stop when all cities are highlighted
+//                        if(city_idx>=len){
+//                            clearInterval(city_play) //terminates calls to update function within setInterval function.
+//                            };
+//                      }, 300);
+                
+                
+//                 ////        HIGHLIGHTING the cities by playing order!:
+//                    var playgroup = 0; //playgroup starts at 1        
+//                    //Every 300 msec: highlight a new city:
+//                    var city_play = setInterval(function() {
+//                        playgroup++;
+//city_idx = 300;
+//                                debugger;
+//                        //Select all elements with class city from first playgroud
+//                        var selection = d3.selectAll("#city" + playgroup +"");
+//                        
+//                        selection.attr("class", 
+//                                function(d, i){
+//                                if (i < city_idx){
+//                                  return "city highlight"
+//                                } else 
+//                                  return "city"
+//                              })
+////                        .attr("d", pathproj);   //only needed when you choose point circles instead of discs.
+//
+//                        
+////                        var len =  d3.selectAll(".city").data().length;
+////                        console.log(city_idx, len)
+//                        //Stop when all cities are highlighted
+////                        if(city_idx>=len){
+////                            clearInterval(city_play) //terminates calls to update function within setInterval function.
+////                            };
+//                      }, 5000);
+                
+                
+                
+                function highlightcity(playgroup, delay, callback){
+                    
+                      setTimeout(function() {
                         
-//                           d3.selectAll(".city highlight").data().datum(function(d) {return d3.geo.circle().angle(30)()}) 
-                           
-                           
-                        var len =  d3.selectAll(".city").data().length;
-//                        console.log(city_idx, len)
-                        //Stop when all cities are highlighted
-                        if(city_idx>=len){
-                            clearInterval(city_play) //terminates calls to update function within setInterval function.
-                            };
-                      }, 300);
+                          debugger;
+                          var selection = d3.selectAll("#city" + playgroup +"");
+                        
+                            selection.attr("class", "city highlight");
+//                            selection.attr("class", 
+//                                function(d, i){
+//                                if (i < city_idx){
+//                                  return "city highlight"
+//                                } else 
+//                                  return "city"
+//                              }
+//                                          );
+                        
+                          
+                          callback(null);
+                      }, delay);
+
+                };
+                
+                
+                  q.defer(rotateglobe, p1, 10)
+                     .defer(rotateglobe, p2, 7000)
+                    .defer(rotateglobe, p3, 11000)
+                    .defer(rotateglobe, p4, 15000)
+                    .defer(rotateglobe, p5, 19000)
+                    .defer(rotateglobe, p6, 23000)
+                    .defer(highlightcity, 1, 2000)
+                     .defer(highlightcity, 2, 8500)
+                    .defer(highlightcity, 3, 12500)
+                    .defer(highlightcity, 4, 16500)
+                    .defer(highlightcity, 5, 20500)
+                    .defer(highlightcity, 6, 24500)
+                        .await(function(error) {
+                          if (error) throw error;
+                          console.log("Goodbye!");
+                        });
+                
                 
                 
                 }; // end plot_points function
         
+           
+            // Timing, swabbed body parts and link with continents:
+            //Continent	        Sounds	     Body part	# teams	ORDER PLAYED
+            //South America	    percussion	 scalp	      10	     1
+            //Africa	        bass drum	 hands	      2	         2
+            //North America	    atmosphere	 nose	       85	     3
+            //Asia	            harmony	     ear	      125	     4
+            //Europe	        melody	     mouth	       74	     5
+            //ALL!	            Symphony	 All	      296	     6
+       
         
         
         
-            ////////////////////////////////////////////////////////////////////////////////////////////////////
-            ////////Group clusters of stars on body parts of mother earth
-            ////////To ighlight the swabbed body parts during music!
-            //////// Based on:  http://blockbuilder.org/mbostock/1021953    
-            ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // locations of the nodes:
-            // ear: 
-        var earx = 370, eary = 390, ear2x = 525, ear2y = 390;
-            // mouth:
-        var mouthx = 450, mouthy = 435;
-            // hand:
-        var handx = 490, handy = 750, hand2x = 900, hand2y = 580;
-            // belly:
-        var bellyx = 465, bellyy = 660;
-            // feet:
-        var feetx = 550, feety = 960;
         
-        
-        
-        var focieall = [{x: earx, y: eary}, {x: ear2x, y: ear2y}, {x: mouthx, y: mouthy}, {x: handx, y: handy}, {x: hand2x, y: hand2y}, {x: bellyx, y: bellyy}, {x: feetx, y: feety} ];
-        var focieear = [{x: earx, y: eary}, {x: ear2x, y: ear2y}];
-        var fociemouth = [{x: mouthx, y: mouthy}];
-        var fociehands = [{x: handx, y: handy}, {x: hand2x, y: hand2y}];
-        var fociebelly = [{x: bellyx, y: bellyy}];
-        var fociefeet = [{x: feetx, y: feety} ];
-
-        
-        
-        function allstars(foci, delay, callback) {
-             
-            var counter = 0;
-            
-            setTimeout(function() {
-            
-            callback(null);
-               
-
-        
-            var nodes = [];
-//                foci = [{x: earx, y: eary}, {x: ear2x, y: ear2y}, {x: mouthx, y: mouthy}, {x: handx, y: handy}, {x: hand2x, y: hand2y}, {x: bellyx, y: bellyy}, {x: feetx, y: feety} ];
-
-            var force = d3.layout.force()
-                .nodes(nodes)
-                .links([])
-//            .linkStrength(0.9)
-//            .linkDistance(1)
-//            .charge(2000)
-                .gravity(0)
-            .friction(0.4) // I added
-                .size([width, height])
-                .on("tick", tick);
-
-            var node = svg.selectAll("circle");
-
-            function tick(e) {
-              var k = .5 * e.alpha; // k is important parameter in determining speed and distance of particles
-
-                // Push nodes toward their designated focus.
-              nodes.forEach(function(o, i) {
-                o.y += (foci[o.id].y - o.y) * k;
-                o.x += (foci[o.id].x - o.x) * k;
-              });
-
-              node
-                  .attr("cx", function(d) { return d.x; })
-                  .attr("cy", function(d) { return d.y; });
-            };
-            
-            var IntervalId = setInterval(function(){
-                
-              counter++;
-                
-              nodes.push({id: ~~(Math.random() * foci.length)}); // ~~ is: Math.floor
-              force.start();
-
-                node = node.data(nodes);
-                var rscale = d3.scale.linear()
-                            .domain([0,1])
-                            .range([2,8])
-                
-              node.enter().append("circle")
-                  .attr("class", "node")
-                  .attr("cx", function(d) { return d.x; })
-                  .attr("cy", function(d) { return d.y; })
-//                  .attr("r", 3)
-                  .attr("r", function(d,i) { return rscale(Math.random());})
-//                  .style("fill", function(d,i) { return color(d.id); })
-//                  .style("stroke", function(d) { return d3.rgb(fill(d.id)).darker(2); })
-                  .call(force.drag);
-                
-                    //Twinkle script from: http://blockbuilder.org/pmplewa/0e36cce6c9c5edb31e18d41ad1f82c4e */
-                    d3.selectAll(".node")
-                        .each(function() {
-                          var circle = d3.select(this);                           
-                          (function twinkle() {
-                            circle.transition()
-                              .duration(100 + 480 * Math.random())
-                              .ease("linear")
-                              .attr("opacity", 0.3 + 0.99 * Math.random())
-                              .each("end", twinkle);
-                          })();
-                        }); //end twinkle
-                      
-//                console.log(counter);
-                
-                
-                if (counter>50){clearInterval(IntervalId)};
-                    
-                }, 100); //repeat interval every 100msec
-             
-                
-                
-            }, delay);
-        };
-        
-//        allstars(focieear);
-//        allstars(fociefeet);
-//        
-        d3.queue()
-            .defer(allstars,focieear, 100)
-            .defer(allstars,fociebelly, 10000)
-            .defer(allstars,fociefeet, 20000)
-            .defer(allstars,fociemouth, 30000)
-            .defer(allstars,fociehands, 40000)
-//            .defer(allstars,focieear, 100, 100)
-//            .defer(allstars,fociebelly, 10000, 80)
-//            .defer(allstars,fociefeet, 20000, 100)
-//            .defer(allstars,fociemouth, 30000, 30)
-//            .defer(allstars,fociehands, 40000, 100)
-            .await(function(error) {
-              if (error) throw error;
-              console.log("Goodbye!");
-            });
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         // loading igem data 
 //        d3.csv("./data/igem/igem_team_data_and_gps.csv", function(d) {
 //        d3.csv("./data/igem/igem_team_gps_sorted_by_country.csv", function(d) {
-        d3.csv("./igem_data/igem_team_gps_sorted_by_lon-lat.csv", function(d) {
+//        d3.csv("./data/igem/igem_team_gps_sorted_by_music_order.csv", function(d) {
+        d3.csv("./igem_data/igem_team_gps_sorted_by_music_order_v2.csv", function(d) {
           d['id'] = +d['id'];
+          d['play_order'] = +d['play_order'];
           d['lat'] = +d['lat'];
           d['lon'] = +d['lon'];
           return d;
@@ -473,18 +540,42 @@ var q = d3.queue();
     ////////////////////////////////////////////////////////////////////////////////////////////////////
         
         
-        
-        
       </script>
   </head>
     
     
 <body>
+    
+     <!--          Set up audio feature extraction -->
+        <script>
+            var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            var audioElement = document.getElementById('audioElement');
+            var audioSrc = audioCtx.createMediaElementSource(audioElement);
+            var analyser = audioCtx.createAnalyser();
+
+            // Bind our analyser to the media element source.
+            audioSrc.connect(analyser);
+            audioSrc.connect(audioCtx.destination);
+        </script>
+
+    
+    <!--        Buttons for interactivity with music  -->
+            <div id="Play">
+<!--              <button onclick="document.getElementById('audioElement').play();">Play!</button>-->
+              <button onclick="document.getElementById('audioElement').play();">Play!</button>
+              <button onclick="document.getElementById('audioElement').pause()">Pause music</button>
+            </div>  
+    
+    
+    
     <div id="content">
         <svg></svg>
         <div id="MotherEarth">                        
-            <img id="image" src="./images/motherearth.png" width="110%"></img>
+<!--            <img id="image" src="./images/linda_c.png" width="140%"></img>-->
+            <img id="image" src="./images/motherearth.png" width="140%"></img>
         </div>
+<!--        <div id="equalizer"></div> /*for linear one*/-->
+        <svg id="equalizer" width="1900" height="1100"></svg> <!--for circular one*/-->
     </div>
     
     <script type="text/javascript">
@@ -492,6 +583,136 @@ var q = d3.queue();
             draw(geo_data)
             });
         
+          
+                
+        //////////////////////////////////////////////////////////////////
+        ////////Launch equalizer
+        //////////////////////////////////////////////////////////////////
+        
+          
+        
+//        var svgHeight = '300';
+//        var svgWidth = '1900';
+//        var barPadding = '.5';
+
+        
+        
+        function launchequalizer() {
+              
+               // Time to play! /////////////////////////////////////////
+              
+                      var samplebins = 230; //# of bins or equalizer
+            var frequencyData = new Uint8Array(samplebins); //add 1 to ensure circle "closes"!
+       
+            
+                ////////////////  CIRCULAR EQUALIZER BY MANIPULATING THE RADIUS of CIRCLES
+                //<!--////////////////////////////////////////////////////////////////////////////////-->
+                //<!--     CIRCLES WITH CHANGING RADIUS-->
+                //<!--     // based on https://bl.ocks.org/mbostock/2d466ec3417722e3568cd83fc35338e3-->
+                //<!--////////////////////////////////////////////////////////////////////////////////-->
+
+//            var svg = d3.select("#equalizer").append("svg")
+//                        .attr("width",svgWidth)
+//                    .attr("height",svgHeight);
+////                    width = +svg.attr("width"),
+////                    height = +svg.attr("height");
+//                  
+//                svg.selectAll('rect')
+//                       .data(frequencyData)
+//                       .enter()
+//                       .append('rect')
+//                       .attr('x', function (d, i) {
+//                          return i * (svgWidth / frequencyData.length);
+//                       })
+//                       .attr('width', svgWidth / frequencyData.length - barPadding);
+//
+            
+             var svg = d3.select("#equalizer"),
+                        width = +svg.attr("width"),
+                        height = +svg.attr("height"),
+                        angles = d3.range(0, 2 * Math.PI, Math.PI / ( 0.5*(samplebins))); //ensure same (-1) or smaller number as frequency array!
+            
+            //CIRCULAR
+            var trlx = 1300, trly = 650;
+            var radiuscirc = 350;
+            var path = svg.append("g")
+                        .attr("transform", "translate(" + trlx + "," + trly + ")")
+//                        .style("fill", "url(#radial-gradient)")  // GRADIENT
+//                        .style("fill", "none")  
+                        .style("fill", "white")  
+                        .style("opacity", .3)  
+//                        .style("filter", "url(#yellow-glow)")  // GLOW!
+                        .attr("stroke-linejoin", "round")
+//                        .style("stroke", "white")
+//                        .style("stroke-opacity", .2)
+//                        .style("stroke-width", 12)
+                        .selectAll("path")
+                        .data([1])
+                        .enter().append("path")
+                        .datum(function(d, i) {
+                          return d4.radialLine()
+                              .curve(d4.curveCatmullRom)
+//                              .curve(d4.curveStepBefore)
+                              .angle(function(a) { return a; })
+                              .radius(function(a,i) {
+                                    return radiuscirc +.62*frequencyData[Math.round(a*100/Math.PI)];
+                                    });
+                        });
+                       
+                    d3.timer(function() {
+                      path.attr("d", function(d) {
+                        return d(angles);
+                      });
+                    });
+            
+            
+            
+            // Time to play! /////////////////////////////////////////
+            // CIRCULAR ONE
+                    // Continuously loop and update chart with frequency data.
+                    function renderChart() {
+                           requestAnimationFrame(renderChart);
+                           // Copy frequency data to frequencyData array.
+                           analyser.getByteFrequencyData(frequencyData);
+                        }; //renderchart
+                    // Run the loop
+                    renderChart(); 
+            
+            
+            
+                  // Continuously loop and update chart with frequency data.
+            //LINEAR ONE
+//                    function renderChart() {
+//                           requestAnimationFrame(renderChart);
+//                           // Copy frequency data to frequencyData array.
+//                           analyser.getByteFrequencyData(frequencyData);
+//                        
+////            console.log(frequencyData)
+
+                        // Update d3 chart with new data  FOR LINEAR ONE
+//           svg.selectAll('rect')
+//              .data(frequencyData)
+//              .attr('y', function(d) {
+//                 return svgHeight - d;
+//              })
+//              .attr('height', function(d) {
+//                 return d;
+//              })
+//              .attr('fill', function(d,i) {
+////                 return 'rgb(0, 0, ' + d + ')';
+//                 return 'rgb(125, 0, ' + i + ')';
+//              })
+           
+//                        }; //renderchart
+                    // Run the loop
+//                    renderChart();  
+                 
+        }; //end launchequalizer  
+        
+        
+      
+        
+        launchequalizer();
     </script>
 </body>
 </html>
