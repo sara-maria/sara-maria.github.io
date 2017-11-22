@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+         <!-- Declare the character set of the document -->
+        <meta charset="UTF-8">
+         <!-- Support IE9-IE10 -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <!-- Set the viewport -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Page Info -->
+        <title>Standbeelden - Man/Vrouw? </title>
+        <meta name="author" content="Sara Maria Sprinkhuizen">
+        <meta name="description" content="Standbeelden in Amsterdam">
+        <meta name="keywords" content="amsterdam, standbeelden, kunst, kunstwerken, man, vrouw, sex, geslacht, tool">
+
+    <style>
+        
+        body {
+                overflow:visible;
+                background: #131314;
+                position: relative;
+                }
+
+
+        #slideshow {
+                height: 660px;
+                width: 800px;
+                padding: 20px;
+                }
+            
+        #Buttons{
+                width: inherit;
+                height: auto;
+                position: static;
+                padding: 15px 10px 5px 10px;
+        }
+        #Buttonscontrol{
+                width: inherit;
+                height: auto;
+                position: static;
+                padding: 15px 10px 5px 10px;
+        }
+        
+        .button {
+                width:16em;
+                height:4em;
+                line-height: 4.1em; 
+                vertical-align: middle;
+                text-align: center;
+                font-size:20px;
+                background-color: white;
+                padding: .1em;
+                margin-left: 1em;
+                margin-right: 1em;
+                border-radius: 2em;
+                border:1px solid #9d9999;
+                color:#444;
+                font-weight: 100;
+            }   
+        
+        #buttonman {
+                background-color: lightblue;
+         }
+        
+        #buttonvrouw {
+                background-color: pink;
+         }
+        
+        #buttonmanenvrouw {
+                background-color: yellow;
+         }
+        
+        #buttongeen {
+                background-color: lightgray;
+         }
+        
+         #buttonstop {
+             background-color: red;
+
+         }
+             
+        #buttonstart {
+             background-color: green;
+         }
+             
+    </style>
+</head>
+    
+    
+<body>
+
+<!--        Buttons for interactivity   -->
+
+<div id="Buttonscontrol">   
+    <button class="button" id="buttonstart" onclick=start();>Start</button>
+    <button class="button" id="buttonstop" onclick=stop();>Stop en Save</button>
+</div>
+ 
+<div id="slideshow">  <!-- Slideshow of images-->
+    <img id="slider" src="./images/statues_start_image.png" height="100%">
+</div>
+<div id="Buttons">
+    <button class="button" id="buttonman" onclick=slideShow("m");>Man</button>
+    <button class="button" id="buttonvrouw" onclick=slideShow("v");>Vrouw</button>
+    <button class="button" id="buttonmanenvrouw" onclick=slideShow("b");>Man en Vrouw</button>
+    <button class="button" id="buttongeen" onclick=slideShow("g");>Geen van twee</button>
+</div>
+
+
+ <!-- Javascripts -->
+<script src="./javascripts/d3.min.js" charset="utf-8"></script>
+
+<!--    MAIN JAVASCRIPT FUNCTIONS FOR PAGE CREATION-->
+    
+<script type="text/javascript">  
+
+    
+    //    TO ADD and IMPROVE: 
+    //    - Start button turns into stop button after pressing it
+    //    - keyboard option instead of button press option
+    //    - good way to get the data out!!
+    
+
+    var margin = 0,
+        width = 1900 - margin,
+        height = 1100 - margin;
+
+
+    ///////////////////////////////////////////////////////////////////////////////////        
+    //SLIDE SHOW data from csvfile:
+    var imgArray;
+        var curIndexslide = 0;
+
+    d3.csv("./images_standbeelden/images_list_classified.csv", function(data) {
+        data.forEach(function(d) {
+            d.id = +d.id;
+            d.type = 0;  
+          });
+        imgArray = data;
+        });
+        
+    function start() {
+        // start slideshow with first image
+         document.getElementById('slider').src = imgArray[curIndexslide].link; //show image from file links
+        curIndexslide++;
+        return curIndexslide;
+        };
+
+    function slideShow(type) {
+        console.log("type is ", type);
+        //Create array with image name and classification type:
+        imgArray[curIndexslide-1].type =  type;
+
+        
+        console.log(curIndexslide)
+        console.log("curimage is ", imgArray[curIndexslide].link)
+
+        document.getElementById('slider').src = imgArray[curIndexslide].link; //show image from file links
+
+        curIndexslide++;
+        if (curIndexslide >= imgArray.length ) { 
+                curIndexslide = 0; //imgArray.length;
+                document.getElementById('slider').src = ""; 
+                console.log("the end")
+            }; 
+        };
+    
+    function stop(type) {
+        // stop slideshow and manage to get the data to file
+        var datamannen = imgArray.filter(function(d) { return d.type == "m"; })
+        var datavrouwen = imgArray.filter(function(d) { return d.type == "v"; })
+
+        var output = console.table(imgArray);
+            
+//        From: https://stackoverflow.com/questions/13405129/javascript-create-and-save-file
+//            window.open('data:text/csv;charset=utf-8,' + escape(output));
+
+        };
+
+</script>
+    
+    
+</body>
+</html>
