@@ -15,20 +15,32 @@
         <meta name="keywords" content="amsterdam, standbeelden, kunst, kunstwerken, man, vrouw, sex, geslacht, tool">
 
     <style>
-        
+/*
+             *{
+                border: 1px solid orange !important;
+              }
+*/
+
         body {
                 overflow:visible;
                 background: #131314;
                 position: relative;
                 }
 
-
         #slideshow {
                 height: 660px;
                 width: 800px;
+/*                position:relative;*/
                 padding: 20px;
                 }
-            
+        
+        #imagetitle{
+            color:#fff;
+            }
+        
+        #slider {
+        }
+        
         #Buttons{
                 width: inherit;
                 height: auto;
@@ -59,7 +71,7 @@
                 font-weight: 100;
             }   
         
-        #buttonman {
+         #buttonman {
                 background-color: lightblue;
          }
         
@@ -82,6 +94,8 @@
              
         #buttonstart {
              background-color: green;
+/*             position:relative;*/
+/*             margin-top:100%;*/
          }
              
     </style>
@@ -91,13 +105,13 @@
 <body>
 
 <!--        Buttons for interactivity   -->
-
 <div id="Buttonscontrol">   
     <button class="button" id="buttonstart" onclick=start();>Start</button>
     <button class="button" id="buttonstop" onclick=stop();>Stop en Save</button>
 </div>
  
 <div id="slideshow">  <!-- Slideshow of images-->
+    <h2 id=imagetitle>Standbeeld omschrijving komt hier</h2>
     <img id="slider" src="./images_standbeelden/statues_start_image.png" height="100%">
 </div>
 <div id="Buttons">
@@ -109,54 +123,96 @@
 
 
  <!-- Javascripts -->
-<script src="./javascripts/d3.min.js" charset="utf-8"></script>
+    <script src="./js/d3.v4.min.js"></script>
+      <script>
+        d3version4 = d3
+        window.d3 = null
+      </script>
+    <script src="./js/d3.v3.js.min"></script>
+      <script>
+        d3version3 = d3
+        window.d3 = null
+        // test it worked
+        console.log('v3', d3version3.version)
+        console.log('v4', d3version4.version)
+    </script>
+
+    <script>
+        // load both d3's - v3 and v4
+        var d3 = d3version3;
+        var d4 = d3version4;
+        var q = d4.queue();
+    </script>
+
+
 
 <!--    MAIN JAVASCRIPT FUNCTIONS FOR PAGE CREATION-->
-    
 <script type="text/javascript">  
-
-    
-    //    TO ADD and IMPROVE: 
-    //    - Start button turns into stop button after pressing it
-    //    - keyboard option instead of button press option
-    //    - good way to get the data out!!
-    
-
     var margin = 0,
         width = 1900 - margin,
         height = 1100 - margin;
 
 
     ///////////////////////////////////////////////////////////////////////////////////        
+    //SLIDE SHOW with preloaded images:
+//        var imgArray = [
+//            './images/linda_scalp.png',
+//            './images/linda_scalp_hands.png',
+//            './images/linda_scalp_hands_nose.png',
+//            './images/linda_scalp_hands_nose_ear.png',
+//            './images/linda_mouth_elbow.png',
+//            './images/linda_color.png'];
+
+    ///////////////////////////////////////////////////////////////////////////////////        
     //SLIDE SHOW data from csvfile:
     var imgArray;
         var curIndexslide = 0;
 
-    d3.csv("./images_standbeelden/images_list_classified_weblinks_v2.csv", function(data) {
+    d3.csv("./images_standbeelden/ams_beelden_PREPPED.csv", function(data) {
         data.forEach(function(d) {
-            d.id = +d.id;
-            d.type = 0;  
+            //d.id = +d.id;
+            console.log(d.omschrijving)
           });
         imgArray = data;
         });
-        
+
+    
+    
+//    TO ADD: 
+//    - Start button turns into stop button after pressing it
+//    - keyboard option instead of button press option
+//    - good way to get the data out!!
+    
+    
+    
     function start() {
-        // start slideshow with first image
-         document.getElementById('slider').src = imgArray[curIndexslide].link; //show image from file links
+        // start slideshow with FIRST image
+         document.getElementById('slider').src = imgArray[curIndexslide].imageURL; //show image from file links
+        
+         console.log(curIndexslide);
+        console.log("curimage is ", imgArray[curIndexslide].imageURL);
+        console.log( imgArray[curIndexslide].omschrijving);
+
+        document.getElementById("imagetitle").innerHTML = imgArray[curIndexslide].omschrijving;
+ 
         curIndexslide++;
         return curIndexslide;
+        
         };
 
+    
     function slideShow(type) {
-        console.log("type is ", type);
+        // PART 1. PROCESS THE *PREVIOUS* IMAGE BUTTON PRESS TYPE CHOICE
         //Create array with image name and classification type:
         imgArray[curIndexslide-1].type =  type;
+        console.log("type of previous image is ", type);    
 
-        
-        console.log(curIndexslide)
-        console.log("curimage is ", imgArray[curIndexslide].link)
-
-        document.getElementById('slider').src = imgArray[curIndexslide].link; //show image from file links
+        // PART 2. SHOW THE NEW IMAGE AND INFO
+        document.getElementById('slider').src = imgArray[curIndexslide].imageURL; //show image
+        document.getElementById("imagetitle").innerHTML = imgArray[curIndexslide].omschrijving;
+        console.log(curIndexslide);
+        console.log("curimage is ", imgArray[curIndexslide].imageURL);
+        console.log( imgArray[curIndexslide].omschrijving);
 
         curIndexslide++;
         if (curIndexslide >= imgArray.length ) { 
@@ -166,15 +222,35 @@
             }; 
         };
     
+    
     function stop(type) {
-        // stop slideshow and manage to get the data to file
+        // stop slideshow and save data to file
+        console.log(imgArray);
+
         var datamannen = imgArray.filter(function(d) { return d.type == "m"; })
         var datavrouwen = imgArray.filter(function(d) { return d.type == "v"; })
-
-        var output = console.table(imgArray);
+        var databoth = imgArray.filter(function(d) { return d.type == "b"; })
+        var datanone = imgArray.filter(function(d) { return d.type == "g"; })
+        var alltyped = imgArray.filter(function(d) { return d.type != "NA"; })
             
-//        From: https://stackoverflow.com/questions/13405129/javascript-create-and-save-file
-//            window.open('data:text/csv;charset=utf-8,' + escape(output));
+        var output = console.table(imgArray,["omschrijving", "X", "type"]);
+
+        console.log("number of male statues is: ", datamannen.length)
+        console.log("number of female statues is: ", datavrouwen.length)
+        console.log("number of M&F statues is: ", databoth.length)
+        console.log("number of other statues is: ", datanone.length)
+        
+        //debugger;
+        
+        //        From: https://stackoverflow.com/questions/13405129/javascript-create-and-save-file
+        //var myCsv = "Col1,Col2,Col3\nval1,val2,val3";
+        var allnames = imgArray.map(function(d) {return d.omschrijving;});
+        var alltypes =  imgArray.map(function(d) {return d.type;});
+        var nameslist = allnames.join("\n");
+        var typeslist = alltypes.join("\n");
+        var myCsv = nameslist.concat("\n",typeslist);
+        
+        window.open('data:text/csv;charset=utf-8,' + escape(myCsv));
 
         };
 
