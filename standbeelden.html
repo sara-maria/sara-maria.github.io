@@ -123,28 +123,7 @@
 
 
  <!-- Javascripts -->
-    <script src="./js/d3.v4.min.js"></script>
-      <script>
-        d3version4 = d3
-        window.d3 = null
-      </script>
-    <script src="./js/d3.v3.js.min"></script>
-      <script>
-        d3version3 = d3
-        window.d3 = null
-        // test it worked
-        console.log('v3', d3version3.version)
-        console.log('v4', d3version4.version)
-    </script>
-
-    <script>
-        // load both d3's - v3 and v4
-        var d3 = d3version3;
-        var d4 = d3version4;
-        var q = d4.queue();
-    </script>
-
-
+    <script src="./d3.v4.min.js"></script>
 
 <!--    MAIN JAVASCRIPT FUNCTIONS FOR PAGE CREATION-->
 <script type="text/javascript">  
