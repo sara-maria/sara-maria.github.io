@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+	<html>
+	  <head>
+          
+        <!-- Declare the character set of the document -->
+        <meta charset="UTF-8">
+        <!-- Support -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <!-- Set the viewport -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Page Info -->
+        <title>Biota Beats</title>
+        <meta name="author" content="EMW Street Bio Team">
+        <meta name="description" content="Biota Beats - A microbial record player developed by the EMW Street Bio team.">
+        <meta property="og:image" content="./BBB_images/BiotaBeats_screenshot.png">
+        <meta name="keywords" content="Biota,Beats,microbiome,microbiota,bacteria,EMW,Street,Bio,record,player,DJ,music,art,data art">
+        
+        <!-- Javascripts -->
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet"> 
+        <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+        <!-- Styling -->
+          <style>
+          
+              /* layout boundary lines*/
+/*             *{ border: .5px solid orange !important;  }*/
+              
+            html {
+                  height: 100%;
+                }
+                body {
+                  min-height: 100%;
+                }
+			
+            body {
+                font-family: 'Lato', sans-serif;
+                font-weight: 300;
+                font-size: 28px;
+                background-color: #000;
+                margin-left: 50px;
+                margin-right: 50px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+                opacity: 1;
+                -moz-transition: opacity 1.5s ease-in;
+                -webkit-transition: opacity 1.5s ease-in;
+                -o-transition: opacity 1.5s ease-in;
+                transition: opacity 1.5s ease-in;
+            }
+            
+            body.loading {
+                background-color: #000;
+                background-image: url('./BBB_images/BiotaBeatslogo.png');
+                background-repeat: no-repeat;
+                background-position: center; 
+                background-size: 600px 600px;
+                opacity: 0;
+            }
+              
+            #div-header {
+                 position:relative;
+                 height:16vh; /*viewport height percentage*/ 
+                 text-align:center;
+                }
+            #div-header #BBlogo {
+                    position:absolute;
+                    top:-40px;
+                    left:16px;
+                    height: 140%;
+                }
+              
+            
+            /*   Main div containing all visuals and info etc:*/
+            #div-container {
+                 position:relative;
+                 height:78vh; 
+                }
+            
+              
+                #div-info {
+                         position:absolute;
+                         top:0;
+                         left:0;
+                         width:16%;
+                         height:100%;
+                         }
+                #info-container {
+                        border-radius: 1em;
+                        background-color: #50395f;
+                        font-weight: 100;
+                        height: 100%;
+                        margin-top: 0px;
+                        margin-right: 16px;
+                        z-index:-1;
+                        }
+                #info-container p{
+                        color:#aec5d8;
+                        margin-left: 12px;
+                        margin-right: 12px;
+                        margin-top: 2px;
+                        }
+                #circlenumber{
+                        position:relative;
+                        left:-10px;
+                        }
+
+                /* Holds biotabody, disc, and equalizer*/
+                #div-content {
+                     position:absolute;
+                     top:0;
+                     right:0;
+                     width:80%;
+                     height:75%;
+                    display: -webkit-flex;
+                    display: flex;
+                    -webkit-flex-direction: row;
+                    flex-direction: row;
+                    border: 4px solid #6c8996 !important;
+                    border-radius: 30px;
+                    background-color: #365d6c;
+/*                    overflow: hidden;*/
+                    }
+              
+                /* Holds the buttons*/
+                #div-interaction {
+                     position:absolute;
+                     bottom:0;
+                     right:0;
+                     width:80%;
+                     height:20%; /* use this to control distance from content above */
+                     border: 4px solid #66b6dd !important;
+                     border-radius: 30px;
+                     background-color: #00080b;
+/*                     overflow: hidden;*/
+                    }
+              
+                #div-footer {
+                    position:relative;
+                    bottom:0;
+                    margin-top:10px;
+/*                    height:vh;*/
+                    }
+              
+              /* Other styling: */
+              #div-header h1 {
+                    color:#fff;
+                    position:relative;
+                    padding: 0px;
+                    margin: 0px;
+                    padding-left: 140px;
+                    vertical-align:middle;
+                    font-size: 4rem;
+                    font-weight: 100;
+                    letter-spacing: 4rem;
+                }
+              #div-header h3 {
+                    color:#fff;
+                    position:relative;
+                    padding: 0px;
+                    padding-left: 140px;
+                    margin: 0px;
+                    height:20px;
+                    vertical-align:middle;
+                    font-size: 1rem;
+                    font-weight: 100;
+                    letter-spacing: 1.4rem;
+                }
+              
+              h4 {
+                    color:#c9c9c9;
+                    bottom:0;
+                    font-size: 8px;
+                    font-weight: 100;
+                    letter-spacing: .2rem;
+                    padding:0px;
+                    margin:0px;
+                }
+                
+              
+            #BiotaBody {
+                    width:25%;
+                    height: 100%;
+                    display: flex;
+                    display: -webkit-flex;
+                    }
+            #Disc {
+                    width: 40%;
+                    display: flex;
+                    display: -webkit-flex;
+                    overflow: visible;
+                    }
+            #Music {
+                    width: 35%;
+                    display: flex;
+                    display: -webkit-flex;
+                }
+              
+            .playbutton {
+                    display:inline-block;
+                    width: 18%;
+                    height:1em;
+                    line-height: 1.1em; /*needed for vertical align*/
+                    vertical-align: middle;
+                    text-align: center;
+                    background-color: white;
+                    border-radius: 2em;
+                    border:1px solid #9d9999;
+                    background-color: "rgb(250, 243, 243)";
+                    color:#444;
+                    font-weight: 100
+                }   
+              
+              .buttoncontainer {
+                    margin-left: 30px;
+                    width: 90%;
+                    display: flex;
+                    justify-content: space-between;
+                }
+              .textcontainer {
+                    width: 95%;
+                    text-align: justify; 
+                    -ms-text-justify: distribute-all-lines; 
+                    text-justify: distribute-all-lines; 
+                    clear: both; 
+                }
+              
+              .text_below_button{
+                    display: inline-block;
+                    margin-right: 4px;
+                    width: 18%;
+                    color:#fff;
+                    text-align: center;
+                    font-size: 16px;
+                    font-weight: 100;
+                    letter-spacing: 8px;
+                }
+              
+              
+              .round-button {
+                    border: 2px solid rgb(0, 0, 0);
+                    display:inline-block;
+                    box-sizing: border-box;
+                    display:block;
+                    width:80px;
+                    height:80px;
+                    padding-top: 12px;
+                    padding-left: 0px;
+                    line-height: 20px;
+                    color:#000;
+                    text-align:center;
+                    text-decoration:none;
+                    font-size:1.6rem;
+                    font-weight:bold;
+                  
+                    background-clip: padding-box;
+                    background-color: #434343;
+                  
+                    background-image: -webkit-linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
+                    background-image: -moz-linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
+                    background-image: -o-linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
+                    background-image: -ms-linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
+                    background-image: linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
+                    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7A7A7A), to(#515151));
+
+
+                    background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),                        
+                    -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0,0%,100%,.6) 0%, hsla(0,0%,100%,0) 100%),                        
+                    -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),                        
+                    -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
+                    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0) 3%, hsla(0,0%,  0%,.1) 3.5%),
+                    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 6%, hsla(0,0%,100%,.1) 7.5%), 
+                    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.2) 2.2%),  
+                    -webkit-radial-gradient(    50% 50%, 200% 50%, hsla(0,0%,90%,1) 5%, hsla(0,0%,85%,1) 30%, hsla(0,0%,60%,1) 100%);
+                }
+                
+              div.playstate{
+                    border-radius: 50%;
+                    display: inline-block;
+                }
+              
+              div.stopstate{
+                    border-radius: 50%;
+                    display: inline-block;
+                }
+             
+              @-webkit-keyframes pulsestop {
+                    0% { box-shadow:0 0 12px #a7defd; }
+                    50% { box-shadow:0 0 52px #a7defd; }
+                    100% { box-shadow:0 0 12px #a7defd; }
+                }
+              
+              .innerplay {
+                  padding-top: 12px;
+                    padding-left: 6px;
+                    line-height: 20px;
+                    color:#000;
+                    text-align:center;
+                    text-decoration:none;
+                  display:inline-block;
+                  border-radius: 50%;
+                  background-color:transparent;
+                  box-shadow: 0 0 32px rgb(250, 26, 10);
+                }
+              
+              .innerstop {
+                    padding-top: 12px;
+                    padding-left: 0px;
+                    line-height: 20px;
+                    color:#000;
+                    text-align:center;
+                    text-decoration:none;
+                    display:inline-block;
+                    border-radius: 50%;
+                    background-color:transparent;
+                    box-shadow: 0 0 42px #6dc3ed;
+                    -webkit-animation: pulsestop 1s ease-in 1s infinite;
+                }
+              
+              
+              .background{
+                  position:absolute;
+                  top:20px;
+                  left:20px;
+                  width:300px; /*(1200px/4;)*/
+                  height:560px; /*(2250px/4;)*/
+              }
+              
+              
+              .masked {
+                  position:absolute;
+                  top:20px;
+                  left:20px;
+                  width:300px; /*(1200px/4;)*/
+                  height:560px; /*(2250px/4;)*/
+/*                  transition: all 2s ease;*/
+                  
+                  -webkit-mask-image: linear-gradient(transparent 100%, transparent 100%);
+                  -webkit-mask-mode: luminance;
+                  -webkit-mask-repeat: no-repeat;
+                  -webkit-mask-size: 300px 560px; 
+                }
+
+              
+          </style>
+    </head>
+        
+    <body class="loading">
+      
+        <div id="div-header"> 
+            <img id="BBlogo" src="./BBB_images/BiotaBeatslogo.png" alt="Biota Beats Logo">
+            <h1>BIOTA BEATS</h1>
+            <h3>Muziek uit onze bacteriën</h3>
+        </div>
+        
+        <div id="div-container">
+            <div id="div-info">
+                <div id="info-container">
+                     <svg id="circlenumber" width="40" height="40">
+                        <circle cx="20" cy="20" r="18" fill="#f5b4cf" />
+                        <text x="50%" y="60%" text-anchor="middle" fill="#50395f" font-size="1.4rem" dy=".3em">1</text></svg>
+                    <p>Er leven twee kilo bacteriën in en op ons lijf </p>
+                    
+                     <svg id="circlenumber" width="40" height="40">
+                        <circle cx="20" cy="20" r="18" fill="#f5b4cf" />
+                        <text x="50%" y="60%" text-anchor="middle" fill="#50395f" font-size="1.4rem" dy=".3em">2</text></svg>
+                    <p>Bacteria kunnen ook leven op petrischalen met daarin speciale bacterie-voeding </p>
+                    
+                     <svg id="circlenumber" width="40" height="40">
+                        <circle cx="20" cy="20" r="18" fill="#f5b4cf" />
+                        <text x="50%" y="60%" text-anchor="middle" fill="#50395f" font-size="1.4rem" dy=".3em">3</text></svg>
+                    <p>De bacterie-kolonies op de petrischaal hebben we omgezet in muzieknoten: nu kan je luisteren naar de muziek van je bacteriën! </p>
+                
+                    
+                </div>
+            </div>
+            
+            <div id="div-content">
+                    <!-- Three sections: body, disc, music--> 
+                    <div id="BiotaBody">
+                        <!--  Slideshow of BODY BBB_images-->
+                        
+                        <img id="slider" class="background" src="./BBB_images/0_BW_Body.png">
+                        <img id="slider" class="masked" src="./BBB_images/0_Color_Body.png">
+                        
+                        
+                        
+                    </div>
+
+                    <div id="Disc">
+                        <svg id="discsvg" width="100%" height="100%" >
+                    </div>
+
+                    <div id="Music" class="music">
+<!--                        <svg id="equalizersvg" width="280px" height="280px" >-->
+                        <svg id="equalizersvg" width="100%" height="400px" >
+                        </svg>
+                    </div> 
+            
+            </div>
+            
+            
+            <div id="div-interaction">
+                  <button class="fa fa-star-o"></button>
+                
+                <div class="buttoncontainer">
+                        <div class="innerplay round-button playbutton1"><span class="fa fa-play fa-2x"></span></div>
+                        <div class="innerplay round-button playbutton2"><span class="fa fa-play fa-2x"></span></div>  
+                        <div class="innerplay round-button playbutton3"><span class="fa fa-play fa-2x"></span></div>
+                        <div class="innerplay round-button playbutton4"><span class="fa fa-play fa-2x"></span></div>
+                        <div class="innerplay round-button playbutton5"><span class="fa fa-play fa-2x"></span></div>
+                </div>
+                
+                <div class="textcontainer">
+                        <div class="text_below_button" style="margin-right: 0px;">Voeten</div>
+                        <div class="text_below_button" style="margin-right: 10px;">Genitaliën</div>
+                        <div class="text_below_button" style="margin-left: 16px;">Navel</div>
+                        <div class="text_below_button" style="margin-left: 8px;">Oksel</div>
+                        <div class="text_below_button" style="margin-left: 8px;">Mond</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="div-footer"> <h4><b>CREDITS</b> EMW Street Bio Team, Cambridge, Massachusetts, USA: David Sun Kong, Alex Guo, Gautam Salhotra, Chucky Kim, Sara Sprinkhuizen, Keerthi Shetty, Russell Pasetes, Nicole Bakker, Thrasyvoulos Karydis, Ani Liu, Shannon Johnson, Matt Mendoza, Mary Tsang, Yixiao Jiang, Viirj Kan, Rachel Smith  <b>SONIFICATION</b> Alex Guo and Gautam Salhotra <b>MUSIC PRODUCTION</b> Chucky Kim <b>INTERACTIVE VISUALISATION</b> Sara Sprinkhuizen</h4> <h4>The team wishes to thank Eric Rosembaum for his input and designer Charis Tsevis for allowing to use his beautiful "I, VIRUS" image. </h4> </div>
+
+        
+        <script>
+            ///////////////////////////////////////////////////////////////////
+            //         Build the elements and interactivity                 ///
+            ///////////////////////////////////////////////////////////////////
+            
+            //        START Bufferloading preparations
+            //        <!--          BufferLoading functionality -->
+            //        <!--          https://www.html5rocks.com/en/tutorials/webaudio/intro/#toc-load-->
+                function BufferLoader(context, urlList, callback) {
+                  this.context = context;
+                  this.urlList = urlList;
+                  this.onload = callback;
+                  this.bufferList = new Array();
+                  this.loadCount = 0;
+                }
+
+                BufferLoader.prototype.loadBuffer = function(url, index) {
+                  // Load buffer asynchronously
+                  var request = new XMLHttpRequest();
+                  request.open("GET", url, true);
+                  request.responseType = "arraybuffer";
+
+                  var loader = this;
+
+                  request.onload = function() {
+                    // Asynchronously decode the audio file data in request.response
+                    loader.context.decodeAudioData(
+                      request.response,
+                      function(buffer) {
+                        if (!buffer) {
+                          alert('error decoding file data: ' + url);
+                          return;
+                        }
+                        loader.bufferList[index] = buffer;
+                        if (++loader.loadCount == loader.urlList.length)
+                          loader.onload(loader.bufferList);
+                      },
+                      function(error) {
+                        console.error('decodeAudioData error', error);
+                      }
+                    );
+                  }
+
+                  request.onerror = function() {
+                    alert('BufferLoader: XHR error');
+                  }
+
+                  request.send();
+                }
+
+                BufferLoader.prototype.load = function() {
+                  for (var i = 0; i < this.urlList.length; ++i)
+                  this.loadBuffer(this.urlList[i], i);
+                }
+//              END Bufferloading preparations       
+                
+//              Kick off actual Bufferloading:
+                window.onload = init;
+                var context;
+                var bufferLoader;
+
+                function init() {
+                    console.log("window onload init")
+                  // Fix up prefixing
+                  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                  context = new AudioContext();
+
+                  bufferLoader = new BufferLoader(
+                    context,
+                    [ "./BBB_music/1_feet.wav",
+                      "./BBB_music/2_genitalia.wav",
+                      "./BBB_music/3_belly.wav",
+                      "./BBB_music/4_armpit.wav",
+                      "./BBB_music/5_mouth.wav",
+                    ],
+                    finishedLoading
+                    );
+                    
+                    bufferLoader.load();
+                }
+                     
+                     
+                     
+                     
+                     
+                     
+                     
+                     
+                     
+
+        function finishedLoading(bufferList) {
+                console.log("finished loading");
+                "use strict";
+            
+            //TOGGLE the PLAY and STOP FONTAWESOME ICON ON CLICK
+            $('.round-button').click(function(){
+                $(this).toggleClass('innerstop innerplay')
+                $(this).find('svg').toggleClass('fa fa-play fa-2x fa fa-stop fa-2x')
+                });
+            $('.round-button').blur(function(){
+                $(this).find('svg').toggleClass('fa fa-play fa-2x fa fa-stop fa-2x')
+                });
+            
+            
+            var svg   = document.getElementById("equalizersvg"); // or other selector like querySelector()
+            
+            var rect = svg.getBoundingClientRect(); // get the bounding rectangle
+            var svgWidth = rect.width;
+            var svgHeight = rect.height;
+            
+            var svg = d3.select("#equalizersvg")
+
+            //            var frequencyData = new Uint8Array(200);
+            var frequencyData = new Uint8Array(64);
+            var barPadding = '.5';
+            // Create our initial D3 equalizer chart.
+            svg.selectAll('rect')
+                   .data(frequencyData)
+                   .enter()
+                   .append('rect')
+                   .attr('x', function (d, i) {
+                      return i * (svgWidth / frequencyData.length);
+                   })
+                   .attr('width', svgWidth / frequencyData.length - barPadding);
+         
+
+            // Add polylines to frame equalizer axes:
+            // yaxes
+            svg.append("line")
+                        .attr("x1", 0)
+                        .attr("y1", 480) //higher --> lower axes!
+                        .attr("x2", 0)
+                        .attr("y2", 120) //smaller --> taller axes!
+                        .attr("stroke-width", 2)
+                        .attr("stroke", "white");
+            // xaxes 
+            svg.append("line")
+                        .attr("x1", 0)
+                        .attr("y1", 400)
+                        .attr("x2", 400)
+                        .attr("y2", 400)
+                        .attr("stroke-width", 2)
+                        .attr("stroke", "white");
+            
+            
+            //////////////////////////////////////////////////////////////////////////
+            //////////////////// DRAW PETRI DISC AND SECTIONS AND COLONIES    ///////////////////
+            //////////////////////////////////////////////////////////////////////////	
+            function growSmallDataDriven(dataset) {
+                        var svg = d3.select("#discsvg")
+                                svg.selectAll('circle.col')
+                                    .data(dataset)
+                                    .enter()
+                                    .append("circle")
+                                    .attr('fill', function(d,i) {
+                                            return "rgb(" + (d.Note *15) + ", " + (d.Note * 10) + ", " + (d.Note * 12) + ")";
+                                            })
+                                    .attr("opacity", .8)    
+                                    .attr("stroke", "#444")
+                                    .attr("stroke-width", 1)    
+                                    .attr("cx", function(d){
+                                        return cx + radiusmax*d.xc;
+                                        })
+                                    .attr("cy", function(d){
+                                            return cy + radiusmax*d.yc;
+                                        })
+                                    .attr("r", 1)
+                                    .transition()
+                                    .duration(2500)
+                                    .ease("sine")
+                                    .attr("r", function(d){
+                                            return d.radcol;
+                                        })
+                      };  
+            
+            
+            //--------------------------------------------------------------------
+            //---- BASED ON http://bl.ocks.org/atul-github/f3dc48348b0dfeb79618 --       
+            //--------------------------------------------------------------------
+            // Drawing Disc SECTIONS as PATHS    
+        var arcfillcolor = "#faf5f5";
+                     
+        function DrawDisc(svg, data, cx, cy, r, startAngle) {
+            var arcs = svg.selectAll('.arc')
+                .data(data);
+
+            arcs.enter()
+                .append('path')
+                .attr('id', function (d, i) {return 'arc' + (i).toString(); })
+                .attr('class', 'arc nonhighlight')
+                .style('stroke', "#444")
+                .style('fill', arcfillcolor);
+                
+            arcs.attr('d', function (d, i) {
+                var rad = ((d.angle1 + startAngle) * Math.PI) / 180.0;
+                var x1 = d.cx + d.r * Math.cos(rad);
+                var y1 = d.cy + d.r * Math.sin(rad);
+
+                var rad = ((d.angle2 + startAngle) * Math.PI) / 180.0;
+                var x2 = d.cx + d.r * Math.cos(rad);
+                var y2 = d.cy + d.r * Math.sin(rad);
+
+                var pathString = 'M' + x1 + ',' + y1 + ' ' + 'A' + d.r + ',' + d.r + ' 0 0,1 ' + x2 + ',' + y2 + ' L ' + d.cx + ',' + d.cy + ' Z ';
+                return pathString;
+            });
+            
+        }; // end of Draw Disc
+             
+    function Initialize(DiscId, cx, cy, r, Discdata) {
+                        
+            var svgdisc = d3.select('#' + DiscId)            
+            svgdisc.append('circle')
+                .attr({ 'cx': cx, 'cy': cy, 'r': 4 })
+                .style('fill', 'none');
+
+            var total = d3.sum(Discdata);
+
+            var data = [];
+            var startAngle = -18;
+            for (var i = 0; i < Discdata.length; ++i) {
+                var percent = (100 * Discdata[i]) / total;
+                var a1 = startAngle;
+                var a2 = startAngle + (percent * 360) / 100
+                data.push({ cx: cx, cy: cy, r: r, percent: percent, angle1: a1, angle2: a2 });
+                startAngle += (percent * 360) / 100;
+            }
+            svgdisc = d3.select('#' + DiscId);
+            DrawDisc(svgdisc, data, cx, cy, r, 0); 
+        }; // end of Initialize 
+
+    // 2. Draw petridisc ------------------------------- 
+            // Set parameters for disc
+            var svgdisc = d3.select("#discsvg");
+
+            var Discdata = [1,1,1,1,1]; // width of each element
+            var cx = 260;
+            var cy = 240;
+            var sections = 5; 
+            var radiusmax = 210;
+            var rmax = radiusmax/Discdata.length;
+            var N = Array.from({length: sections}, (q, radiusmax) => radiusmax+1);
+            for(var i=0; i<N.length; i++) { N[i] *= rmax;}
+            var radius = N;
+
+             // Create the body sections on the disc    
+            Initialize('discsvg', cx, cy, radiusmax, Discdata); 
+
+            // Create concentric circles to serve as background:    
+            svgdisc.selectAll('circle')
+                .data(radius)
+                .enter()
+                .append('circle')
+                .attr('cx', cx)
+                .attr('cy', cy)
+                .attr('r', function(d) { return d; })
+                .attr('fill', 'none')
+                .attr("stroke", "#444")
+                .attr("stroke-width", 1)    
+
+// 3. Load Colony Coordinate data and PLOT these! -------------------------------
+            d3.csv("./BBB_data/20170612_colony_coordinates.csv",function(d){ 
+                // transform the data here
+                d['xc']=+d["xc"];
+                d['yc']=+d["yc"];
+                d['radcol']=+d["radcol"];
+
+                growSmallDataDriven(d)
+                
+                }, );//d3.csv
+
+
+            ///////////////////////////////////////////////////////////////////////////
+            //////////////////// PETRI DISC BODY SECTION HIGHLIGHTING    //////////////
+            ///////////////////////////////////////////////////////////////////////////	
+             var highlightfillcolor1 = "rgb(177, 211, 230)";
+             var highlightfillcolor2 = "#eee2f2";
+             var highlightstrokecolor = "rgb(125, 0, 50)";
+
+             var heartbeatduration1 = 750;
+             var heartbeatduration2 = 250;
+
+             function highlight(thisarc) {
+
+                    // CHECK WHICH ARCS NEED HIGHLIGHTING NOW:
+                    var allhighlightedarcs = d3.selectAll(".highlight")
+
+                    recursive_transitions();
+
+                    function recursive_transitions() {
+                        allhighlightedarcs.style("fill",highlightfillcolor1)
+                                .style("stroke",highlightstrokecolor)
+
+                        allhighlightedarcs.transition()
+                            .duration(heartbeatduration1)
+                            .style("fill",highlightfillcolor2)
+                            .attr("stroke-width", 1)
+                            .ease('sin-in')
+                            .transition()
+                            .duration(heartbeatduration2)
+                            .style("fill",highlightfillcolor1)
+                            .attr('stroke-width', 4)
+                            .ease('bounce-in')
+                            .each("end", recursive_transitions);
+                        };
+
+                    var allnonhighlightedarcs = d3.selectAll(".nonhighlight")
+                    allnonhighlightedarcs.transition()
+                            .style("fill",arcfillcolor) 
+                            .duration(500)
+                            .attr("stroke-width", 1)
+                            .style("stroke","#444")
+                            .attr("stroke-dasharray", "1, 0");
+
+            }; //highlight
+     
+//          <!-- -----------------------         //// END OF BUILDING PAGE-->
+                     
+                     
+                      
+                  // Create two sources and play them both together.
+                  var source1 = context.createBufferSource();
+                  var source2 = context.createBufferSource();
+                  var source3 = context.createBufferSource();
+                  var source4 = context.createBufferSource();
+                  var source5 = context.createBufferSource();
+                  source1.buffer = bufferList[0];
+                  source2.buffer = bufferList[1];
+                  source3.buffer = bufferList[2];
+                  source4.buffer = bufferList[3];
+                  source5.buffer = bufferList[4];
+
+                // ready to remove the "loading" icon:
+                removeLoading();
+                    
+                    
+                console.log("ready to play");
+                          
+                var playbutton1 = document.querySelector('.playbutton1');
+                var playbutton2 = document.querySelector('.playbutton2');
+                var playbutton3 = document.querySelector('.playbutton3');
+                var playbutton4 = document.querySelector('.playbutton4');
+                var playbutton5 = document.querySelector('.playbutton5');
+                    
+                    
+                // add functions to buttons:
+                    playbutton1.addEventListener('click', trackplaybutton1 , false);
+                    playbutton2.addEventListener('click', trackplaybutton2 , false);
+                    playbutton3.addEventListener('click', trackplaybutton3 , false);
+                    playbutton4.addEventListener('click', trackplaybutton4 , false);
+                    playbutton5.addEventListener('click', trackplaybutton5 , false);
+                   
+                    
+                // set up analyser:
+                var analyser = context.createAnalyser();
+                // keep bars within chart area, and move them smooth over time (0.85)
+                analyser.minDecibels = -90;
+                analyser.maxDecibels = -10;
+                analyser.smoothingTimeConstant = .85;
+
+                // Set up gains (and muting) per track:
+                var gainNode1 = context.createGain();
+                var gainNode2 = context.createGain();
+                var gainNode3 = context.createGain();
+                var gainNode4 = context.createGain();
+                var gainNode5 = context.createGain();
+                    gainNode1.gain.value = 0;
+                    gainNode2.gain.value = 0;
+                    gainNode3.gain.value = 0;
+                    gainNode4.gain.value = 0;
+                    gainNode5.gain.value = 0;
+                    
+                // connect to destination IN RIGHT ORDER!Analyser AFTER gain!(otherwise no effect on frequencies)    
+                source1.connect(gainNode1).connect(analyser).connect(context.destination);
+                source2.connect(gainNode2).connect(analyser).connect(context.destination);
+                source3.connect(gainNode3).connect(analyser).connect(context.destination);
+                source4.connect(gainNode4).connect(analyser).connect(context.destination);
+                source5.connect(gainNode5).connect(analyser).connect(context.destination);
+                    
+                    // make sure to loop the tracks:
+                    source1.loop = true;
+                    source2.loop = true;
+                    source3.loop = true;
+                    source4.loop = true;
+                    source5.loop = true;
+                    
+                    //and play!    
+                    source1.start(0);
+                    source2.start(0);
+                    source3.start(0);
+                    source4.start(0);
+                    source5.start(0);
+
+
+            var maskarray = [];
+            var maskedlayer = d3.select(".masked");
+            
+            var maskUrl1 = "url(./BBB_images/1_Feet_Mask_vF.png)";
+            var maskUrl2 = "url(./BBB_images/2_Gen_Mask_vF.png)";
+            var maskUrl3 = "url(./BBB_images/3_Belly_Mask_vF.png)";
+            var maskUrl4 = "url(./BBB_images/4_Armpit_Mask_vF.png)";
+            var maskUrl5 = "url(./BBB_images/5_Mouth_Mask_vF.png)";
+            
+                function trackplaybutton1() {
+                    
+                    var thisarcsel = svgdisc.select('#arc0');                    
+                    
+                    if(playbutton1.id == "") {
+                            gainNode1.gain.value = 1;
+                            playbutton1.id = "activated";
+
+                            thisarcsel.classed("nonhighlight",false)
+                                    .classed("highlight",true);
+                            maskarray.push(maskUrl1)
+                            maskedlayer.style('-webkit-mask-image',maskarray);
+
+                    } else {
+                            gainNode1.gain.value = 0;
+                            playbutton1.id = "";
+
+                            thisarcsel.classed("nonhighlight",true)
+                                    .classed("highlight",false);
+
+                            maskarray = maskarray.filter(e => e !== maskUrl1);
+                            maskedlayer.style('-webkit-mask-image',maskarray);
+                          }
+                    highlight()
+                }
+                    
+                    
+                function trackplaybutton2() {
+                    
+                    var thisarcsel = svgdisc.select('#arc4');
+                    
+                    if(playbutton2.id == "") {
+                            gainNode2.gain.value = 1;
+                            playbutton2.id = "activated";
+
+                            thisarcsel.classed("nonhighlight",false)
+                                    .classed("highlight",true);
+
+                            maskarray.push(maskUrl2)
+                            maskedlayer.style('-webkit-mask-image',maskarray);
+
+                    } else {
+                            gainNode2.gain.value = 0;
+                            playbutton2.id = "";
+
+                            thisarcsel.classed("nonhighlight",true)
+                                    .classed("highlight",false);
+
+                            maskarray = maskarray.filter(e => e !== maskUrl2);
+                            maskedlayer.style('-webkit-mask-image',maskarray);
+                          }
+                    highlight()
+                }
+            
+            
+                function trackplaybutton3() {
+                    
+                    var thisarcsel = svgdisc.select('#arc2');
+                      
+                    if(playbutton3.id == "") {
+                            gainNode3.gain.value = 1;
+                            playbutton3.id = "activated";
+
+                            thisarcsel.classed("nonhighlight",false)
+                                    .classed("highlight",true);
+
+                            maskarray.push(maskUrl3)
+                            maskedlayer.style('-webkit-mask-image',maskarray);
+
+                    } else {
+                            gainNode3.gain.value = 0;
+                            playbutton3.id = "";
+
+                            thisarcsel.classed("nonhighlight",true)
+                                    .classed("highlight",false);
+
+                            maskarray = maskarray.filter(e => e !== maskUrl3);
+                            maskedlayer.style('-webkit-mask-image',maskarray);
+                          }
+                    highlight()
+                }           
+            
+                function trackplaybutton4() {
+                    
+                        var thisarcsel = svgdisc.select('#arc1');
+                        
+                        if(playbutton4.id == "") {
+                            gainNode4.gain.value = 1;
+                            playbutton4.id = "activated";
+
+                            thisarcsel.classed("nonhighlight",false)
+                                    .classed("highlight",true);
+                            
+                            maskarray.push(maskUrl4)
+                            maskedlayer.style('-webkit-mask-image',maskarray);
+
+                          } else {
+                            gainNode4.gain.value = 0;
+                            playbutton4.id = "";
+
+                            thisarcsel.classed("nonhighlight",true)
+                                    .classed("highlight",false);
+
+                            maskarray = maskarray.filter(e => e !== maskUrl4);
+                            maskedlayer.style('-webkit-mask-image',maskarray);
+                          }
+                    highlight()
+                }
+            
+            
+                function trackplaybutton5() {
+                        var thisarcsel = svgdisc.select('#arc3');
+
+                    if(playbutton5.id == "") {
+                            gainNode5.gain.value = 1;
+                            playbutton5.id = "activated";
+
+                            thisarcsel.classed("nonhighlight",false)
+                                    .classed("highlight",true);
+
+                            maskarray.push(maskUrl5)
+                            maskedlayer.style('-webkit-mask-image',maskarray);
+                      
+                    } else {
+                            gainNode5.gain.value = 0;
+                            playbutton5.id = "";
+
+                            thisarcsel.classed("nonhighlight",true)
+                                    .classed("highlight",false);
+
+                            maskarray = maskarray.filter(e => e !== maskUrl5);
+                            maskedlayer.style('-webkit-mask-image',maskarray);
+
+                  }
+                    highlight()
+                }
+                    
+
+                        
+        function renderChart() {
+                   requestAnimationFrame(renderChart);
+
+                   // Copy frequency data to frequencyData array.
+                   analyser.getByteFrequencyData(frequencyData);
+
+                   // Update d3 chart with new data.
+                   svg.selectAll('rect')
+                      .data(frequencyData)
+                      .attr('y', function(d) {
+                         return svgHeight - d;
+                      })
+                      .attr('height', function(d) {
+                         return d;
+                      })
+//                      .attr('fill', function(d,i) {
+//                         return 'rgb(125, 0, ' + i + ')';
+//                      })
+//                   
+                   .attr('fill', function(d,i) {
+//                 return 'rgb(125, 0, ' + d + ')';
+                 return 'rgb(125, ' +Math.round(.75*d)+ ', ' +d+ ')';
+//                 return 'rgb(125, 0, ' + i + ')';
+              })
+                   };
+        
+            // Run the loop for equalizer!!
+            renderChart(); 
+                    
+                    
+                    
+//            /* The redirect to autoplay page function after XXX seconds of no interactivity" 
+//                FROM: https://www.kirupa.com/html5/detecting_if_the_user_is_idle_or_inactive.htm    
+
+                var timeoutID;
+                var numberofidletimes = 0;
+                function setup() {
+                    this.addEventListener("mousemove", resetTimer, false);
+                    this.addEventListener("mousedown", resetTimer, false);
+                    this.addEventListener("keypress", resetTimer, false);
+                    this.addEventListener("DOMMouseScroll", resetTimer, false);
+                    this.addEventListener("mousewheel", resetTimer, false);
+                    this.addEventListener("touchmove", resetTimer, false);
+                    this.addEventListener("MSPointerMove", resetTimer, false);
+
+                    startTimer();
+                }
+                setup();
+
+                function startTimer() {
+                    // wait XXXX seconds before calling goInactive
+                    timeoutID = window.setTimeout(goInactive, 5000);
+                }
+
+                function resetTimer(e) {
+                    window.clearTimeout(timeoutID);
+
+                    goActive();
+                }
+
+                function goInactive() {
+                    // do something
+                    console.log("going into symphony mode!")
+                    // track how often this has happened, and every now and then: reload whole page:
+                    numberofidletimes = numberofidletimes + 1;
+//                    if (numberofidletimes > 3) { // XX minutes
+//                            console.log("logged out a lot!")
+//                            window.location.reload();
+//                            }
+                    
+                }
+
+                function goActive() {
+                    // do something
+                    console.log("going back into user interface playing mode!")
+                    startTimer();
+                }
+                    
+        }; // end FinishedLoading function
+
+              
+              
+          
+              
+            // CODE FOR THE OPENING WAITING SCREEN while LOADING MUSIC FILES:
+            var body = document.getElementsByTagName('body')[0];
+			var removeLoading = function() {
+					body.className = body.className.replace(/loading/, '');
+			};
+			
+    </script>
+          
+          
+          
+	</body>
+</html>
