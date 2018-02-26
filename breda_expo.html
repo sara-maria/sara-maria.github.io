@@ -72,6 +72,11 @@
                 opacity: 0;
             }
               
+            #wrapper{
+                height:1079px;
+              }
+              
+              
             #div-header {
                  position:relative;
                  height:16vh; /*viewport height percentage*/ 
@@ -416,6 +421,7 @@
         
     <body class="loading">
       
+        <div class="wrapper">
         <div id="div-header"> 
             <img id="BBlogo" src="./BBB_images/BiotaBeatslogo.png" alt="Biota Beats Logo">
             <h1>BIOTA BEATS</h1>
@@ -493,7 +499,7 @@
             <h4 id="weblinkfooter">www.biotabeats.org</h4>
         </div>
 
-        
+        </div> 
         <script>
             ///////////////////////////////////////////////////////////////////
             //         Build the elements and interactivity                 ///
@@ -557,6 +563,8 @@
 
                 function init() {
                     console.log("window onload init")
+                    console.log("goede hooget???")
+                    
                   // Fix up prefixing
                   window.AudioContext = window.AudioContext || window.webkitAudioContext;
                   context = new AudioContext();
