@@ -185,7 +185,7 @@
                     vertical-align:middle;
                     font-size: 1rem;
                     font-weight: 100;
-                    letter-spacing: 1.4rem;
+                    letter-spacing: 1.8rem;
                 }
               
               h4 {
@@ -199,7 +199,7 @@
                 }
              #weblinkfooter{
                     position:absolute;
-                    right:0;
+                    right:20px;
                     bottom:0;
                     }   
               
@@ -385,6 +385,12 @@
                   height:560px; /*(2250px/4;)*/
 /*                  transition: all 2s ease;*/
                   
+                  
+                  mask-image: linear-gradient(transparent 100%, transparent 100%);
+                  mask-mode: luminance;
+                  mask-repeat: no-repeat;
+                  mask-size: 300px 560px; 
+                  
                   -webkit-mask-image: linear-gradient(transparent 100%, transparent 100%);
                   -webkit-mask-mode: luminance;
                   -webkit-mask-repeat: no-repeat;
@@ -464,11 +470,11 @@
 <!--                  <button class="fa fa-star-o"></button>-->
                 
                 <div class="buttoncontainer">
-                        <div class="innerplay round-button playbutton1"><span class="fa fa-play fa-2x"></span></div>
-                        <div class="innerplay round-button playbutton2"><span class="fa fa-play fa-2x"></span></div>  
-                        <div class="innerplay round-button playbutton3"><span class="fa fa-play fa-2x"></span></div>
-                        <div class="innerplay round-button playbutton4"><span class="fa fa-play fa-2x"></span></div>
-                        <div class="innerplay round-button playbutton5"><span class="fa fa-play fa-2x"></span></div>
+                        <div class="innerplay round-button playbutton1"><span id="playsymbol" class="fa fa-play fa-2x"></span></div>
+                        <div class="innerplay round-button playbutton2"><span id="playsymbol" class="fa fa-play fa-2x"></span></div>  
+                        <div class="innerplay round-button playbutton3"><span id="playsymbol" class="fa fa-play fa-2x"></span></div>
+                        <div class="innerplay round-button playbutton4"><span id="playsymbol" class="fa fa-play fa-2x"></span></div>
+                        <div class="innerplay round-button playbutton5"><span id="playsymbol" class="fa fa-play fa-2x"></span></div>
                 </div>
                 
                 <div class="textcontainer">
@@ -482,8 +488,8 @@
         </div>
         
         <div id="div-footer"> 
-            <h4><b>CREDITS</b> EMW Street Bio Team, Cambridge, Massachusetts, USA: David Sun Kong, Alex Guo, Gautam Salhotra, Chucky Kim, Sara Sprinkhuizen, Keerthi Shetty, Thrasyvoulos Karydis, Ani Liu, Russell Pasetes, Nicole Bakker, Shannon Johnson, Matt Mendoza, Mary Tsang, Yixiao Jiang, Viirj Kan, Rachel Smith  <b>SONIFICATION</b> Alex Guo and Gautam Salhotra <b>MUSIC PRODUCTION</b> Chucky Kim <b>INTERACTIVE VISUALISATION</b> Sara Sprinkhuizen</h4> 
-            <h4>The team wishes to thank Eric Rosembaum for his input and designer Charis Tsevis for allowing to use his beautiful "I, VIRUS" image. </h4> 
+<!--            <h4><b>CREDITS</b> EMW Street Bio Team, Cambridge, Massachusetts, USA: David Sun Kong, Alex Guo, Gautam Salhotra, Chucky Kim, Sara Sprinkhuizen, Keerthi Shetty, Thrasyvoulos Karydis, Ani Liu, Russell Pasetes, Nicole Bakker, Shannon Johnson, Matt Mendoza, Mary Tsang, Yixiao Jiang, Viirj Kan, Rachel Smith  <b>SONIFICATION</b> Alex Guo and Gautam Salhotra <b>MUSIC PRODUCTION</b> Chucky Kim <b>INTERACTIVE VISUALISATION</b> Sara Sprinkhuizen</h4> -->
+<!--            <h4>The team wishes to thank Eric Rosembaum for his input and designer Charis Tsevis for allowing to use his beautiful "I, VIRUS" image. </h4> -->
             <h4 id="weblinkfooter">www.biotabeats.org</h4>
         </div>
 
@@ -562,7 +568,6 @@
                       "./BBB_music/3_belly.wav",
                       "./BBB_music/4_armpit.wav",
                       "./BBB_music/5_mouth.wav",
-//                      "./BBB_music/6_symphony_with_2sec_silence.mp3",
                       "./BBB_music/6-SYMPHONY.mp3",
                     ],
                     finishedLoading
@@ -956,7 +961,10 @@
                     }
                     
                     // and set current body mask back to BW:
-                    maskedlayer.style('-webkit-mask-image',"");
+//                ---> NOTE! HERE CODE WITH "" first instead of maskarray!
+                    var maskarray = [];
+                    maskedlayer.style('-webkit-mask-image',maskarray);
+                    maskedlayer.style('mask-image',"maskarray");
                 
                     //and then after some seconds, start playing again!
                     //start the symphony song
@@ -1047,6 +1055,7 @@
                             
                             maskarray.push(maskUrl1)
                             maskedlayer.style('-webkit-mask-image',maskarray);
+                            maskedlayer.style('mask-image',maskarray);
 
                     } else {
                             gainNode1.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
@@ -1057,6 +1066,7 @@
 
                             maskarray = maskarray.filter(e => e !== maskUrl1);
                             maskedlayer.style('-webkit-mask-image',maskarray);
+                            maskedlayer.style('mask-image',maskarray);
                           }
                     highlight()
                 };
@@ -1075,6 +1085,7 @@
 
                             maskarray.push(maskUrl2)
                             maskedlayer.style('-webkit-mask-image',maskarray);
+                            maskedlayer.style('mask-image',maskarray);
 
                     } else {
                             gainNode2.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
@@ -1085,6 +1096,7 @@
 
                             maskarray = maskarray.filter(e => e !== maskUrl2);
                             maskedlayer.style('-webkit-mask-image',maskarray);
+                            maskedlayer.style('mask-image',maskarray);
                           }
                     highlight()
                 };
@@ -1104,6 +1116,7 @@
 
                             maskarray.push(maskUrl3)
                             maskedlayer.style('-webkit-mask-image',maskarray);
+                            maskedlayer.style('mask-image',maskarray);
 
                     } else {
                             gainNode3.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
@@ -1114,6 +1127,7 @@
 
                             maskarray = maskarray.filter(e => e !== maskUrl3);
                             maskedlayer.style('-webkit-mask-image',maskarray);
+                            maskedlayer.style('mask-image',maskarray);
                           }
                     highlight()
                 };           
@@ -1131,6 +1145,7 @@
                             
                             maskarray.push(maskUrl4)
                             maskedlayer.style('-webkit-mask-image',maskarray);
+                            maskedlayer.style('mask-image',maskarray);
 
                           } else {
                             var time_gain_delay = .1; //in seconds!
@@ -1142,6 +1157,7 @@
 
                             maskarray = maskarray.filter(e => e !== maskUrl4);
                             maskedlayer.style('-webkit-mask-image',maskarray);
+                            maskedlayer.style('mask-image',maskarray);
                           }
                     highlight()
                 };
@@ -1158,6 +1174,7 @@
 
                             maskarray.push(maskUrl5)
                             maskedlayer.style('-webkit-mask-image',maskarray);
+                            maskedlayer.style('mask-image',maskarray);
                       
                     } else {
                             gainNode5.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
@@ -1168,6 +1185,7 @@
 
                             maskarray = maskarray.filter(e => e !== maskUrl5);
                             maskedlayer.style('-webkit-mask-image',maskarray);
+                            maskedlayer.style('mask-image',maskarray);
 
                   }
                     highlight()
@@ -1207,29 +1225,35 @@
                 function maskfeet() { 
                     maskarraysymphony = [maskUrl1];
                     maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                    maskedlayer.style('mask-image',maskarraysymphony);
                 };
           
                 function maskfeetgen() { 
                     maskarraysymphony = [maskUrl1,maskUrl2];
                     maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                    maskedlayer.style('mask-image',maskarraysymphony);
                 };
                 
                 function maskfeetgenbelly() { 
                     maskarraysymphony = [maskUrl1,maskUrl2,maskUrl3];
                     maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                    maskedlayer.style('mask-image',maskarraysymphony);
                 };
             
                 function maskfeetgenbellyarm() { 
                     maskarraysymphony = [maskUrl1,maskUrl2,maskUrl3,maskUrl4];
                     maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                    maskedlayer.style('mask-image',maskarraysymphony);
                 };
                 function feetmouth() { 
                     maskarraysymphony = [maskUrl1,maskUrl5];
                     maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                    maskedlayer.style('mask-image',maskarraysymphony);
                 };
                 function symall() { 
                     maskarraysymphony = [maskUrl1,maskUrl2,maskUrl3,maskUrl4,maskUrl5];
                     maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                    maskedlayer.style('mask-image',maskarraysymphony);
                 };
                             
                
@@ -1445,8 +1469,8 @@
                 var prechosen_numberidletimes = 100; 
             
                 function setup() {
-                    this.addEventListener("mousemove", resetTimer, false);
-                    this.addEventListener("mousedown", resetTimer, false);
+//                    this.addEventListener("mousemove", resetTimer, false);
+//                    this.addEventListener("mousedown", resetTimer, false);
                     this.addEventListener("keypress", resetTimer, false);
                     this.addEventListener("DOMMouseScroll", resetTimer, false);
                     this.addEventListener("mousewheel", resetTimer, false);
@@ -1471,50 +1495,80 @@
                 function goInactive() {
                     console.log("going into symphony mode!")
 
-                    // First - track how often a timeout has happened. Every now & then reload whole page:
-                    numberofidletimes = numberofidletimes + 1;
-                    if (numberofidletimes > prechosen_numberidletimes) { // XX minutes
-                            console.log("logged out a lot!")
-                            window.location.reload();
-                            }
-
-                    //start the symphony song
-                    startSymphonysong(); 
-
-//                    var time_gain_delay =  0.1; //in seconds!
-//                    gainNode6.gain.setTargetAtTime(1, context.currentTime, time_gain_delay);
-                    
-                    // show highlighted disc sections
-                    symphonymode();
-                    
-                    // show body parts
-                    symphonyslideShow();
-                    
+//                    // First - track how often a timeout has happened. Every now & then reload whole page:
+//                    numberofidletimes = numberofidletimes + 1;
+//                    if (numberofidletimes > prechosen_numberidletimes) { // XX minutes
+//                            console.log("logged out a lot!")
+//                            window.location.reload();
+//                            }
+//
+//                    //THEN: Stop any ongoing body parts that are playing:
+//                     gainNode1.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+//                     gainNode2.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+//                     gainNode3.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+//                     gainNode4.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+//                     gainNode5.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+//                            
+//                    //THEN: Set play buttons to stop buttons:
+//                    playbutton1.id = "";
+//                    playbutton2.id = "";
+//                    playbutton3.id = "";
+//                    playbutton4.id = "";
+//                    playbutton5.id = "";
+//
+//                    //Unplay playbuttons:
+//                    d3.selectAll('.round-button').classed("innerplay",true).classed("innerstop",false);
+//                    d3.selectAll('#playsymbol').classed("fa fa-stop fa-2x",false).classed("fa fa-play fa-2x",true);
+//
+//                    
+//                    //THEN: unhighlight all arcs
+//                    var allarcs =  d3.selectAll(".arc");
+//                    allarcs.classed("nonhighlight",true)
+//                                    .classed("highlight",false);
+//                    highlight();
+//                    
+//                    //THEN: unmask body
+//                    maskarray = maskarray.filter(e => e !== maskUrl1);
+//                    maskarray = maskarray.filter(e => e !== maskUrl2);
+//                    maskarray = maskarray.filter(e => e !== maskUrl3);
+//                    maskarray = maskarray.filter(e => e !== maskUrl4);
+//                    maskarray = maskarray.filter(e => e !== maskUrl5);
+//                    maskedlayer.style('-webkit-mask-image',maskarray);
+//                    maskedlayer.style('mask-image',maskarray);
+//
+//                    
+//                    //now its time to start the symphony song
+//                    startSymphonysong(); 
+//
+//                    // show highlighted disc sections
+//                    symphonymode();
+//                    
+//                    // show body parts
+//                    symphonyslideShow();
                 }
 
                 function goActive() {
                     console.log("going back into user interface playing mode!")
                     
-                    // stop the symphone song:
-                    startSymphonysong(false); 
-//                     var time_gain_delay = .1; //in seconds!
-//                     gainNode6.gain.setTargetAtTime(0, context.currentTime, time_gain_delay);
-                    
-                    // unhighlight all arcs
-                    highlight();
-                    
-                    //stop slideshow by clearing all timeouts:
-                    // https://stackoverflow.com/questions/8860188/is-there-a-way-to-clear-all-time-outs
-                    var id = window.setTimeout(function() {}, 0);
-                    while (id--) {
-                        window.clearTimeout(id); // will do nothing if no timeout with id is present
-                    }
-                    
-                    // and set current body mask back to BW:
-                    maskedlayer.style('-webkit-mask-image',"");
-                    
-                    // restart timer
-                    startTimer();
+//                    // stop the symphony song:
+//                    startSymphonysong(false); 
+//                    
+//                    // unhighlight all arcs
+//                    highlight();
+//                    
+//                    //stop slideshow by clearing all timeouts:
+//                    // https://stackoverflow.com/questions/8860188/is-there-a-way-to-clear-all-time-outs
+//                    var id = window.setTimeout(function() {}, 0);
+//                    while (id--) {
+//                        window.clearTimeout(id); // will do nothing if no timeout with id is present
+//                    }
+//                    
+//                    // and set current body mask back to BW:
+//                    maskedlayer.style('-webkit-mask-image',"");
+//                    maskedlayer.style('mask-image',"");
+//                    
+//                    // restart timer
+//                    startTimer();
                 }
                     
             
