@@ -73,7 +73,8 @@
             }
               
             #wrapper{
-                height:1000px;
+                height:1060px;
+                overflow: hidden;
               }
               
               
@@ -144,7 +145,7 @@
                     border: 8px solid #365d6c !important;
                     border-radius: 30px;
                     background-color: #365d6c;
-/*                    overflow: hidden;*/
+                    
                     }
               
                 /* Holds the buttons*/
@@ -218,7 +219,7 @@
                     width: 40%;
                     display: flex;
                     display: -webkit-flex;
-                    overflow: visible;
+/*                    overflow: visible;*/
                     }
             #Music {
                     width: 35%;
@@ -564,6 +565,7 @@
                 function init() {
                     console.log("window onload init")
                     console.log("goede hooget???")
+                    console.log("overflow uit???")
                     
                   // Fix up prefixing
                   window.AudioContext = window.AudioContext || window.webkitAudioContext;
