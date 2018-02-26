@@ -38,7 +38,7 @@
           <style>
           
               /* layout boundary lines*/
-             *{ border: .5px solid orange !important;  }
+/*             *{ border: .5px solid orange !important;  }*/
               
             html {
                   height: 99%;
@@ -50,7 +50,7 @@
             body {
                 font-family: 'Lato', sans-serif;
                 font-weight: 300;
-                font-size: 28px;
+                font-size: 32px;
                 background-color: #000;
                 margin-left: 50px;
                 margin-right: 50px;
@@ -109,7 +109,7 @@
                         border-radius: 1em;
                         background-color: #3a1b50;
                         font-weight: 100;
-                    font-size: 1.6rem;
+                    font-size: 1.8rem;
                         height: 100%;
                         margin-top: 0px;
                         margin-right: 16px;
@@ -157,7 +157,7 @@
                      height:20%; /* use this to control distance from content above */
                      border: 8px solid #66b6dd !important;
                      border-radius: 30px;
-                    padding-top:20px;
+                    padding-top:10px; /*equal to border radius*/
 /*                     background-color: #00080b;*/
 /*                     overflow: hidden;*/
                     }
@@ -175,7 +175,7 @@
                     position:relative;
                     padding: 0px;
                     margin: 0px;
-                    padding-left: 140px;
+                    margin-left: 380px;
                     vertical-align:middle;
                     font-size: 4rem;
                     font-weight: 100;
@@ -185,13 +185,13 @@
                     color:#fff;
                     position:relative;
                     padding: 0px;
-                    padding-left: 140px;
                     margin: 0px;
+                    margin-left: 380px;
                     height:20px;
                     vertical-align:middle;
                     font-size: 1rem;
                     font-weight: 100;
-                    letter-spacing: 1.8rem;
+                    letter-spacing: 2rem;
                 }
               
               h4 {
@@ -244,6 +244,7 @@
 */
               
               .buttoncontainer {
+                    margin-top: 20px;
                     margin-left: 60px;
                     margin-right: 80px;
                     display: flex;
@@ -261,7 +262,7 @@
               .text_below_button{
                     display: inline-block;
                     margin-right: 4px;
-                    width: 18%;
+                    width: 260px;
                     color:#dbdbdb;
                     text-align: center;
                     font-size: 16px;
@@ -275,8 +276,8 @@
                     display:inline-block;
                     box-sizing: border-box;
                     display:block;
-                    width:80px;
-                    height:80px;
+                    width:100px;
+                    height:100px;
 /*                    padding-top: 12px;*/
                     padding-left: 0px;
                     line-height: 20px;
@@ -336,7 +337,7 @@
                 }
               
               .innerplay {
-                  padding-top: 16px;
+                  padding-top: 28px;
                     padding-left: 6px;
                     line-height: 20px;
 /*                    color:#000;*/
@@ -348,13 +349,12 @@
                   border-radius: 50%;
                   border-color: #00d8ff;
                   background-color:transparent;
-/*                  box-shadow: 0 0 32px rgb(250, 26, 10);*/
                  box-shadow: 0 0 42px #6dc3ed;
                   -webkit-animation: pulseplay 3s ease-in 3s infinite;
                 }
               
               .innerstop {
-                    padding-top: 14px;
+                    padding-top: 26px;
                     padding-left: 0px;
                     line-height: 20px;
 /*                    color:#000;*/
@@ -367,8 +367,6 @@
                     border-radius: 50%;
                   border-color: rgb(250, 26, 10);
                     background-color:transparent;
-/*                    box-shadow: 0 0 42px #6dc3ed;*/
-                    
                    box-shadow: 0 0 42px rgb(250, 26, 10);
                     -webkit-animation: pulsestop 1s ease-in 1s infinite;
                 }
@@ -412,7 +410,7 @@
 
 		.labelText {
 			fill: #66b6dd;
-            font-size: .8rem;
+            font-size: 1rem;
             font-weight: 100;
             letter-spacing: 1.2rem;
 		}
@@ -466,7 +464,7 @@
 
                     <div id="Music" class="music">
 <!--                        <svg id="equalizersvg" width="280px" height="280px" >-->
-                        <svg id="equalizersvg" width="90%" height="400px" >
+                        <svg id="equalizersvg" width="90%" height="480px" >
                         </svg>
                     </div> 
             
@@ -487,9 +485,9 @@
                 <div class="textcontainer">
                         <div class="text_below_button" style="margin-left:-20px;">Voeten</div>
                         <div class="text_below_button" style="margin-left:20px;">Genitaliën</div>
-                        <div class="text_below_button" style="margin-left:40px;">Navel</div>
-                        <div class="text_below_button" style="margin-left:30px;">Oksel</div>
-                        <div class="text_below_button" style="margin-left:10px;">Mond</div>
+                        <div class="text_below_button" style="margin-left:50px;">Navel</div>
+                        <div class="text_below_button" style="margin-left:40px;">Oksel</div>
+                        <div class="text_below_button" style="text-align:right; margin-left:-50px;">Mond</div>
                 </div>
             </div>
         </div>
@@ -635,9 +633,9 @@
             // xaxes 
             svg.append("line")
                         .attr("x1", 0)
-                        .attr("y1", 400)
-                        .attr("x2", 420)
-                        .attr("y2", 400)
+                        .attr("y1", 480)
+                        .attr("x2", 460) //keep to 460 for width
+                        .attr("y2", 480)
                         .attr("stroke-width", 2)
                         .attr("stroke", "#efe9e9");
             
@@ -1505,42 +1503,42 @@
                 function goInactive() {
                     console.log("going into symphony mode!")
 
-                    // First - track how often a timeout has happened. Every now & then reload whole page:
-                    numberofidletimes = numberofidletimes + 1;
-                    if (numberofidletimes > prechosen_numberidletimes) { // XX minutes
-                            console.log("logged out a lot!")
-                            window.location.reload();
-                            }
-
-                    //THEN: Stop any ongoing body parts that are playing:
-                     gainNode1.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-                     gainNode2.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-                     gainNode3.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-                     gainNode4.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-                     gainNode5.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-                            
-                    //THEN: Set play buttons to stop buttons:
-                    playbutton1.id = "";
-                    playbutton2.id = "";
-                    playbutton3.id = "";
-                    playbutton4.id = "";
-                    playbutton5.id = "";
-
-                    //Unplay playbuttons:
-                    d3.selectAll('.round-button').classed("innerplay",true).classed("innerstop",false);
-                    d3.selectAll('#playsymbol').classed("fa fa-stop fa-2x",false).classed("fa fa-play fa-2x",true);
-
-                    console.log("AARGGH")
-                    //THEN: unhighlight all arcs
-                    
-                    var allarcs =  svgdisc.select('#arc2');
-                     console.log(allarcs)
-                     
-                     
+//                    // First - track how often a timeout has happened. Every now & then reload whole page:
+//                    numberofidletimes = numberofidletimes + 1;
+//                    if (numberofidletimes > prechosen_numberidletimes) { // XX minutes
+//                            console.log("logged out a lot!")
+//                            window.location.reload();
+//                            }
+//
+//                    //THEN: Stop any ongoing body parts that are playing:
+//                     gainNode1.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+//                     gainNode2.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+//                     gainNode3.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+//                     gainNode4.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+//                     gainNode5.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+//                            
+//                    //THEN: Set play buttons to stop buttons:
+//                    playbutton1.id = "";
+//                    playbutton2.id = "";
+//                    playbutton3.id = "";
+//                    playbutton4.id = "";
+//                    playbutton5.id = "";
+//
+//                    //Unplay playbuttons:
+//                    d3.selectAll('.round-button').classed("innerplay",true).classed("innerstop",false);
+//                    d3.selectAll('#playsymbol').classed("fa fa-stop fa-2x",false).classed("fa fa-play fa-2x",true);
+//
+//                    console.log("AARGGH")
+//                    //THEN: unhighlight all arcs
+//                    
+//                    var allarcs =  svgdisc.select('#arc2');
+//                     console.log(allarcs)
+//                     
+//                     
 //                     allarcs.classed("nonhighlight",false)
 //                                    .classed("highlight",true);
                     
-                    allarcs.style("fill","red")
+//                    allarcs.style("fill","red")
                     
                     
 //                    allarcs.style("fill","red")
@@ -1551,16 +1549,16 @@
 //                            .classed("highlight",false);
 //                    highlight();
                     
-                    console.log("niettedoen");
+//                    console.log("niettedoen");
 //                    debugger;
                     //THEN: unmask body
-                    maskarray = maskarray.filter(e => e !== maskUrl1);
-                    maskarray = maskarray.filter(e => e !== maskUrl2);
-                    maskarray = maskarray.filter(e => e !== maskUrl3);
-                    maskarray = maskarray.filter(e => e !== maskUrl4);
-                    maskarray = maskarray.filter(e => e !== maskUrl5);
-                    maskedlayer.style('-webkit-mask-image',maskarray);
-                    maskedlayer.style('mask-image',maskarray);
+//                    maskarray = maskarray.filter(e => e !== maskUrl1);
+//                    maskarray = maskarray.filter(e => e !== maskUrl2);
+//                    maskarray = maskarray.filter(e => e !== maskUrl3);
+//                    maskarray = maskarray.filter(e => e !== maskUrl4);
+//                    maskarray = maskarray.filter(e => e !== maskUrl5);
+//                    maskedlayer.style('-webkit-mask-image',maskarray);
+//                    maskedlayer.style('mask-image',maskarray);
 
                     
 //                    //now its time to start the symphony song
@@ -1574,27 +1572,27 @@
                 }
 
                 function goActive() {
-                    console.log("going back into user interface playing mode!")
+                    console.log("going into user interface playing mode!")
                     
-                    // stop the symphony song:
-                    startSymphonysong(false); 
-                    
-                    // unhighlight all arcs
-                    highlight();
-                    
-                    //stop slideshow by clearing all timeouts:
-                    // https://stackoverflow.com/questions/8860188/is-there-a-way-to-clear-all-time-outs
-                    var id = window.setTimeout(function() {}, 0);
-                    while (id--) {
-                        window.clearTimeout(id); // will do nothing if no timeout with id is present
-                    }
-                    
-                    // and set current body mask back to BW:
-                    maskedlayer.style('-webkit-mask-image',"");
-                    maskedlayer.style('mask-image',"");
-                    
-                    // restart timer
-                    startTimer();
+//                    // stop the symphony song:
+//                    startSymphonysong(false); 
+//                    
+//                    // unhighlight all arcs
+//                    highlight();
+//                    
+//                    //stop slideshow by clearing all timeouts:
+//                    // https://stackoverflow.com/questions/8860188/is-there-a-way-to-clear-all-time-outs
+//                    var id = window.setTimeout(function() {}, 0);
+//                    while (id--) {
+//                        window.clearTimeout(id); // will do nothing if no timeout with id is present
+//                    }
+//                    
+//                    // and set current body mask back to BW:
+//                    maskedlayer.style('-webkit-mask-image',"");
+//                    maskedlayer.style('mask-image',"");
+//                    
+//                    // restart timer
+//                    startTimer();
                 }
                     
             
