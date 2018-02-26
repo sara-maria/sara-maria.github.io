@@ -1523,14 +1523,14 @@
                     console.log("AARGGH")
                     //THEN: unhighlight all arcs
                     
-//                    var allarcs =  svgdisc.select('#arc2');
+                    var allarcs =  svgdisc.select('#arc2');
                      console.log(allarcs)
                      
                      
 //                     allarcs.classed("nonhighlight",false)
 //                                    .classed("highlight",true);
                     
-//                    allarcs.style("fill","red")
+                    allarcs.style("fill","red")
                     
                     
 //                    allarcs.style("fill","red")
@@ -1540,19 +1540,19 @@
 //                    allarcs.classed("nonhighlight",true)
 //                            .classed("highlight",false);
 //                    highlight();
-//                    
-//                    console.log("niettedoen");
-////                    debugger;
-//                    //THEN: unmask body
-//                    maskarray = maskarray.filter(e => e !== maskUrl1);
-//                    maskarray = maskarray.filter(e => e !== maskUrl2);
-//                    maskarray = maskarray.filter(e => e !== maskUrl3);
-//                    maskarray = maskarray.filter(e => e !== maskUrl4);
-//                    maskarray = maskarray.filter(e => e !== maskUrl5);
-//                    maskedlayer.style('-webkit-mask-image',maskarray);
-//                    maskedlayer.style('mask-image',maskarray);
-//
-//                    
+                    
+                    console.log("niettedoen");
+//                    debugger;
+                    //THEN: unmask body
+                    maskarray = maskarray.filter(e => e !== maskUrl1);
+                    maskarray = maskarray.filter(e => e !== maskUrl2);
+                    maskarray = maskarray.filter(e => e !== maskUrl3);
+                    maskarray = maskarray.filter(e => e !== maskUrl4);
+                    maskarray = maskarray.filter(e => e !== maskUrl5);
+                    maskedlayer.style('-webkit-mask-image',maskarray);
+                    maskedlayer.style('mask-image',maskarray);
+
+                    
 //                    //now its time to start the symphony song
 //                    setTstartSymphonysong(); 
 //
@@ -1566,25 +1566,25 @@
                 function goActive() {
                     console.log("going back into user interface playing mode!")
                     
-//                    // stop the symphony song:
-//                    startSymphonysong(false); 
-//                    
-//                    // unhighlight all arcs
-//                    highlight();
-//                    
-//                    //stop slideshow by clearing all timeouts:
-//                    // https://stackoverflow.com/questions/8860188/is-there-a-way-to-clear-all-time-outs
-//                    var id = window.setTimeout(function() {}, 0);
-//                    while (id--) {
-//                        window.clearTimeout(id); // will do nothing if no timeout with id is present
-//                    }
-//                    
-//                    // and set current body mask back to BW:
-//                    maskedlayer.style('-webkit-mask-image',"");
-//                    maskedlayer.style('mask-image',"");
-//                    
-//                    // restart timer
-//                    startTimer();
+                    // stop the symphony song:
+                    startSymphonysong(false); 
+                    
+                    // unhighlight all arcs
+                    highlight();
+                    
+                    //stop slideshow by clearing all timeouts:
+                    // https://stackoverflow.com/questions/8860188/is-there-a-way-to-clear-all-time-outs
+                    var id = window.setTimeout(function() {}, 0);
+                    while (id--) {
+                        window.clearTimeout(id); // will do nothing if no timeout with id is present
+                    }
+                    
+                    // and set current body mask back to BW:
+                    maskedlayer.style('-webkit-mask-image',"");
+                    maskedlayer.style('mask-image',"");
+                    
+                    // restart timer
+                    startTimer();
                 }
                     
             
