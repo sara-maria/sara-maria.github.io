@@ -4,19 +4,7 @@
           
 <!--
           TO DO:
-
-
-            - Voeg roze pijl toe die naar knoppen wijst
-            - DRUK OP KNOP ipv speel muziek in de roze pijl tekst
-            - arclabels text spacing doet het niet
-            - symphony mode fixen
-            - tekst onder knoppen uitlijnen
-            - background color main content donkerder!
-
-
-
-            -
-          - layout design overall: match colors to BB logo
+          - arclabels text spacing doet het niet in firefox
           - Code smooth transitions between body part highlights
           - Create stronger feet highlight colors
           - Equalizer layout?
@@ -66,8 +54,8 @@
                 background-color: #000;
                 margin-left: 50px;
                 margin-right: 50px;
-/*                margin-top: 20px;*/
-/*                margin-bottom: 20px;*/
+                margin-top: 0px;
+                margin-bottom: 0px;
                 opacity: 1;
                 -moz-transition: opacity 1.5s ease-in;
                 -webkit-transition: opacity 1.5s ease-in;
@@ -104,7 +92,7 @@
               
             #PijltoPlay{
                 position:absolute;
-                    bottom:10px;
+                    bottom:4px;
                     left:86px;
                     height:16%;
                 z-index:2;
@@ -116,7 +104,6 @@
                  height:78vh; 
                 }
             
-              
                 #div-info {
                          position:absolute;
                          top:0;
@@ -141,7 +128,6 @@
                         margin-top: 2px;
                         }
                 #infocircle{
-/*                        fill:#f5b4cf;*/
                         fill:#f489b2;
                         }
               
@@ -152,11 +138,11 @@
 
                 /* Holds biotabody, disc, and equalizer*/
                 #div-content {
-                     position:absolute;
-                     top:0;
-                     right:0;
-                     width:80%;
-                     height:75%;
+                    position:absolute;
+                    top:0;
+                    right:0;
+                    width:80%;
+                    height:75%;
                     display: -webkit-flex;
                     display: flex;
                     -webkit-flex-direction: row;
@@ -164,7 +150,6 @@
                     border: 8px solid #07242f !important;
                     border-radius: 30px;
                     background-color: #07242f;
-                    
                     }
               
                 /* Holds the buttons*/
@@ -175,18 +160,14 @@
                      width:80%;
                      height:20%; /* use this to control distance from content above */
                      border: 8px solid #66b6dd !important;
-/*                     border: 8px solid #f489b2 !important;*/
                      border-radius: 30px;
-                    padding-top:10px; /*equal to border radius*/
-/*                     background-color: #00080b;*/
-/*                     overflow: hidden;*/
+                     padding-top:10px; /*bit more than border thickness*/
                     }
               
                 #div-footer {
                     position:relative;
                     bottom:0;
                     margin-top:10px;
-/*                    height:vh;*/
                     }
               
               /* Other styling: */
@@ -239,29 +220,12 @@
                     width: 40%;
                     display: flex;
                     display: -webkit-flex;
-/*                    overflow: visible;*/
                     }
             #Music {
                     width: 35%;
                     display: flex;
                     display: -webkit-flex;
                 }
-              
-/*
-            .playbutton {
-                    display:inline-block;
-                    width: 18%;
-                    height:1em;
-                    line-height: 1.1em; needed for vertical align
-                    vertical-align: middle;
-                    text-align: center;
-                    background-color: white;
-                    border-radius: 2em;
-                    background-color: "rgb(250, 243, 243)";
-                    color:#444;
-                    font-weight: 100
-                }   
-*/
               
               .buttoncontainer {
                     margin-top: 20px;
@@ -270,9 +234,8 @@
                     display: flex;
                     justify-content: space-between;
                 }
+              
               .textcontainer {
-/*                  margin-left: 30px;*/
-/*                    width: 95%;*/
                     text-align: justify; 
                     -ms-text-justify: distribute-all-lines; 
                     text-justify: distribute-all-lines; 
@@ -290,7 +253,6 @@
                     letter-spacing: 8px;
                 }
               
-              
               .round-button {
                     border: 2px solid rgb(0, 0, 0);
                     display:inline-block;
@@ -298,7 +260,6 @@
                     display:block;
                     width:100px;
                     height:100px;
-/*                    padding-top: 12px;*/
                     padding-left: 0px;
                     line-height: 20px;
                     text-align:center;
@@ -308,7 +269,6 @@
                   
                     background-clip: padding-box;
                     background-color: #434343;
-/*                    background-color: #434343;*/
                   
                     background-image: -webkit-linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
                     background-image: -moz-linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
@@ -316,20 +276,6 @@
                     background-image: -ms-linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
                     background-image: linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
                     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7A7A7A), to(#515151));
-
-
-/*
-                    background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),                        
-                    -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0,0%,100%,.6) 0%, hsla(0,0%,100%,0) 100%),                        
-                    -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),                        
-                    -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
-                    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0) 3%, hsla(0,0%,  0%,.1) 3.5%),
-                    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 6%, hsla(0,0%,100%,.1) 7.5%), 
-                    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.2) 2.2%),  
-                    -webkit-radial-gradient(    50% 50%, 200% 50%, hsla(0,0%,90%,1) 5%, hsla(0,0%,85%,1) 30%, hsla(0,0%,60%,1) 100%);
-*/
-                
-              
               }
                 
               div.playstate{
@@ -355,40 +301,34 @@
                 }
               
               .innerplay {
-                  padding-top: 28px;
+                    padding-top: 28px;
                     padding-left: 6px;
                     line-height: 20px;
-/*                    color:#000;*/
-/*                    color:rgb(90, 19, 14);*/
-                   color:#242424;
+                    color:#242424;
                     text-align:center;
                     text-decoration:none;
-                  display:inline-block;
-                  border-radius: 50%;
-                  border-color: #00d8ff;
-                  background-color:transparent;
-                 box-shadow: 0 0 42px #6dc3ed;
-                  -webkit-animation: pulseplay 3s ease-in 3s infinite;
+                    display:inline-block;
+                    border-radius: 50%;
+                    border-color: #00d8ff;
+                    background-color:transparent;
+                    box-shadow: 0 0 42px #6dc3ed;
+                    -webkit-animation: pulseplay 3s ease-in 3s infinite;
                 }
               
               .innerstop {
                     padding-top: 26px;
                     padding-left: 0px;
                     line-height: 20px;
-/*                    color:#000;*/
-/*                    color:#0c4f6c;*/
-/*                    color:rgb(51, 10, 7);*/
                     color:#242424;
                     text-align:center;
                     text-decoration:none;
                     display:inline-block;
                     border-radius: 50%;
-                  border-color: rgb(250, 26, 10);
+                    border-color: rgb(250, 26, 10);
                     background-color:transparent;
-                   box-shadow: 0 0 42px rgb(250, 26, 10);
+                    box-shadow: 0 0 42px rgb(250, 26, 10);
                     -webkit-animation: pulsestop 1s ease-in 1s infinite;
                 }
-              
               
               .background{
                   position:absolute;
@@ -398,15 +338,12 @@
                   height:560px; /*(2250px/4;)*/
               }
               
-              
               .masked {
                   position:absolute;
                   top:20px;
                   left:20px;
                   width:300px; /*(1200px/4;)*/
                   height:560px; /*(2250px/4;)*/
-/*                  transition: all 2s ease;*/
-                  
                   
                   mask-image: linear-gradient(transparent 100%, transparent 100%);
                   mask-mode: luminance;
@@ -421,17 +358,16 @@
 
               
               .labelArc {
-			fill: none;
-/*			stroke: #AAAAAA;*/
-			stroke: none;
-		}
+                    fill: none;
+                    stroke: none;
+                }
 
-		.labelText {
-			fill: #66b6dd;
-            font-size: 1rem;
-            font-weight: 100;
-            letter-spacing: 1.2rem; /*werkt niet in firefox....*/
-		}
+                .labelText {
+                    fill: #66b6dd;
+                    font-size: 1rem;
+                    font-weight: 100;
+                    letter-spacing: 1.2rem; /*werkt niet in firefox....*/
+                }
               
           </style>
     </head>
@@ -511,8 +447,8 @@
         </div>
         
         <div id="div-footer"> 
-<!--            <h4><b>CREDITS</b> EMW Street Bio Team, Cambridge, Massachusetts, USA: David Sun Kong, Alex Guo, Gautam Salhotra, Chucky Kim, Sara Sprinkhuizen, Keerthi Shetty, Thrasyvoulos Karydis, Ani Liu, Russell Pasetes, Nicole Bakker, Shannon Johnson, Matt Mendoza, Mary Tsang, Yixiao Jiang, Viirj Kan, Rachel Smith  <b>SONIFICATION</b> Alex Guo and Gautam Salhotra <b>MUSIC PRODUCTION</b> Chucky Kim <b>INTERACTIVE VISUALISATION</b> Sara Sprinkhuizen</h4> -->
-<!--            <h4>The team wishes to thank Eric Rosembaum for his input and designer Charis Tsevis for allowing to use his beautiful "I, VIRUS" image. </h4> -->
+<!-- <h4><b>CREDITS</b> EMW Street Bio Team, Cambridge, Massachusetts, USA: David Sun Kong, Alex Guo, Gautam Salhotra, Chucky Kim, Sara Sprinkhuizen, Keerthi Shetty, Thrasyvoulos Karydis, Ani Liu, Russell Pasetes, Nicole Bakker, Shannon Johnson, Matt Mendoza, Mary Tsang, Yixiao Jiang, Viirj Kan, Rachel Smith  <b>SONIFICATION</b> Alex Guo and Gautam Salhotra <b>MUSIC PRODUCTION</b> Chucky Kim <b>INTERACTIVE VISUALISATION</b> Sara Sprinkhuizen</h4> -->
+<!-- <h4>The team wishes to thank Eric Rosembaum for his input and designer Charis Tsevis for allowing to use his beautiful "I, VIRUS" image. </h4> -->
             <h4 id="weblinkfooter">www.biotabeats.org</h4>
         </div>
 
@@ -580,8 +516,6 @@
 
                 function init() {
                     console.log("window onload init")
-                    console.log("goede hooget???")
-                    console.log("overflow uit???")
                     
                   // Fix up prefixing
                   window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -602,8 +536,6 @@
                     bufferLoader.load();
                 }
                      
-                     
-
         function finishedLoading(bufferList) {
                 console.log("finished loading");
                 "use strict";
@@ -812,8 +744,6 @@
 			.sort(null);    
 
             
-            
-            
 		//Draw the arcs themselves
 		svgdisclabel.selectAll(".labelArc")
 			.data(pie(labelData))
@@ -821,13 +751,9 @@
 			.attr("class", "labelArc")
 			.attr("d", arclabel).each(function(d,i) {
 				var firstArcSection = /(^.+?)L/; 
-				//Grab everything up to the first Line statement
 				var newArc = firstArcSection.exec( d3.select(this).attr("d") )[1];
-				//Replace all the comma's so that IE can handle it -_-
-				//The g after the / is a modifier that "find all matches rather than stopping after the first match"
 				newArc = newArc.replace(/,/g , " ");
-								
-				//Create a new invisible arc that the text can flow along
+				//Create invisible arc
 				svgdisclabel.append("path")
 					.attr("class", "hiddenDonutArcs")
 					.attr("id", "labelArc_"+i)
@@ -838,16 +764,15 @@
         //Append the label names on the outside of the arcs
 		svgdisclabel.selectAll(".labelText")
 			.data(labelData)
-		   .enter().append("text")
+		    .enter().append("text")
 			.attr("class", "labelText")
 			.attr("dy", 18)
-		   .append("textPath")
+		    .append("textPath")
 			.attr("startOffset","50%")
 			.style("text-anchor","middle")
 			.attr("xlink:href",function(d,i){return "#labelArc_"+i;})
 			.text(function(d){return d.label;});
             
-                   
                    
             ///////////////////////////////////////////////////////////////////////////
             //////////////////// PETRI DISC BODY SECTION HIGHLIGHTING    //////////////
@@ -860,6 +785,14 @@
              var heartbeatduration2 = 250;
 
              function highlight() {
+                 
+                 var allnonhighlightedarcs = d3.selectAll(".nonhighlight")
+                     allnonhighlightedarcs.transition()
+                            .style("fill",arcfillcolor) 
+                            .duration(500)
+                            .attr("stroke-width", 1)
+                            .style("stroke","#444")
+                            .attr("stroke-dasharray", "1, 0");                 
                  
                     // CHECK WHICH ARCS NEED HIGHLIGHTING NOW:
                     var allhighlightedarcs = d3.selectAll(".highlight")
@@ -883,23 +816,12 @@
                             .each("end", recursive_transitions);
                         };
 
-                    var allnonhighlightedarcs = d3.selectAll(".nonhighlight")
-                    allnonhighlightedarcs.transition()
-                            .style("fill",arcfillcolor) 
-                            .duration(500)
-                            .attr("stroke-width", 1)
-                            .style("stroke","#444")
-                            .attr("stroke-dasharray", "1, 0");
-
-//                 debugger;
             }; //highlight
      
-//          <!-- -----------------------         //// END OF BUILDING PAGE-->
+////// END OF BUILDING PAGE-->
 
             
-            
-            
-              // Create two sources and play them both together.
+              // Create all body track sources
               var source1 = context.createBufferSource();
               var source2 = context.createBufferSource();
               var source3 = context.createBufferSource();
@@ -911,11 +833,6 @@
               source4.buffer = bufferList[3];
               source5.buffer = bufferList[4];
 
-                // ready to remove the "loading" icon:
-                removeLoading();
-                    
-                console.log("ready to play");
-                          
                 var playbutton1 = document.querySelector('.playbutton1');
                 var playbutton2 = document.querySelector('.playbutton2');
                 var playbutton3 = document.querySelector('.playbutton3');
@@ -969,13 +886,19 @@
                     source4.start(0);
                     source5.start(0);
             
-            
+                // ready to remove the "loading" icon:
+                removeLoading();
+                console.log("ready to play");
+                          
+
             
             function onEnd() {
                 console.log('playback symphony finished, time to replay!');
                     audiosymphony.currentTime = 0; //set back to starttime 0 (so now it "Stops")
                 
                     // unhighlight all arcs
+                    d3.selectAll('.arc').classed("nonhighlight",true)
+                                        .classed("highlight",false);
                     highlight();
                     
                     //stop slideshow by clearing all timeouts:
@@ -986,7 +909,6 @@
                     }
                     
                     // and set current body mask back to BW:
-//                ---> NOTE! HERE CODE WITH "" first instead of maskarray!
                     var maskarray = [];
                     maskedlayer.style('-webkit-mask-image',maskarray);
                     maskedlayer.style('mask-image',maskarray);
@@ -1001,55 +923,28 @@
                     // show body parts
                     setTimeout(symphonyslideShow,2000);
                     
-                };
+                }; // end of onEnd
             
-            
-    var audiosymphony = new Audio();   
-    audiosymphony.src = "./BBB_music/6-SYMPHONY.mp3";
-    audiosymphony.controls = false;
-    audiosymphony.autoplay = false;
-    audiosymphony.loop = false;
-    audiosymphony.onended = onEnd;
-    source6 = context.createMediaElementSource(audiosymphony);
-    source6.connect(analyser);
-    analyser.connect(context.destination);
+            var audiosymphony = new Audio();   
+                audiosymphony.src = "./BBB_music/6-SYMPHONY.mp3";
+                audiosymphony.controls = false;
+                audiosymphony.autoplay = false;
+                audiosymphony.loop = false;
+                audiosymphony.onended = onEnd;
+                source6 = context.createMediaElementSource(audiosymphony);
+                source6.connect(analyser);
+                analyser.connect(context.destination);
 
-            
-            
             function startSymphonysong(bool) {
-                if(bool === undefined) bool = true;
+                    if(bool === undefined) bool = true;
 
-                if(bool === true) {
-//                    var source6 = context.createBufferSource();
-//                    source6.buffer = bufferList[5];
-//                    gainNode6 = context.createGain();
-//                    gainNode6.gain.setTargetAtTime(1,context.currentTime, .2);
-////                    source6.loop = true;
-//                    source6.onended = onEnd;
-//                    
-//                    source6.connect(gainNode6).connect(analyser).connect(context.destination);
-//                    source6.start(context.currentTime);
-                    
-                    audiosymphony.play();
-                    
-                    
-                } else {
-                    
-//                    source6 = null;
-                    // calling .stop() on source6 does not work here. Therefore: controlling gain.
-//                    gainNode6.gain.setTargetAtTime(0,context.currentTime, .2);
-                    
-//                    source6.stop(context.currentTime);
-                    
-                    audiosymphony.pause();
-                    audiosymphony.currentTime = 0; //set back to starttime 0 (so now it "Stops")
-                    
-                    
-                    
-                }
-            }
-            
-            
+                    if(bool === true) {
+                        audiosymphony.play();
+                    } else {
+                        audiosymphony.pause();
+                        audiosymphony.currentTime = 0; //set back to starttime 0 (so it "Stops")
+                    }
+                };
             
             
             // IMAGES BIOTA BODY
@@ -1062,13 +957,12 @@
             var maskUrl4 = "url(./BBB_images/4_Armpit_Mask_vF.png)";
             var maskUrl5 = "url(./BBB_images/5_Mouth_Mask_vF.png)";
             
-            // setting for gains. NOTE: Exponential: thus needs much more ramp up than ramp down time!
+            // Settings for gains 
+            // NOTE: Exponential: thus needs much more ramp up than ramp down time!
             var time_gain_delay_start = 2;//in sec 
             var time_gain_delay_stop = .1;//in sec
             
-            
                 function trackplaybutton1() {
-                    
                     var thisarcsel = svgdisc.select('#arc0');                    
                     
                     if(playbutton1.id == "") {
@@ -1098,7 +992,6 @@
                     
                     
                 function trackplaybutton2() {
-                    
                     var thisarcsel = svgdisc.select('#arc4');
                     
                     if(playbutton2.id == "") {
@@ -1128,7 +1021,6 @@
             
             
                 function trackplaybutton3() {
-                    
                     var thisarcsel = svgdisc.select('#arc2');
                       
                     if(playbutton3.id == "") {
@@ -1158,7 +1050,6 @@
                 };           
             
                 function trackplaybutton4() {
-                    
                         var thisarcsel = svgdisc.select('#arc1');
                         
                         if(playbutton4.id == "") {
@@ -1292,20 +1183,19 @@
                 var slidetimeout = setTimeout(maskfeetgenbellyarm, 24000);
                 var slidetimeout = setTimeout(feetmouth, 40000);
                 var slidetimeout = setTimeout(symall, 48000);
-            };
+                };
 
             
             var curIndexarc = 0;
-            var ArcArray = [
-            '#arc0',
-            '#arc4',
-            '#arc2',
-            '#arc1',
-            '#arc3',
-            '#arc5'];
+            var ArcArray = ['#arc0',
+                            '#arc4',
+                            '#arc2',
+                            '#arc1',
+                            '#arc3',
+                            '#arc5'];
             
             function symphonymode() {
-            var curIndexarc = 0;
+                var curIndexarc = 0;
             
                  // symphony mode: all sections on in certain order!!
                  //phase1 - feet                              - Arc0
@@ -1318,170 +1208,83 @@
                 phase1();
                 
                      function phase1() {
+                         // first un-highlight all arcs: /////////////////
+                             d3.selectAll('.arc').classed("nonhighlight",true)
+                                        .classed("highlight",false);
+                         ////////////////////////////////////////////////
+                         // highlight current arc
                          var thisarcsel =  d3.select(ArcArray[curIndexarc]);
+                            thisarcsel.classed("nonhighlight",false)
+                                        .classed("highlight",true);
+                         
                          curIndexarc++;
-
-                         recursive_transitions_slideshow();
-
-                            function recursive_transitions_slideshow() {     
-                                 thisarcsel.style("fill",highlightfillcolor1)
-                                            .style("stroke",highlightstrokecolor)
-                                            .transition()
-                                            .duration(heartbeatduration1)
-                                            .style("fill",highlightfillcolor2)
-                                            .attr("stroke-width", 1)
-                                            .ease('sin-in')
-                                            .transition()
-                                            .duration(heartbeatduration2)
-                                            .style("fill",highlightfillcolor1)
-                                            .attr('stroke-width', 4)
-                                            .ease('bounce-in')
-                                            .each("end", recursive_transitions_slideshow);
-                                };
-                            setTimeout(phase2, 8000);   
+                         highlight();
+                         setTimeout(phase2, 8000);   
                         }; //phase1
 
                      function phase2() {
+                         ////////////////////////////////////////////////
+                         // highlight current arc
                          var thisarcsel =  d3.select(ArcArray[curIndexarc]);
+                             thisarcsel.classed("nonhighlight",false)
+                                        .classed("highlight",true);
+                         
                          curIndexarc++;
-
-                         recursive_transitions_slideshow();
-
-                            function recursive_transitions_slideshow() {     
-                                 thisarcsel.style("fill",highlightfillcolor1)
-                                            .style("stroke",highlightstrokecolor)
-                                            .transition()
-                                            .duration(heartbeatduration1)
-                                            .style("fill",highlightfillcolor2)
-                                            .attr("stroke-width", 1)
-                                            .ease('sin-in')
-                                            .transition()
-                                            .duration(heartbeatduration2)
-                                            .style("fill",highlightfillcolor1)
-                                            .attr('stroke-width', 4)
-                                            .ease('bounce-in')
-                                            .each("end", recursive_transitions_slideshow);
-                                };
-                            setTimeout(phase3, 8000);
+                         highlight();
+                         setTimeout(phase3, 8000);
                      }; //phase2
 
                      function phase3() {
+                         ////////////////////////////////////////////////
+                         // highlight current arc
                          var thisarcsel =  d3.select(ArcArray[curIndexarc]);
+                            thisarcsel.classed("nonhighlight",false)
+                                        .classed("highlight",true);
+                         
                          curIndexarc++;
-
-                         recursive_transitions_slideshow();
-
-                            function recursive_transitions_slideshow() {     
-                                 thisarcsel.style("fill",highlightfillcolor1)
-                                            .style("stroke",highlightstrokecolor)
-                                            .transition()
-                                            .duration(heartbeatduration1)
-                                            .style("fill",highlightfillcolor2)
-                                            .attr("stroke-width", 1)
-                                            .ease('sin-in')
-                                            .transition()
-                                            .duration(heartbeatduration2)
-                                            .style("fill",highlightfillcolor1)
-                                            .attr('stroke-width', 4)
-                                            .ease('bounce-in')
-                                            .each("end", recursive_transitions_slideshow);
-                                };
-                            setTimeout(phase4, 8000);
+                         highlight();
+                         setTimeout(phase4, 8000);
                         }; //phase3
 
                      function phase4() {
-                          var thisarcsel =  d3.select(ArcArray[curIndexarc]);
+                         ////////////////////////////////////////////////
+                         // highlight current arc
+                         var thisarcsel =  d3.select(ArcArray[curIndexarc]);
+                            thisarcsel.classed("nonhighlight",false)
+                                        .classed("highlight",true);
+                         
                          curIndexarc++;
-
-                         recursive_transitions_slideshow();
-
-                            function recursive_transitions_slideshow() {     
-                                 thisarcsel.style("fill",highlightfillcolor1)
-                                            .style("stroke",highlightstrokecolor)
-                                            .transition()
-                                            .duration(heartbeatduration1)
-                                            .style("fill",highlightfillcolor2)
-                                            .attr("stroke-width", 1)
-                                            .ease('sin-in')
-                                            .transition()
-                                            .duration(heartbeatduration2)
-                                            .style("fill",highlightfillcolor1)
-                                            .attr('stroke-width', 4)
-                                            .ease('bounce-in')
-                                            .each("end", recursive_transitions_slideshow);
-                                };
-                            timeoutphase4 = setTimeout(phase5, 16000);
+                         highlight();
+                         timeoutphase4 = setTimeout(phase5, 16000);
                         }; //phase4
 
                      function phase5() { //FEET AND MOUTH ONLY
                            // first un-highlight all arcs: /////////////////
-                             arcs = d3.selectAll('.arc')
-                             arcs.transition()
-                                        .style("fill",arcfillcolor) 
-                                        .duration(500)
-                                        .attr("stroke-width", 1)
-                                        .style("stroke","#444")
-                                        .attr("stroke-dasharray", "1, 0");
+                             arcs = d3.selectAll('.arc').classed("nonhighlight",true)
+                                        .classed("highlight",false);
                             ////////////////////////////////////////////////
-
                          var thisarcsel =  arcs.filter("#arc3,#arc0") // feet and mouth
-
-                         recursive_transitions_slideshow();
-
-                            function recursive_transitions_slideshow() {     
-                                 thisarcsel.style("fill",highlightfillcolor1)
-                                            .style("stroke",highlightstrokecolor)
-                                            .transition()
-                                            .duration(heartbeatduration1)
-                                            .style("fill",highlightfillcolor2)
-                                            .attr("stroke-width", 1)
-                                            .ease('sin-in')
-                                            .transition()
-                                            .duration(heartbeatduration2)
-                                            .style("fill",highlightfillcolor1)
-                                            .attr('stroke-width', 4)
-                                            .ease('bounce-in')
-                                            .each("end", recursive_transitions_slideshow);
-                                };
-                            timeoutphase5 = setTimeout(phase6, 8000);
+                                thisarcsel.classed("nonhighlight",false)
+                                        .classed("highlight",true);
+                         
+                         highlight();
+                         timeoutphase5 = setTimeout(phase6, 8000);
                      }; //phase5
 
                      function phase6() { // FINAL PHASE - SELECT ALL!!
-                         // first un-highlight all arcs: /////////////////
-                             arcs = d3.selectAll('.arc')
-
-                             arcs.transition()
-                                        .style("fill","none") 
-                                        .duration(500)
-                                        .attr("stroke-width", 1)
-                                        .style("stroke","#444")
-                                        .attr("stroke-dasharray", "1, 0");
                             ////////////////////////////////////////////////
-
                           var thisarcsel =  d3.selectAll(".arc");
-
-                         recursive_transitions_slideshow();
-
-                            function recursive_transitions_slideshow() {     
-                                 thisarcsel.style("fill",highlightfillcolor1)
-                                            .style("stroke",highlightstrokecolor)
-                                            .transition()
-                                            .duration(heartbeatduration1)
-                                            .style("fill",highlightfillcolor2)
-                                            .attr("stroke-width", 1)
-                                            .ease('sin-in')
-                                            .transition()
-                                            .duration(heartbeatduration2)
-                                            .style("fill",highlightfillcolor1)
-                                            .attr('stroke-width', 4)
-                                            .ease('bounce-in')
-                                            .each("end", recursive_transitions_slideshow);
-                        }; //recursive_transitions_slideshow
-
+                              thisarcsel.classed("nonhighlight",false)
+                                        .classed("highlight",true);
+                         
+                         highlight();
                      }; //phase6
          
-     }; // end sympony function
+            }; // end symphony function
 
+
+            
+            
             
                     
 //            /* The redirect to autoplay page function after XXX seconds of no interactivity" 
@@ -1513,112 +1316,100 @@
 
                 function resetTimer(e) {
                     window.clearTimeout(timeoutID);
-
                     goActive();
                 }
-
                    
+            var symphonytracking = null;
                 function goInactive() {
                     console.log("going into symphony mode!")
+                    symphonytracking = 1;
+                    
+                    // First - track how often a timeout has happened. Every now & then reload whole page:
+                    numberofidletimes = numberofidletimes + 1;
+                    if (numberofidletimes > prechosen_numberidletimes) { // XX minutes
+                            console.log("logged out a lot!")
+                            window.location.reload();
+                            }
 
-//                    // First - track how often a timeout has happened. Every now & then reload whole page:
-//                    numberofidletimes = numberofidletimes + 1;
-//                    if (numberofidletimes > prechosen_numberidletimes) { // XX minutes
-//                            console.log("logged out a lot!")
-//                            window.location.reload();
-//                            }
-//
-//                    //THEN: Stop any ongoing body parts that are playing:
-//                     gainNode1.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-//                     gainNode2.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-//                     gainNode3.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-//                     gainNode4.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-//                     gainNode5.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-//                            
-//                    //THEN: Set play buttons to stop buttons:
-//                    playbutton1.id = "";
-//                    playbutton2.id = "";
-//                    playbutton3.id = "";
-//                    playbutton4.id = "";
-//                    playbutton5.id = "";
-//
-//                    //Unplay playbuttons:
-//                    d3.selectAll('.round-button').classed("innerplay",true).classed("innerstop",false);
-//                    d3.selectAll('#playsymbol').classed("fa fa-stop fa-2x",false).classed("fa fa-play fa-2x",true);
-//
-//                    console.log("AARGGH")
-//                    //THEN: unhighlight all arcs
-//                    
-//                    var allarcs =  svgdisc.select('#arc2');
-//                     console.log(allarcs)
-//                     
-//                     
-//                     allarcs.classed("nonhighlight",false)
-//                                    .classed("highlight",true);
-                    
-//                    allarcs.style("fill","red")
+                    //THEN: Stop any ongoing body parts that are playing:
+                     gainNode1.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+                     gainNode2.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+                     gainNode3.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+                     gainNode4.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+                     gainNode5.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+                            
+                    //Unplay playbuttons:
+                    d3.selectAll('.round-button').classed("innerplay",true).classed("innerstop",false);
+                    d3.selectAll('#playsymbol').classed("fa fa-stop fa-2x",false).classed("fa fa-play fa-2x",true);
+                    playbutton1.id = "";
+                    playbutton2.id = "";
+                    playbutton3.id = "";
+                    playbutton4.id = "";
+                    playbutton5.id = "";
                     
                     
-//                    allarcs.style("fill","red")
-//                            .style("fill",arcfillcolor) 
-//                            .attr("stroke-width", 1)
-//                            .style("stroke","#444")
-//                    allarcs.classed("nonhighlight",true)
-//                            .classed("highlight",false);
-//                    highlight();
+                    //THEN: unhighlight all arcs
+                    var allarcs =  svgdisc.selectAll('.arc');
+                        allarcs.classed("nonhighlight",true)
+                                .classed("highlight",false);
+                    highlight();                    
                     
-//                    console.log("niettedoen");
-//                    debugger;
                     //THEN: unmask body
-//                    maskarray = maskarray.filter(e => e !== maskUrl1);
-//                    maskarray = maskarray.filter(e => e !== maskUrl2);
-//                    maskarray = maskarray.filter(e => e !== maskUrl3);
-//                    maskarray = maskarray.filter(e => e !== maskUrl4);
-//                    maskarray = maskarray.filter(e => e !== maskUrl5);
-//                    maskedlayer.style('-webkit-mask-image',maskarray);
-//                    maskedlayer.style('mask-image',maskarray);
+                    maskarray = maskarray.filter(e => e !== maskUrl1);
+                    maskarray = maskarray.filter(e => e !== maskUrl2);
+                    maskarray = maskarray.filter(e => e !== maskUrl3);
+                    maskarray = maskarray.filter(e => e !== maskUrl4);
+                    maskarray = maskarray.filter(e => e !== maskUrl5);
+                    maskedlayer.style('-webkit-mask-image',maskarray);
+                    maskedlayer.style('mask-image',maskarray);
 
                     
-//                    //now its time to start the symphony song
-//                    setTstartSymphonysong(); 
-//
-//                    // show highlighted disc sections
-//                    symphonymode();
-//                    
-//                    // show body parts
-//                    symphonyslideShow();
+                    //now its time to start the symphony song
+                    setTimeout(startSymphonysong,2000); 
+                    //and show highlighted disc sections
+                    setTimeout(symphonymode,2000);
+                    //and show body parts
+                    setTimeout(symphonyslideShow,2000);
                 }
 
                 function goActive() {
+                    //NOTE: this function is called on EVERY user interaction!
+                    //so also when you were NOT in symphony mode before
                     console.log("going into user interface playing mode!")
                     
-//                    // stop the symphony song:
-//                    startSymphonysong(false); 
-//                    
-//                    // unhighlight all arcs
-//                    highlight();
-//                    
-//                    //stop slideshow by clearing all timeouts:
-//                    // https://stackoverflow.com/questions/8860188/is-there-a-way-to-clear-all-time-outs
-//                    var id = window.setTimeout(function() {}, 0);
-//                    while (id--) {
-//                        window.clearTimeout(id); // will do nothing if no timeout with id is present
-//                    }
-//                    
-//                    // and set current body mask back to BW:
+                    // stop the symphony song:
+                    startSymphonysong(false); 
+                    
+                    // re-un-highlight all arcs ONLY when coming out of symphony mode!
+                    if (symphonytracking == 1) {
+                        console.log("coming out of symphony mode")
+                        d3.selectAll('.arc').classed("nonhighlight",true)
+                                        .classed("highlight",false);
+                        }
+                    highlight();
+                    
+                    //reset symphonytracker to zero:
+                    symphonytracking = 0;
+                    
+                    //stop slideshow by clearing all timeouts:
+                    //https://stackoverflow.com/questions/8860188/is-there-a-way-to-clear-all-time-outs
+                    var id = window.setTimeout(function() {}, 0);
+                    while (id--) {
+                        window.clearTimeout(id); // will do nothing if no timeout with id is present
+                    }
+                    
+                    // and set current body mask back to BW:
 //                    maskedlayer.style('-webkit-mask-image',"");
 //                    maskedlayer.style('mask-image',"");
-//                    
-//                    // restart timer
-//                    startTimer();
+                    
+                    // restart timer
+                    startTimer();
                 }
                     
             
             
         }; // end FinishedLoading function //////////////////////////////////////////////
 
-              
-              
           
               
             // CODE FOR THE OPENING WAITING SCREEN while LOADING MUSIC FILES:
