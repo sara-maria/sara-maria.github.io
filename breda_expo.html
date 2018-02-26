@@ -2,6 +2,16 @@
 	<html>
 	  <head>
           
+<!--
+          TO DO:
+          - layout design overall: match colors to BB logo
+          - Code smooth transitions between body part highlights
+          - Create stronger feet highlight colors
+          - Equalizer layout?
+          - Actual bacterial structures instead of circles on petri
+          - Analyser only "on" when play mode is on?
+-->
+          
         <!-- Declare the character set of the document -->
         <meta charset="UTF-8">
         <!-- Support -->
@@ -91,19 +101,25 @@
                          }
                 #info-container {
                         border-radius: 1em;
-                        background-color: #50395f;
+                        background-color: #3a1b50;
                         font-weight: 100;
+                    font-size: 1.6rem;
                         height: 100%;
                         margin-top: 0px;
                         margin-right: 16px;
                         z-index:-1;
                         }
                 #info-container p{
-                        color:#aec5d8;
+                        color:#e5e2e4;
                         margin-left: 12px;
                         margin-right: 12px;
                         margin-top: 2px;
                         }
+                #infocircle{
+/*                        fill:#f5b4cf;*/
+                        fill:#f489b2;
+                        }
+              
                 #circlenumber{
                         position:relative;
                         left:-10px;
@@ -120,7 +136,7 @@
                     display: flex;
                     -webkit-flex-direction: row;
                     flex-direction: row;
-                    border: 4px solid #6c8996 !important;
+                    border: 8px solid #365d6c !important;
                     border-radius: 30px;
                     background-color: #365d6c;
 /*                    overflow: hidden;*/
@@ -133,9 +149,10 @@
                      right:0;
                      width:80%;
                      height:20%; /* use this to control distance from content above */
-                     border: 4px solid #66b6dd !important;
+                     border: 8px solid #66b6dd !important;
                      border-radius: 30px;
-                     background-color: #00080b;
+                    padding-top:20px;
+/*                     background-color: #00080b;*/
 /*                     overflow: hidden;*/
                     }
               
@@ -180,7 +197,11 @@
                     padding:0px;
                     margin:0px;
                 }
-                
+             #weblinkfooter{
+                    position:absolute;
+                    right:0;
+                    bottom:0;
+                    }   
               
             #BiotaBody {
                     width:25%;
@@ -200,29 +221,31 @@
                     display: -webkit-flex;
                 }
               
+/*
             .playbutton {
                     display:inline-block;
                     width: 18%;
                     height:1em;
-                    line-height: 1.1em; /*needed for vertical align*/
+                    line-height: 1.1em; needed for vertical align
                     vertical-align: middle;
                     text-align: center;
                     background-color: white;
                     border-radius: 2em;
-                    border:1px solid #9d9999;
                     background-color: "rgb(250, 243, 243)";
                     color:#444;
                     font-weight: 100
                 }   
+*/
               
               .buttoncontainer {
-                    margin-left: 30px;
-                    width: 90%;
+                    margin-left: 60px;
+                    margin-right: 80px;
                     display: flex;
                     justify-content: space-between;
                 }
               .textcontainer {
-                    width: 95%;
+/*                  margin-left: 30px;*/
+/*                    width: 95%;*/
                     text-align: justify; 
                     -ms-text-justify: distribute-all-lines; 
                     text-justify: distribute-all-lines; 
@@ -233,7 +256,7 @@
                     display: inline-block;
                     margin-right: 4px;
                     width: 18%;
-                    color:#fff;
+                    color:#dbdbdb;
                     text-align: center;
                     font-size: 16px;
                     font-weight: 100;
@@ -248,17 +271,19 @@
                     display:block;
                     width:80px;
                     height:80px;
-                    padding-top: 12px;
+/*                    padding-top: 12px;*/
                     padding-left: 0px;
                     line-height: 20px;
-                    color:#000;
+/*                    color:#000;*/
+/*                    color:red;*/
                     text-align:center;
                     text-decoration:none;
-                    font-size:1.6rem;
+                    font-size:1.4rem;
                     font-weight:bold;
                   
                     background-clip: padding-box;
                     background-color: #434343;
+/*                    background-color: #434343;*/
                   
                     background-image: -webkit-linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
                     background-image: -moz-linear-gradient(100% 100% 90deg, #515151, #7A7A7A);
@@ -268,6 +293,7 @@
                     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7A7A7A), to(#515151));
 
 
+/*
                     background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),                        
                     -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0,0%,100%,.6) 0%, hsla(0,0%,100%,0) 100%),                        
                     -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),                        
@@ -276,7 +302,10 @@
                     -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 6%, hsla(0,0%,100%,.1) 7.5%), 
                     -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.2) 2.2%),  
                     -webkit-radial-gradient(    50% 50%, 200% 50%, hsla(0,0%,90%,1) 5%, hsla(0,0%,85%,1) 30%, hsla(0,0%,60%,1) 100%);
-                }
+*/
+                
+              
+              }
                 
               div.playstate{
                     border-radius: 50%;
@@ -289,35 +318,52 @@
                 }
              
               @-webkit-keyframes pulsestop {
-                    0% { box-shadow:0 0 12px #a7defd; }
-                    50% { box-shadow:0 0 52px #a7defd; }
-                    100% { box-shadow:0 0 12px #a7defd; }
+                    0% { box-shadow:0 0 12px rgb(250, 26, 10); }
+                    50% { box-shadow:0 0 52px rgb(250, 26, 10); }
+                    100% { box-shadow:0 0 12px rgb(250, 26, 10); }
+                }
+              
+              @-webkit-keyframes pulseplay {
+                    0% { box-shadow:0 0 12px #6dc3ed; }
+                    50% { box-shadow:0 0 52px #6dc3ed; }
+                    100% { box-shadow:0 0 12px #6dc3ed; }
                 }
               
               .innerplay {
-                  padding-top: 12px;
+                  padding-top: 16px;
                     padding-left: 6px;
                     line-height: 20px;
-                    color:#000;
+/*                    color:#000;*/
+/*                    color:rgb(90, 19, 14);*/
+                   color:#242424;
                     text-align:center;
                     text-decoration:none;
                   display:inline-block;
                   border-radius: 50%;
+                  border-color: #00d8ff;
                   background-color:transparent;
-                  box-shadow: 0 0 32px rgb(250, 26, 10);
+/*                  box-shadow: 0 0 32px rgb(250, 26, 10);*/
+                 box-shadow: 0 0 42px #6dc3ed;
+                  -webkit-animation: pulseplay 3s ease-in 3s infinite;
                 }
               
               .innerstop {
-                    padding-top: 12px;
+                    padding-top: 14px;
                     padding-left: 0px;
                     line-height: 20px;
-                    color:#000;
+/*                    color:#000;*/
+/*                    color:#0c4f6c;*/
+/*                    color:rgb(51, 10, 7);*/
+                    color:#242424;
                     text-align:center;
                     text-decoration:none;
                     display:inline-block;
                     border-radius: 50%;
+                  border-color: rgb(250, 26, 10);
                     background-color:transparent;
-                    box-shadow: 0 0 42px #6dc3ed;
+/*                    box-shadow: 0 0 42px #6dc3ed;*/
+                    
+                   box-shadow: 0 0 42px rgb(250, 26, 10);
                     -webkit-animation: pulsestop 1s ease-in 1s infinite;
                 }
               
@@ -346,6 +392,19 @@
                 }
 
               
+              .labelArc {
+			fill: none;
+/*			stroke: #AAAAAA;*/
+			stroke: none;
+		}
+
+		.labelText {
+			fill: #66b6dd;
+            font-size: .8rem;
+            font-weight: 100;
+            letter-spacing: 1.2rem;
+		}
+              
           </style>
     </head>
         
@@ -361,19 +420,19 @@
             <div id="div-info">
                 <div id="info-container">
                      <svg id="circlenumber" width="40" height="40">
-                        <circle cx="20" cy="20" r="18" fill="#f5b4cf" />
+                        <circle id="infocircle" cx="20" cy="20" r="18"/>
                         <text x="50%" y="60%" text-anchor="middle" fill="#50395f" font-size="1.4rem" dy=".3em">1</text></svg>
                     <p>Er leven twee kilo bacteriën in en op ons lijf </p>
                     
                      <svg id="circlenumber" width="40" height="40">
-                        <circle cx="20" cy="20" r="18" fill="#f5b4cf" />
+                        <circle id="infocircle" cx="20" cy="20" r="18"/>
                         <text x="50%" y="60%" text-anchor="middle" fill="#50395f" font-size="1.4rem" dy=".3em">2</text></svg>
-                    <p>Bacteria kunnen ook leven op petrischalen met daarin speciale bacterie-voeding </p>
+                    <p>Je kan deze bacteriën laten groeien op petrischalen met daarin speciale bacterie-voeding </p>
                     
                      <svg id="circlenumber" width="40" height="40">
-                        <circle cx="20" cy="20" r="18" fill="#f5b4cf" />
+                        <circle id="infocircle" cx="20" cy="20" r="18"/>
                         <text x="50%" y="60%" text-anchor="middle" fill="#50395f" font-size="1.4rem" dy=".3em">3</text></svg>
-                    <p>De bacterie-kolonies op de petrischaal hebben we omgezet in muzieknoten: nu kan je luisteren naar de muziek van je bacteriën! </p>
+                    <p>De bacterie-kolonies op de petrischaal hebben we omgezet in muzieknoten. Luister maar naar de muziek van bacteriën! </p>
                 
                     
                 </div>
@@ -383,11 +442,8 @@
                     <!-- Three sections: body, disc, music--> 
                     <div id="BiotaBody">
                         <!--  Slideshow of BODY BBB_images-->
-                        
                         <img id="slider" class="background" src="./BBB_images/0_BW_Body.png">
                         <img id="slider" class="masked" src="./BBB_images/0_Color_Body.png">
-                        
-                        
                         
                     </div>
 
@@ -397,7 +453,7 @@
 
                     <div id="Music" class="music">
 <!--                        <svg id="equalizersvg" width="280px" height="280px" >-->
-                        <svg id="equalizersvg" width="100%" height="400px" >
+                        <svg id="equalizersvg" width="90%" height="400px" >
                         </svg>
                     </div> 
             
@@ -405,7 +461,7 @@
             
             
             <div id="div-interaction">
-                  <button class="fa fa-star-o"></button>
+<!--                  <button class="fa fa-star-o"></button>-->
                 
                 <div class="buttoncontainer">
                         <div class="innerplay round-button playbutton1"><span class="fa fa-play fa-2x"></span></div>
@@ -416,16 +472,20 @@
                 </div>
                 
                 <div class="textcontainer">
-                        <div class="text_below_button" style="margin-right: 0px;">Voeten</div>
-                        <div class="text_below_button" style="margin-right: 10px;">Genitaliën</div>
-                        <div class="text_below_button" style="margin-left: 16px;">Navel</div>
-                        <div class="text_below_button" style="margin-left: 8px;">Oksel</div>
-                        <div class="text_below_button" style="margin-left: 8px;">Mond</div>
+                        <div class="text_below_button" style="margin-left:-20px;">Voeten</div>
+                        <div class="text_below_button" style="margin-left:20px;">Genitaliën</div>
+                        <div class="text_below_button" style="margin-left:40px;">Navel</div>
+                        <div class="text_below_button" style="margin-left:30px;">Oksel</div>
+                        <div class="text_below_button" style="margin-left:10px;">Mond</div>
                 </div>
             </div>
         </div>
         
-        <div id="div-footer"> <h4><b>CREDITS</b> EMW Street Bio Team, Cambridge, Massachusetts, USA: David Sun Kong, Alex Guo, Gautam Salhotra, Chucky Kim, Sara Sprinkhuizen, Keerthi Shetty, Russell Pasetes, Nicole Bakker, Thrasyvoulos Karydis, Ani Liu, Shannon Johnson, Matt Mendoza, Mary Tsang, Yixiao Jiang, Viirj Kan, Rachel Smith  <b>SONIFICATION</b> Alex Guo and Gautam Salhotra <b>MUSIC PRODUCTION</b> Chucky Kim <b>INTERACTIVE VISUALISATION</b> Sara Sprinkhuizen</h4> <h4>The team wishes to thank Eric Rosembaum for his input and designer Charis Tsevis for allowing to use his beautiful "I, VIRUS" image. </h4> </div>
+        <div id="div-footer"> 
+            <h4><b>CREDITS</b> EMW Street Bio Team, Cambridge, Massachusetts, USA: David Sun Kong, Alex Guo, Gautam Salhotra, Chucky Kim, Sara Sprinkhuizen, Keerthi Shetty, Thrasyvoulos Karydis, Ani Liu, Russell Pasetes, Nicole Bakker, Shannon Johnson, Matt Mendoza, Mary Tsang, Yixiao Jiang, Viirj Kan, Rachel Smith  <b>SONIFICATION</b> Alex Guo and Gautam Salhotra <b>MUSIC PRODUCTION</b> Chucky Kim <b>INTERACTIVE VISUALISATION</b> Sara Sprinkhuizen</h4> 
+            <h4>The team wishes to thank Eric Rosembaum for his input and designer Charis Tsevis for allowing to use his beautiful "I, VIRUS" image. </h4> 
+            <h4 id="weblinkfooter">www.biotabeats.org</h4>
+        </div>
 
         
         <script>
@@ -482,9 +542,9 @@
                   for (var i = 0; i < this.urlList.length; ++i)
                   this.loadBuffer(this.urlList[i], i);
                 }
-//              END Bufferloading preparations       
+                // END Bufferloading preparations       
                 
-//              Kick off actual Bufferloading:
+                // Kick off actual Bufferloading:
                 window.onload = init;
                 var context;
                 var bufferLoader;
@@ -502,19 +562,14 @@
                       "./BBB_music/3_belly.wav",
                       "./BBB_music/4_armpit.wav",
                       "./BBB_music/5_mouth.wav",
+//                      "./BBB_music/6_symphony_with_2sec_silence.mp3",
+                      "./BBB_music/6-SYMPHONY.mp3",
                     ],
                     finishedLoading
                     );
                     
                     bufferLoader.load();
                 }
-                     
-                     
-                     
-                     
-                     
-                     
-                     
                      
                      
 
@@ -532,7 +587,7 @@
                 });
             
             
-            var svg   = document.getElementById("equalizersvg"); // or other selector like querySelector()
+            var svg = document.getElementById("equalizersvg"); // or other selector like querySelector()
             
             var rect = svg.getBoundingClientRect(); // get the bounding rectangle
             var svgWidth = rect.width;
@@ -540,7 +595,7 @@
             
             var svg = d3.select("#equalizersvg")
 
-            //            var frequencyData = new Uint8Array(200);
+            // var frequencyData = new Uint8Array(200);
             var frequencyData = new Uint8Array(64);
             var barPadding = '.5';
             // Create our initial D3 equalizer chart.
@@ -552,62 +607,60 @@
                       return i * (svgWidth / frequencyData.length);
                    })
                    .attr('width', svgWidth / frequencyData.length - barPadding);
-         
 
             // Add polylines to frame equalizer axes:
             // yaxes
             svg.append("line")
                         .attr("x1", 0)
-                        .attr("y1", 480) //higher --> lower axes!
+                        .attr("y1", 480) //higher --> lower positioned axes!
                         .attr("x2", 0)
-                        .attr("y2", 120) //smaller --> taller axes!
+                        .attr("y2", 180) //smaller --> taller axes!
                         .attr("stroke-width", 2)
-                        .attr("stroke", "white");
+                        .attr("stroke", "#efe9e9");
             // xaxes 
             svg.append("line")
                         .attr("x1", 0)
                         .attr("y1", 400)
-                        .attr("x2", 400)
+                        .attr("x2", 420)
                         .attr("y2", 400)
                         .attr("stroke-width", 2)
-                        .attr("stroke", "white");
-            
+                        .attr("stroke", "#efe9e9");
             
             //////////////////////////////////////////////////////////////////////////
-            //////////////////// DRAW PETRI DISC AND SECTIONS AND COLONIES    ///////////////////
+            //////////////////// DRAW PETR#efe9e9I DISC AND SECTIONS AND COLONIES    ///////////////////
             //////////////////////////////////////////////////////////////////////////	
             function growSmallDataDriven(dataset) {
-                        var svg = d3.select("#discsvg")
-                                svg.selectAll('circle.col')
-                                    .data(dataset)
-                                    .enter()
-                                    .append("circle")
-                                    .attr('fill', function(d,i) {
-                                            return "rgb(" + (d.Note *15) + ", " + (d.Note * 10) + ", " + (d.Note * 12) + ")";
-                                            })
-                                    .attr("opacity", .8)    
-                                    .attr("stroke", "#444")
-                                    .attr("stroke-width", 1)    
-                                    .attr("cx", function(d){
-                                        return cx + radiusmax*d.xc;
-                                        })
-                                    .attr("cy", function(d){
-                                            return cy + radiusmax*d.yc;
-                                        })
-                                    .attr("r", 1)
-                                    .transition()
-                                    .duration(2500)
-                                    .ease("sine")
-                                    .attr("r", function(d){
-                                            return d.radcol;
-                                        })
+                var svg = d3.select("#discsvg")
+                        svg.selectAll('circle.col')
+                            .data(dataset)
+                            .enter()
+                            .append("circle")
+                            .attr('fill', function(d,i) {
+                                return "rgb(" + (d.Note *15) + ", " + (d.Note * 10) + ", " + (d.Note * 12) + ")";
+                                    })
+                            .attr("opacity", .8)    
+                            .attr("stroke", "#444")
+                            .attr("stroke-width", 1)    
+                            .attr("cx", function(d){
+                                return cx + radiusmax*d.xc;
+                                })
+                            .attr("cy", function(d){
+                                    return cy + radiusmax*d.yc;
+                                })
+                            .attr("r", 1)
+                            .transition()
+                            .duration(2500)
+                            .ease("sine")
+                            .attr("r", function(d){
+                                    return d.radcol;
+                                })
                       };  
             
             
-            //--------------------------------------------------------------------
-            //---- BASED ON http://bl.ocks.org/atul-github/f3dc48348b0dfeb79618 --       
-            //--------------------------------------------------------------------
-            // Drawing Disc SECTIONS as PATHS    
+        //--------------------------------------------------------------------
+        //---- BASED ON http://bl.ocks.org/atul-github/f3dc48348b0dfeb79618 --       
+        //--------------------------------------------------------------------
+        // Drawing Disc SECTIONS as PATHS    
         var arcfillcolor = "#faf5f5";
                      
         function DrawDisc(svg, data, cx, cy, r, startAngle) {
@@ -658,13 +711,13 @@
             DrawDisc(svgdisc, data, cx, cy, r, 0); 
         }; // end of Initialize 
 
-    // 2. Draw petridisc ------------------------------- 
+        // 2. Draw petridisc ------------------------------- 
             // Set parameters for disc
             var svgdisc = d3.select("#discsvg");
 
             var Discdata = [1,1,1,1,1]; // width of each element
             var cx = 260;
-            var cy = 240;
+            var cy = 280;
             var sections = 5; 
             var radiusmax = 210;
             var rmax = radiusmax/Discdata.length;
@@ -687,7 +740,7 @@
                 .attr("stroke", "#444")
                 .attr("stroke-width", 1)    
 
-// 3. Load Colony Coordinate data and PLOT these! -------------------------------
+        // 3. Load Colony Coordinate data and PLOT these! -------------------------------
             d3.csv("./BBB_data/20170612_colony_coordinates.csv",function(d){ 
                 // transform the data here
                 d['xc']=+d["xc"];
@@ -698,7 +751,73 @@
                 
                 }, );//d3.csv
 
+                   
+        //4. Make body text labels around petri dish
+        //Based on: http://bl.ocks.org/nbremer/bf6d15082ea81ce69b55
+            var svgdisclabel = d3.select("#discsvg").append("svg")
+                                .append("g").attr("class", "labelgroup")
+					           .attr("transform", "translate(" + (cx) + "," + (cy) + ")");
+		
+		//The start date number and end date number of the months in a year
+		var labelData = [
+			{label: "Genitaliën", value: 20},
+			{label: "Voeten", value: 20},
+			{label: "Oksel", value: 20},
+			{label: "Navel", value: 20},
+			{label: "Mond", value: 20}
+		];
 
+//Creates a function that makes SVG paths in the shape of arcs with the specified inner and outer radius 
+		var arclabel = d3.svg.arc()
+			.innerRadius(radiusmax) 
+			.outerRadius(radiusmax + 30);
+		  
+	    //Create pie chart
+		var pie = d3.layout.pie()
+			.startAngle(0 * Math.PI/180)
+			.endAngle(0 * Math.PI/180 + 2*Math.PI)
+			.value(function(d) { return d.value; })
+			.padAngle(.01)
+			.sort(null);    
+
+            
+            
+            
+		//Draw the arcs themselves
+		svgdisclabel.selectAll(".labelArc")
+			.data(pie(labelData))
+		   .enter().append("path")
+			.attr("class", "labelArc")
+			.attr("d", arclabel).each(function(d,i) {
+				var firstArcSection = /(^.+?)L/; 
+				//Grab everything up to the first Line statement
+				var newArc = firstArcSection.exec( d3.select(this).attr("d") )[1];
+				//Replace all the comma's so that IE can handle it -_-
+				//The g after the / is a modifier that "find all matches rather than stopping after the first match"
+				newArc = newArc.replace(/,/g , " ");
+								
+				//Create a new invisible arc that the text can flow along
+				svgdisclabel.append("path")
+					.attr("class", "hiddenDonutArcs")
+					.attr("id", "labelArc_"+i)
+					.attr("d", newArc)
+					.style("fill", "none");
+			});
+			
+        //Append the label names on the outside of the arcs
+		svgdisclabel.selectAll(".labelText")
+			.data(labelData)
+		   .enter().append("text")
+			.attr("class", "labelText")
+			.attr("dy", 18)
+		   .append("textPath")
+			.attr("startOffset","50%")
+			.style("text-anchor","middle")
+			.attr("xlink:href",function(d,i){return "#labelArc_"+i;})
+			.text(function(d){return d.label;});
+            
+                   
+                   
             ///////////////////////////////////////////////////////////////////////////
             //////////////////// PETRI DISC BODY SECTION HIGHLIGHTING    //////////////
             ///////////////////////////////////////////////////////////////////////////	
@@ -710,7 +829,8 @@
              var heartbeatduration2 = 250;
 
              function highlight(thisarc) {
-
+                 
+//                 debugger;
                     // CHECK WHICH ARCS NEED HIGHLIGHTING NOW:
                     var allhighlightedarcs = d3.selectAll(".highlight")
 
@@ -741,27 +861,28 @@
                             .style("stroke","#444")
                             .attr("stroke-dasharray", "1, 0");
 
+//                 debugger;
             }; //highlight
      
 //          <!-- -----------------------         //// END OF BUILDING PAGE-->
-                     
-                     
-                      
-                  // Create two sources and play them both together.
-                  var source1 = context.createBufferSource();
-                  var source2 = context.createBufferSource();
-                  var source3 = context.createBufferSource();
-                  var source4 = context.createBufferSource();
-                  var source5 = context.createBufferSource();
-                  source1.buffer = bufferList[0];
-                  source2.buffer = bufferList[1];
-                  source3.buffer = bufferList[2];
-                  source4.buffer = bufferList[3];
-                  source5.buffer = bufferList[4];
+
+            
+            
+            
+              // Create two sources and play them both together.
+              var source1 = context.createBufferSource();
+              var source2 = context.createBufferSource();
+              var source3 = context.createBufferSource();
+              var source4 = context.createBufferSource();
+              var source5 = context.createBufferSource();
+              source1.buffer = bufferList[0];
+              source2.buffer = bufferList[1];
+              source3.buffer = bufferList[2];
+              source4.buffer = bufferList[3];
+              source5.buffer = bufferList[4];
 
                 // ready to remove the "loading" icon:
                 removeLoading();
-                    
                     
                 console.log("ready to play");
                           
@@ -771,15 +892,13 @@
                 var playbutton4 = document.querySelector('.playbutton4');
                 var playbutton5 = document.querySelector('.playbutton5');
                     
-                    
                 // add functions to buttons:
-                    playbutton1.addEventListener('click', trackplaybutton1 , false);
-                    playbutton2.addEventListener('click', trackplaybutton2 , false);
-                    playbutton3.addEventListener('click', trackplaybutton3 , false);
-                    playbutton4.addEventListener('click', trackplaybutton4 , false);
-                    playbutton5.addEventListener('click', trackplaybutton5 , false);
-                   
-                    
+                playbutton1.addEventListener('click', trackplaybutton1 , false);
+                playbutton2.addEventListener('click', trackplaybutton2 , false);
+                playbutton3.addEventListener('click', trackplaybutton3 , false);
+                playbutton4.addEventListener('click', trackplaybutton4 , false);
+                playbutton5.addEventListener('click', trackplaybutton5 , false);
+
                 // set up analyser:
                 var analyser = context.createAnalyser();
                 // keep bars within chart area, and move them smooth over time (0.85)
@@ -793,13 +912,14 @@
                 var gainNode3 = context.createGain();
                 var gainNode4 = context.createGain();
                 var gainNode5 = context.createGain();
-                    gainNode1.gain.value = 0;
-                    gainNode2.gain.value = 0;
-                    gainNode3.gain.value = 0;
-                    gainNode4.gain.value = 0;
-                    gainNode5.gain.value = 0;
-                    
-                // connect to destination IN RIGHT ORDER!Analyser AFTER gain!(otherwise no effect on frequencies)    
+                    gainNode1.gain.setTargetAtTime(0,context.currentTime, 0);
+                    gainNode2.gain.setTargetAtTime(0,context.currentTime, 0);
+                    gainNode3.gain.setTargetAtTime(0,context.currentTime, 0);
+                    gainNode4.gain.setTargetAtTime(0,context.currentTime, 0);
+                    gainNode5.gain.setTargetAtTime(0,context.currentTime, 0);
+            
+                // connect to destination IN RIGHT ORDER!
+                // Analyser AFTER gain (otherwise no effect on frequencies)    
                 source1.connect(gainNode1).connect(analyser).connect(context.destination);
                 source2.connect(gainNode2).connect(analyser).connect(context.destination);
                 source3.connect(gainNode3).connect(analyser).connect(context.destination);
@@ -812,15 +932,94 @@
                     source3.loop = true;
                     source4.loop = true;
                     source5.loop = true;
-                    
                     //and play!    
                     source1.start(0);
                     source2.start(0);
                     source3.start(0);
                     source4.start(0);
                     source5.start(0);
+            
+            
+            
+            function onEnd() {
+                console.log('playback symphony finished, time to replay!');
+                    audiosymphony.currentTime = 0; //set back to starttime 0 (so now it "Stops")
+                
+                    // unhighlight all arcs
+                    highlight();
+                    
+                    //stop slideshow by clearing all timeouts:
+                    // https://stackoverflow.com/questions/8860188/is-there-a-way-to-clear-all-time-outs
+                    var id = window.setTimeout(function() {}, 0);
+                    while (id--) {
+                        window.clearTimeout(id); // will do nothing if no timeout with id is present
+                    }
+                    
+                    // and set current body mask back to BW:
+                    maskedlayer.style('-webkit-mask-image',"");
+                
+                    //and then after some seconds, start playing again!
+                    //start the symphony song
+                    setTimeout(startSymphonysong,2000);
 
+                    // show highlighted disc sections
+                    setTimeout(symphonymode,2000);
+                    
+                    // show body parts
+                    setTimeout(symphonyslideShow,2000);
+                    
+                };
+            
+            
+    var audiosymphony = new Audio();   
+    audiosymphony.src = "./BBB_music/6-SYMPHONY.mp3";
+    audiosymphony.controls = false;
+    audiosymphony.autoplay = false;
+    audiosymphony.loop = false;
+    audiosymphony.onended = onEnd;
+    source6 = context.createMediaElementSource(audiosymphony);
+    source6.connect(analyser);
+    analyser.connect(context.destination);
 
+            
+            
+            function startSymphonysong(bool) {
+                if(bool === undefined) bool = true;
+
+                if(bool === true) {
+//                    var source6 = context.createBufferSource();
+//                    source6.buffer = bufferList[5];
+//                    gainNode6 = context.createGain();
+//                    gainNode6.gain.setTargetAtTime(1,context.currentTime, .2);
+////                    source6.loop = true;
+//                    source6.onended = onEnd;
+//                    
+//                    source6.connect(gainNode6).connect(analyser).connect(context.destination);
+//                    source6.start(context.currentTime);
+                    
+                    audiosymphony.play();
+                    
+                    
+                } else {
+                    
+//                    source6 = null;
+                    // calling .stop() on source6 does not work here. Therefore: controlling gain.
+//                    gainNode6.gain.setTargetAtTime(0,context.currentTime, .2);
+                    
+//                    source6.stop(context.currentTime);
+                    
+                    audiosymphony.pause();
+                    audiosymphony.currentTime = 0; //set back to starttime 0 (so now it "Stops")
+                    
+                    
+                    
+                }
+            }
+            
+            
+            
+            
+            // IMAGES BIOTA BODY
             var maskarray = [];
             var maskedlayer = d3.select(".masked");
             
@@ -830,21 +1029,27 @@
             var maskUrl4 = "url(./BBB_images/4_Armpit_Mask_vF.png)";
             var maskUrl5 = "url(./BBB_images/5_Mouth_Mask_vF.png)";
             
+            // setting for gains. NOTE: Exponential: thus needs much more ramp up than ramp down time!
+            var time_gain_delay_start = 2;//in sec 
+            var time_gain_delay_stop = .1;//in sec
+            
+            
                 function trackplaybutton1() {
                     
                     var thisarcsel = svgdisc.select('#arc0');                    
                     
                     if(playbutton1.id == "") {
-                            gainNode1.gain.value = 1;
+                            gainNode1.gain.setTargetAtTime(1, context.currentTime, time_gain_delay_start);
                             playbutton1.id = "activated";
 
                             thisarcsel.classed("nonhighlight",false)
                                     .classed("highlight",true);
+                            
                             maskarray.push(maskUrl1)
                             maskedlayer.style('-webkit-mask-image',maskarray);
 
                     } else {
-                            gainNode1.gain.value = 0;
+                            gainNode1.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
                             playbutton1.id = "";
 
                             thisarcsel.classed("nonhighlight",true)
@@ -854,7 +1059,7 @@
                             maskedlayer.style('-webkit-mask-image',maskarray);
                           }
                     highlight()
-                }
+                };
                     
                     
                 function trackplaybutton2() {
@@ -862,7 +1067,7 @@
                     var thisarcsel = svgdisc.select('#arc4');
                     
                     if(playbutton2.id == "") {
-                            gainNode2.gain.value = 1;
+                            gainNode2.gain.setTargetAtTime(1, context.currentTime, time_gain_delay_start);
                             playbutton2.id = "activated";
 
                             thisarcsel.classed("nonhighlight",false)
@@ -872,7 +1077,7 @@
                             maskedlayer.style('-webkit-mask-image',maskarray);
 
                     } else {
-                            gainNode2.gain.value = 0;
+                            gainNode2.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
                             playbutton2.id = "";
 
                             thisarcsel.classed("nonhighlight",true)
@@ -882,7 +1087,7 @@
                             maskedlayer.style('-webkit-mask-image',maskarray);
                           }
                     highlight()
-                }
+                };
             
             
                 function trackplaybutton3() {
@@ -890,7 +1095,8 @@
                     var thisarcsel = svgdisc.select('#arc2');
                       
                     if(playbutton3.id == "") {
-                            gainNode3.gain.value = 1;
+                            gainNode3.gain.setTargetAtTime(1, context.currentTime, time_gain_delay_start);
+
                             playbutton3.id = "activated";
 
                             thisarcsel.classed("nonhighlight",false)
@@ -900,7 +1106,7 @@
                             maskedlayer.style('-webkit-mask-image',maskarray);
 
                     } else {
-                            gainNode3.gain.value = 0;
+                            gainNode3.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
                             playbutton3.id = "";
 
                             thisarcsel.classed("nonhighlight",true)
@@ -910,14 +1116,14 @@
                             maskedlayer.style('-webkit-mask-image',maskarray);
                           }
                     highlight()
-                }           
+                };           
             
                 function trackplaybutton4() {
                     
                         var thisarcsel = svgdisc.select('#arc1');
                         
                         if(playbutton4.id == "") {
-                            gainNode4.gain.value = 1;
+                            gainNode4.gain.setTargetAtTime(1, context.currentTime, time_gain_delay_start);
                             playbutton4.id = "activated";
 
                             thisarcsel.classed("nonhighlight",false)
@@ -927,7 +1133,8 @@
                             maskedlayer.style('-webkit-mask-image',maskarray);
 
                           } else {
-                            gainNode4.gain.value = 0;
+                            var time_gain_delay = .1; //in seconds!
+                            gainNode4.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
                             playbutton4.id = "";
 
                             thisarcsel.classed("nonhighlight",true)
@@ -937,14 +1144,13 @@
                             maskedlayer.style('-webkit-mask-image',maskarray);
                           }
                     highlight()
-                }
-            
+                };
             
                 function trackplaybutton5() {
                         var thisarcsel = svgdisc.select('#arc3');
 
                     if(playbutton5.id == "") {
-                            gainNode5.gain.value = 1;
+                            gainNode5.gain.setTargetAtTime(1, context.currentTime, time_gain_delay_start);
                             playbutton5.id = "activated";
 
                             thisarcsel.classed("nonhighlight",false)
@@ -954,7 +1160,7 @@
                             maskedlayer.style('-webkit-mask-image',maskarray);
                       
                     } else {
-                            gainNode5.gain.value = 0;
+                            gainNode5.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
                             playbutton5.id = "";
 
                             thisarcsel.classed("nonhighlight",true)
@@ -965,7 +1171,7 @@
 
                   }
                     highlight()
-                }
+                };
                     
 
                         
@@ -984,27 +1190,260 @@
                       .attr('height', function(d) {
                          return d;
                       })
-//                      .attr('fill', function(d,i) {
-//                         return 'rgb(125, 0, ' + i + ')';
-//                      })
-//                   
-                   .attr('fill', function(d,i) {
-//                 return 'rgb(125, 0, ' + d + ')';
-                 return 'rgb(125, ' +Math.round(.75*d)+ ', ' +d+ ')';
-//                 return 'rgb(125, 0, ' + i + ')';
-              })
+                      .attr('fill', function(d,i) {
+                          return 'rgb(125, ' +Math.round(.75*d)+ ', ' +d+ ')';
+                      })
                    };
         
             // Run the loop for equalizer!!
             renderChart(); 
-                    
-                    
+   
+            
+            //////////////////////////////////////////////////////////////////////////
+            // SYMPHONY MODE which starts after certain period of INACTIVITY:
+            //////////////////////////////////////////////////////////////////////////
+             var maskarraysymphony = [];
+
+                function maskfeet() { 
+                    maskarraysymphony = [maskUrl1];
+                    maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                };
+          
+                function maskfeetgen() { 
+                    maskarraysymphony = [maskUrl1,maskUrl2];
+                    maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                };
+                
+                function maskfeetgenbelly() { 
+                    maskarraysymphony = [maskUrl1,maskUrl2,maskUrl3];
+                    maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                };
+            
+                function maskfeetgenbellyarm() { 
+                    maskarraysymphony = [maskUrl1,maskUrl2,maskUrl3,maskUrl4];
+                    maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                };
+                function feetmouth() { 
+                    maskarraysymphony = [maskUrl1,maskUrl5];
+                    maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                };
+                function symall() { 
+                    maskarraysymphony = [maskUrl1,maskUrl2,maskUrl3,maskUrl4,maskUrl5];
+                    maskedlayer.style('-webkit-mask-image',maskarraysymphony);
+                };
+                            
+               
+            var slidetimeout;
+            function symphonyslideShow() {
+                var maskedlayer = d3.select(".masked");
+           
+                maskfeet();          
+                var slidetimeout = setTimeout(maskfeetgen, 8000);
+                var slidetimeout = setTimeout(maskfeetgenbelly, 16000);
+                var slidetimeout = setTimeout(maskfeetgenbellyarm, 24000);
+                var slidetimeout = setTimeout(feetmouth, 40000);
+                var slidetimeout = setTimeout(symall, 48000);
+            };
+
+            
+            var curIndexarc = 0;
+            var ArcArray = [
+            '#arc0',
+            '#arc4',
+            '#arc2',
+            '#arc1',
+            '#arc3',
+            '#arc5'];
+            
+            function symphonymode() {
+            var curIndexarc = 0;
+            
+                 // symphony mode: all sections on in certain order!!
+                 //phase1 - feet                              - Arc0
+                 //phase2 - feet & genitalia                  - Arc0 & Arc4
+                 //phase3 - feet & genitalia & belly          - Arc0 & Arc4 & Arc2
+                 //phase4 - feet & genitalia & belly & arm    - Arc0 & Arc4 & Arc2 & Arc1
+                 //phase5 - feet & mouth                      - Arc0 & Arc3
+                 //phase6 - ALL                               - Arc0 & Arc1 & Arc2 & Arc3 & Arc4
+
+                phase1();
+                
+                     function phase1() {
+                         var thisarcsel =  d3.select(ArcArray[curIndexarc]);
+                         curIndexarc++;
+
+                         recursive_transitions_slideshow();
+
+                            function recursive_transitions_slideshow() {     
+                                 thisarcsel.style("fill",highlightfillcolor1)
+                                            .style("stroke",highlightstrokecolor)
+                                            .transition()
+                                            .duration(heartbeatduration1)
+                                            .style("fill",highlightfillcolor2)
+                                            .attr("stroke-width", 1)
+                                            .ease('sin-in')
+                                            .transition()
+                                            .duration(heartbeatduration2)
+                                            .style("fill",highlightfillcolor1)
+                                            .attr('stroke-width', 4)
+                                            .ease('bounce-in')
+                                            .each("end", recursive_transitions_slideshow);
+                                };
+                            setTimeout(phase2, 8000);   
+                        }; //phase1
+
+                     function phase2() {
+                         var thisarcsel =  d3.select(ArcArray[curIndexarc]);
+                         curIndexarc++;
+
+                         recursive_transitions_slideshow();
+
+                            function recursive_transitions_slideshow() {     
+                                 thisarcsel.style("fill",highlightfillcolor1)
+                                            .style("stroke",highlightstrokecolor)
+                                            .transition()
+                                            .duration(heartbeatduration1)
+                                            .style("fill",highlightfillcolor2)
+                                            .attr("stroke-width", 1)
+                                            .ease('sin-in')
+                                            .transition()
+                                            .duration(heartbeatduration2)
+                                            .style("fill",highlightfillcolor1)
+                                            .attr('stroke-width', 4)
+                                            .ease('bounce-in')
+                                            .each("end", recursive_transitions_slideshow);
+                                };
+                            setTimeout(phase3, 8000);
+                     }; //phase2
+
+                     function phase3() {
+                         var thisarcsel =  d3.select(ArcArray[curIndexarc]);
+                         curIndexarc++;
+
+                         recursive_transitions_slideshow();
+
+                            function recursive_transitions_slideshow() {     
+                                 thisarcsel.style("fill",highlightfillcolor1)
+                                            .style("stroke",highlightstrokecolor)
+                                            .transition()
+                                            .duration(heartbeatduration1)
+                                            .style("fill",highlightfillcolor2)
+                                            .attr("stroke-width", 1)
+                                            .ease('sin-in')
+                                            .transition()
+                                            .duration(heartbeatduration2)
+                                            .style("fill",highlightfillcolor1)
+                                            .attr('stroke-width', 4)
+                                            .ease('bounce-in')
+                                            .each("end", recursive_transitions_slideshow);
+                                };
+                            setTimeout(phase4, 8000);
+                        }; //phase3
+
+                     function phase4() {
+                          var thisarcsel =  d3.select(ArcArray[curIndexarc]);
+                         curIndexarc++;
+
+                         recursive_transitions_slideshow();
+
+                            function recursive_transitions_slideshow() {     
+                                 thisarcsel.style("fill",highlightfillcolor1)
+                                            .style("stroke",highlightstrokecolor)
+                                            .transition()
+                                            .duration(heartbeatduration1)
+                                            .style("fill",highlightfillcolor2)
+                                            .attr("stroke-width", 1)
+                                            .ease('sin-in')
+                                            .transition()
+                                            .duration(heartbeatduration2)
+                                            .style("fill",highlightfillcolor1)
+                                            .attr('stroke-width', 4)
+                                            .ease('bounce-in')
+                                            .each("end", recursive_transitions_slideshow);
+                                };
+                            timeoutphase4 = setTimeout(phase5, 16000);
+                        }; //phase4
+
+                     function phase5() { //FEET AND MOUTH ONLY
+                           // first un-highlight all arcs: /////////////////
+                             arcs = d3.selectAll('.arc')
+                             arcs.transition()
+                                        .style("fill",arcfillcolor) 
+                                        .duration(500)
+                                        .attr("stroke-width", 1)
+                                        .style("stroke","#444")
+                                        .attr("stroke-dasharray", "1, 0");
+                            ////////////////////////////////////////////////
+
+                         var thisarcsel =  arcs.filter("#arc3,#arc0") // feet and mouth
+
+                         recursive_transitions_slideshow();
+
+                            function recursive_transitions_slideshow() {     
+                                 thisarcsel.style("fill",highlightfillcolor1)
+                                            .style("stroke",highlightstrokecolor)
+                                            .transition()
+                                            .duration(heartbeatduration1)
+                                            .style("fill",highlightfillcolor2)
+                                            .attr("stroke-width", 1)
+                                            .ease('sin-in')
+                                            .transition()
+                                            .duration(heartbeatduration2)
+                                            .style("fill",highlightfillcolor1)
+                                            .attr('stroke-width', 4)
+                                            .ease('bounce-in')
+                                            .each("end", recursive_transitions_slideshow);
+                                };
+                            timeoutphase5 = setTimeout(phase6, 8000);
+                     }; //phase5
+
+                     function phase6() { // FINAL PHASE - SELECT ALL!!
+                         // first un-highlight all arcs: /////////////////
+                             arcs = d3.selectAll('.arc')
+
+                             arcs.transition()
+                                        .style("fill","none") 
+                                        .duration(500)
+                                        .attr("stroke-width", 1)
+                                        .style("stroke","#444")
+                                        .attr("stroke-dasharray", "1, 0");
+                            ////////////////////////////////////////////////
+
+                          var thisarcsel =  d3.selectAll(".arc");
+
+                         recursive_transitions_slideshow();
+
+                            function recursive_transitions_slideshow() {     
+                                 thisarcsel.style("fill",highlightfillcolor1)
+                                            .style("stroke",highlightstrokecolor)
+                                            .transition()
+                                            .duration(heartbeatduration1)
+                                            .style("fill",highlightfillcolor2)
+                                            .attr("stroke-width", 1)
+                                            .ease('sin-in')
+                                            .transition()
+                                            .duration(heartbeatduration2)
+                                            .style("fill",highlightfillcolor1)
+                                            .attr('stroke-width', 4)
+                                            .ease('bounce-in')
+                                            .each("end", recursive_transitions_slideshow);
+                        }; //recursive_transitions_slideshow
+
+                     }; //phase6
+         
+     }; // end sympony function
+
+            
                     
 //            /* The redirect to autoplay page function after XXX seconds of no interactivity" 
 //                FROM: https://www.kirupa.com/html5/detecting_if_the_user_is_idle_or_inactive.htm    
-
                 var timeoutID;
                 var numberofidletimes = 0;
+                // time after which visual goes into default symphony playing mode:
+                var TimeOutPeriodSeconds = 5000; 
+                // prechosen_numberidletimes *  TimeOutPeriodSeconds is time after which whole visual reloads. 5000*100 = 500 seconds of non activity (about 8 minutes)
+                var prechosen_numberidletimes = 100; 
+            
                 function setup() {
                     this.addEventListener("mousemove", resetTimer, false);
                     this.addEventListener("mousedown", resetTimer, false);
@@ -1019,8 +1458,8 @@
                 setup();
 
                 function startTimer() {
-                    // wait XXXX seconds before calling goInactive
-                    timeoutID = window.setTimeout(goInactive, 5000);
+                    // wait TimeOutPeriodSeconds seconds before calling goInactive
+                    timeoutID = window.setTimeout(goInactive, TimeOutPeriodSeconds);
                 }
 
                 function resetTimer(e) {
@@ -1030,24 +1469,57 @@
                 }
 
                 function goInactive() {
-                    // do something
                     console.log("going into symphony mode!")
-                    // track how often this has happened, and every now and then: reload whole page:
+
+                    // First - track how often a timeout has happened. Every now & then reload whole page:
                     numberofidletimes = numberofidletimes + 1;
-//                    if (numberofidletimes > 3) { // XX minutes
-//                            console.log("logged out a lot!")
-//                            window.location.reload();
-//                            }
+                    if (numberofidletimes > prechosen_numberidletimes) { // XX minutes
+                            console.log("logged out a lot!")
+                            window.location.reload();
+                            }
+
+                    //start the symphony song
+                    startSymphonysong(); 
+
+//                    var time_gain_delay =  0.1; //in seconds!
+//                    gainNode6.gain.setTargetAtTime(1, context.currentTime, time_gain_delay);
+                    
+                    // show highlighted disc sections
+                    symphonymode();
+                    
+                    // show body parts
+                    symphonyslideShow();
                     
                 }
 
                 function goActive() {
-                    // do something
                     console.log("going back into user interface playing mode!")
+                    
+                    // stop the symphone song:
+                    startSymphonysong(false); 
+//                     var time_gain_delay = .1; //in seconds!
+//                     gainNode6.gain.setTargetAtTime(0, context.currentTime, time_gain_delay);
+                    
+                    // unhighlight all arcs
+                    highlight();
+                    
+                    //stop slideshow by clearing all timeouts:
+                    // https://stackoverflow.com/questions/8860188/is-there-a-way-to-clear-all-time-outs
+                    var id = window.setTimeout(function() {}, 0);
+                    while (id--) {
+                        window.clearTimeout(id); // will do nothing if no timeout with id is present
+                    }
+                    
+                    // and set current body mask back to BW:
+                    maskedlayer.style('-webkit-mask-image',"");
+                    
+                    // restart timer
                     startTimer();
                 }
                     
-        }; // end FinishedLoading function
+            
+            
+        }; // end FinishedLoading function //////////////////////////////////////////////
 
               
               
