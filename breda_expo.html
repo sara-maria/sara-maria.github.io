@@ -41,10 +41,10 @@
 /*             *{ border: .5px solid orange !important;  }*/
               
             html {
-                  height: 100%;
+                  height: 99%;
                 }
                 body {
-                  min-height: 100%;
+                  min-height: 99%;
                 }
 			
             body {
@@ -833,9 +833,8 @@
              var heartbeatduration1 = 750;
              var heartbeatduration2 = 250;
 
-             function highlight(thisarc) {
+             function highlight() {
                  
-//                 debugger;
                     // CHECK WHICH ARCS NEED HIGHLIGHTING NOW:
                     var allhighlightedarcs = d3.selectAll(".highlight")
 
@@ -964,7 +963,7 @@
 //                ---> NOTE! HERE CODE WITH "" first instead of maskarray!
                     var maskarray = [];
                     maskedlayer.style('-webkit-mask-image',maskarray);
-                    maskedlayer.style('mask-image',"maskarray");
+                    maskedlayer.style('mask-image',maskarray);
                 
                     //and then after some seconds, start playing again!
                     //start the symphony song
@@ -1470,7 +1469,7 @@
             
                 function setup() {
 //                    this.addEventListener("mousemove", resetTimer, false);
-//                    this.addEventListener("mousedown", resetTimer, false);
+                    this.addEventListener("mousedown", resetTimer, false);
                     this.addEventListener("keypress", resetTimer, false);
                     this.addEventListener("DOMMouseScroll", resetTimer, false);
                     this.addEventListener("mousewheel", resetTimer, false);
@@ -1492,41 +1491,58 @@
                     goActive();
                 }
 
+                   
                 function goInactive() {
                     console.log("going into symphony mode!")
 
-//                    // First - track how often a timeout has happened. Every now & then reload whole page:
-//                    numberofidletimes = numberofidletimes + 1;
-//                    if (numberofidletimes > prechosen_numberidletimes) { // XX minutes
-//                            console.log("logged out a lot!")
-//                            window.location.reload();
-//                            }
-//
-//                    //THEN: Stop any ongoing body parts that are playing:
-//                     gainNode1.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-//                     gainNode2.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-//                     gainNode3.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-//                     gainNode4.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-//                     gainNode5.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
-//                            
-//                    //THEN: Set play buttons to stop buttons:
-//                    playbutton1.id = "";
-//                    playbutton2.id = "";
-//                    playbutton3.id = "";
-//                    playbutton4.id = "";
-//                    playbutton5.id = "";
-//
-//                    //Unplay playbuttons:
-//                    d3.selectAll('.round-button').classed("innerplay",true).classed("innerstop",false);
-//                    d3.selectAll('#playsymbol').classed("fa fa-stop fa-2x",false).classed("fa fa-play fa-2x",true);
-//
-//                    
-//                    //THEN: unhighlight all arcs
-//                    var allarcs =  d3.selectAll(".arc");
+                    // First - track how often a timeout has happened. Every now & then reload whole page:
+                    numberofidletimes = numberofidletimes + 1;
+                    if (numberofidletimes > prechosen_numberidletimes) { // XX minutes
+                            console.log("logged out a lot!")
+                            window.location.reload();
+                            }
+
+                    //THEN: Stop any ongoing body parts that are playing:
+                     gainNode1.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+                     gainNode2.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+                     gainNode3.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+                     gainNode4.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+                     gainNode5.gain.setTargetAtTime(0, context.currentTime, time_gain_delay_stop);
+                            
+                    //THEN: Set play buttons to stop buttons:
+                    playbutton1.id = "";
+                    playbutton2.id = "";
+                    playbutton3.id = "";
+                    playbutton4.id = "";
+                    playbutton5.id = "";
+
+                    //Unplay playbuttons:
+                    d3.selectAll('.round-button').classed("innerplay",true).classed("innerstop",false);
+                    d3.selectAll('#playsymbol').classed("fa fa-stop fa-2x",false).classed("fa fa-play fa-2x",true);
+
+                    console.log("AARGGH")
+                    //THEN: unhighlight all arcs
+                    
+//                    var allarcs =  svgdisc.select('#arc2');
+                     console.log(allarcs)
+                     
+                     
+//                     allarcs.classed("nonhighlight",false)
+//                                    .classed("highlight",true);
+                    
+//                    allarcs.style("fill","red")
+                    
+                    
+//                    allarcs.style("fill","red")
+//                            .style("fill",arcfillcolor) 
+//                            .attr("stroke-width", 1)
+//                            .style("stroke","#444")
 //                    allarcs.classed("nonhighlight",true)
-//                                    .classed("highlight",false);
+//                            .classed("highlight",false);
 //                    highlight();
 //                    
+//                    console.log("niettedoen");
+////                    debugger;
 //                    //THEN: unmask body
 //                    maskarray = maskarray.filter(e => e !== maskUrl1);
 //                    maskarray = maskarray.filter(e => e !== maskUrl2);
@@ -1538,7 +1554,7 @@
 //
 //                    
 //                    //now its time to start the symphony song
-//                    startSymphonysong(); 
+//                    setTstartSymphonysong(); 
 //
 //                    // show highlighted disc sections
 //                    symphonymode();
