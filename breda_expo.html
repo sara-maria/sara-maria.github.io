@@ -7,7 +7,7 @@
           - arclabels text spacing doet het niet in firefox
           - Code smooth transitions between body part highlights
           - Create stronger feet highlight colors
-          - Equalizer layout?
+          - Equalizer layout
           - Actual bacterial structures instead of circles on petri
           - Analyser only "on" when play mode is on?
 -->
@@ -92,11 +92,11 @@
               
             #PijltoPlay{
                 position:absolute;
-                    bottom:4px;
-                    left:86px;
+                    bottom:0px;
+                    left:124px;
                     height:16%;
-                z-index:2;
-            }
+                    z-index:2;
+                }
               
             /*   Main div containing all visuals and info etc:*/
             #div-container {
@@ -711,7 +711,6 @@
                 d['radcol']=+d["radcol"];
 
                 growSmallDataDriven(d)
-                console.log("bug fixed");
                 });//d3.csv
 
                    
@@ -1292,8 +1291,8 @@
                 var timeoutID;
                 var numberofidletimes = 0;
                 // time after which visual goes into default symphony playing mode:
-                var TimeOutPeriodSeconds = 5000; 
-                // prechosen_numberidletimes *  TimeOutPeriodSeconds is time after which whole visual reloads. 5000*100 = 500 seconds of non activity (about 8 minutes)
+                var TimeOutPeriodSeconds = 45000; //45 seconden
+                // prechosen_numberidletimes *  TimeOutPeriodSeconds is time after which whole visual reloads.  45*100 =  seconds of non activity (about 75 minutes)
                 var prechosen_numberidletimes = 100; 
             
                 function setup() {
@@ -1321,7 +1320,7 @@
                    
             var symphonytracking = null;
                 function goInactive() {
-                    console.log("going into symphony mode!")
+                    console.log("going into symphony mode")
                     symphonytracking = 1;
                     
                     // First - track how often a timeout has happened. Every now & then reload whole page:
@@ -1363,7 +1362,6 @@
                     maskedlayer.style('-webkit-mask-image',maskarray);
                     maskedlayer.style('mask-image',maskarray);
 
-                    
                     //now its time to start the symphony song
                     setTimeout(startSymphonysong,2000); 
                     //and show highlighted disc sections
@@ -1375,7 +1373,7 @@
                 function goActive() {
                     //NOTE: this function is called on EVERY user interaction!
                     //so also when you were NOT in symphony mode before
-                    console.log("going into user interface playing mode!")
+                    console.log("going into user interface playing mode")
                     
                     // stop the symphony song:
                     startSymphonysong(false); 
@@ -1398,15 +1396,9 @@
                         window.clearTimeout(id); // will do nothing if no timeout with id is present
                     }
                     
-                    // and set current body mask back to BW:
-//                    maskedlayer.style('-webkit-mask-image',"");
-//                    maskedlayer.style('mask-image',"");
-                    
                     // restart timer
                     startTimer();
                 }
-                    
-            
             
         }; // end FinishedLoading function //////////////////////////////////////////////
 
