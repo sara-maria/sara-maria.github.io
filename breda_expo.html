@@ -167,7 +167,7 @@
                 #div-footer {
                     position:relative;
                     bottom:0;
-                    margin-top:10px;
+                    margin-top:34px;
                     }
               
               /* Other styling: */
@@ -197,17 +197,20 @@
               
               h4 {
                     color:#c9c9c9;
-                    bottom:0;
+/*                    bottom:0;*/
                     font-size: 8px;
                     font-weight: 100;
                     letter-spacing: .2rem;
                     padding:0px;
                     margin:0px;
+                    width: 65%;
                 }
+              
              #weblinkfooter{
                     position:absolute;
-                    right:20px;
+                    right:1px;
                     bottom:0;
+                 width: 10%;
                     }   
               
             #BiotaBody {
@@ -254,7 +257,7 @@
                 }
               
               .round-button {
-                    border: 2px solid rgb(0, 0, 0);
+                    border: 4px solid rgb(0, 0, 0);
                     display:inline-block;
                     box-sizing: border-box;
                     display:block;
@@ -369,14 +372,30 @@
                     letter-spacing: 1.2rem; /*werkt niet in firefox....*/
                 }
               
+                a {
+                  color:#ffc2cc;
+                  text-decoration:none;
+/*                  font-weight: 700; */
+                  font-size:8px;
+                }
+
+                a:hover {
+                  color:#ffedf0;
+                }
+
+
+              
+              
           </style>
     </head>
         
     <body class="loading">
       
         <div class="wrapper">
-        <div id="div-header"> 
-            <img id="BBlogo" src="./BBB_images/BiotaBeatslogo.png" alt="Biota Beats Logo">
+        <div id="div-header">
+            <a href="https://www.biotabeats.org", target="_blank">
+                <img id="BBlogo" src="./BBB_images/BiotaBeatslogo.png" alt="Biota Beats Logo">
+            </a>
             <h1>BIOTA BEATS</h1>
             <h3>Muziek uit onze bacteriën</h3>
         </div>
@@ -447,12 +466,20 @@
         </div>
         
         <div id="div-footer"> 
-<!-- <h4><b>CREDITS</b> EMW Street Bio Team, Cambridge, Massachusetts, USA: David Sun Kong, Alex Guo, Gautam Salhotra, Chucky Kim, Sara Sprinkhuizen, Keerthi Shetty, Thrasyvoulos Karydis, Ani Liu, Russell Pasetes, Nicole Bakker, Shannon Johnson, Matt Mendoza, Mary Tsang, Yixiao Jiang, Viirj Kan, Rachel Smith  <b>SONIFICATION</b> Alex Guo and Gautam Salhotra <b>MUSIC PRODUCTION</b> Chucky Kim <b>INTERACTIVE VISUALISATION</b> Sara Sprinkhuizen</h4> -->
-<!-- <h4>The team wishes to thank Eric Rosembaum for his input and designer Charis Tsevis for allowing to use his beautiful "I, VIRUS" image. </h4> -->
-            <h4 id="weblinkfooter">www.biotabeats.org</h4>
+             
+            <h4><b>CREDITS</b> Biota Beats is created by the amazing, multidisciplinary Street Bio team at EMW bookstore in Cambridge, MA, USA: David Sun Kong, Alex Guo, Gautam Salhotra, Chucky Kim, Sara Sprinkhuizen, Keerthi Shetty, Thrasyvoulos Karydis, Ani Liu, Russell Pasetes, Nicole Bakker, Shannon Johnson, Matt Mendoza, Mary Tsang, Yixiao Jiang, Viirj Kan, Rachel Smith</h4>
+<!--            <h4><b>CREDITS</b> EMW Street Bio Team, Cambridge, Massachusetts, USA: David Sun Kong, <b>SONIFICATION</b> Alex Guo and Gautam Salhotra <b>MUSIC PRODUCTION</b> Chucky Kim <b>INTERACTIVE VISUALISATION</b> Sara Sprinkhuizen</h4>-->
+            <h4>The team wishes to thank designer Charis Tsevis for allowing to use his beautiful "I, VIRUS" image. </h4>
+
+            <h4 id="weblinkfooter"><a href="https://sara-maria.github.io/", target="_blank">Sara Maria 2018</a></h4>
+
         </div>
 
         </div> 
+            
+            
+<!--            Alex Guo, Gautam Salhotra, Chucky Kim, Sara Sprinkhuizen, Keerthi Shetty, Thrasyvoulos Karydis, Ani Liu, Russell Pasetes, Nicole Bakker, Shannon Johnson, Matt Mendoza, Mary Tsang, Yixiao Jiang, Viirj Kan, Rachel Smith  -->
+            
         <script>
             ///////////////////////////////////////////////////////////////////
             //         Build the elements and interactivity                 ///
@@ -590,7 +617,7 @@
                         .attr("stroke", "#efe9e9");
             
             //////////////////////////////////////////////////////////////////////////
-            //////////////////// DRAW PETR#efe9e9I DISC AND SECTIONS AND COLONIES    ///////////////////
+            //////////////////// DRAW PETRI DISC AND SECTIONS AND COLONIES    ///////////////////
             //////////////////////////////////////////////////////////////////////////	
             function growSmallDataDriven(dataset) {
                 var svg = d3.select("#discsvg")
