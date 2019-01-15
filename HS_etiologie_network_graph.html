@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+/*     * { border: 1px solid orange; }*/
+    
+html, 
+body {
+    height: 100vh;
+    min-height: 100vh;
+}
+    
+#PubNetwork{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: .1px solid #d9d9d9;
+}
+.node {
+    stroke: #e0e0e0;
+    stroke-width: .2px;
+    opacity: 1;
+}
+
+.link {
+    stroke: #999;
+    stroke-opacity: .3;
+}
+    
+.loading {
+    font-size: 18px;
+    font-family: Arial;
+}
+    
+.label {
+    fill: #444; 
+    font: 16px sans-serif; 
+}
+    
+.entry-name {
+      font-weight: normal;
+    }
+    
+.entry-value {
+      font-style: italic;
+    }
+</style>
+
+
+<!--BASED ON : https://stackoverflow.com/questions/29639270/space-out-nodes-evenly-around-root-node-in-d3-force-layout -->
+
+
+<body>
+<!--<script src="//d3js.org/d3.v3.min.js"></script>-->
+    <script src="./js/d3.v3.js.min"></script>
+<!--    <script src="./js/d3.v4.min.js"></script>-->
+
+    
+    <div id="PubNetwork"></div>
+    
+    
+<script>
+var width = document.getElementById("PubNetwork").offsetWidth,
+    height = document.getElementById("PubNetwork").offsetHeight;
+
+    // color per category:
+    // 0 = subsidy circle
+    // 1 = 2000
+    // 2 = 2005
+    // 3 = 2010
+    // 4 = 2015
+//var color = d3.scale.ordinal().range(["grey", "#B67DA7","#A1627F","#864A5B","#68353C"]);
+//var color = d3.scale.ordinal().range(["grey", "#4B2E3C","#6F4A60","#926889","#B38AB4"]);
+var color = d3.scale.ordinal().range(["grey", "#B38AB4","#946E91","#76546F","#583C4F"]);
+
+    
+var circleScale = d3.scale.linear()
+                        .domain([1,650])
+                        .range([2, 50]);
+    
+    var force = d3.layout.force()
+//                    .charge(-120)
+//                    .linkDistance(30)
+                    .size([width, height]);
+
+var svg = d3.select("#PubNetwork").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var loading = svg.append("text")
+    .attr("class", "loading")
+    .attr("x", width / 2)
+    .attr("y", height / 2)
+    .attr("dy", ".35em")
+    .style("text-anchor", "middle")
+    .text("Loading...");
+
+//d3.json("./ForceDirectData_v3.json", function (error, json) {
+d3.json("./graph_file_intl_pub_ETIOLOGY.json", function (error, json) {
+    var nodes = json.nodes;
+    
+    nodes[0].fixed = true;
+    nodes[0].x = width / 2;
+    nodes[0].y = height / 2;
+    
+    force.nodes(nodes)
+        .links(json.links)
+        .charge(function(d){
+            var charge = -500;
+            if (d.index === 0) charge = 10 * charge;
+            return charge;
+        });
+    
+    var link = svg.selectAll(".link")
+        .data(json.links)
+        .enter().append("line")
+        .attr("class", "link")              
+        .style("stroke-width", 1);
+    
+    
+    
+    var nodes = svg.selectAll(".node")
+        .data(json.nodes)
+        .enter().append("circle")
+        .attr("class", "node")
+        .attr("r", function (d) {
+            return (circleScale(d.TimesCited));
+        })
+        .attr("fill", function (d) {
+            return color(d.colorGroup);
+        })
+        .on('mouseenter', function(d){
+          	var nodeSelection = d3.select(this).transition()
+                                    .style("stroke","#454242")
+                                    .style("stroke-width","2px");
+
+            if (d.index === 0) {console.log("center circle")
+                               
+                               svg.append('svg:text')
+                              .attr('x', 50)
+                              .attr('y', 50)
+                              .attr('class', 'label')
+                        .append('svg:tspan')
+                              .attr("class", "entry-name")
+                              .text("Alle subsidies van de Hartstichting besteed aan entiologie onderzoek")
+
+                        svg.append('svg:text')
+                              .attr('x', 50)
+                              .attr('y', 70)
+                              .attr('class', 'label')
+                        .append('svg:tspan')
+                              .attr("class", "entry-name")
+                              .text("Jaren")
+                        .append("svg:tspan")
+                                .text(": ")
+                        .append('svg:tspan')
+                              .attr("class", "entry-value")
+                              .text("2000, 2005, 2010, 2015")
+                    
+                        svg.append('svg:text')
+                              .attr('x', 50)
+                              .attr('y', 90)
+                              .attr('class', 'label')
+                        .append('svg:tspan')
+                              .attr("class", "entry-name")
+                              .text("Totale subsidie bedrag")
+                        .append("svg:tspan")
+                                .text(": ")
+                        .append('svg:tspan')
+                              .attr("class", "entry-value")
+                              .text("EUR 29 miljoen")
+                        
+                               
+                               };
+            
+            if (d.index !== 0) { //console.log("not center circle")
+                               
+                               svg.append('svg:text')
+                              .attr('x', 50)
+                              .attr('y', 50)
+                              .attr('class', 'label')
+                        .append('svg:tspan')
+                              .attr("class", "entry-name")
+                              .text("Titel publicatie")
+                        .append("svg:tspan")
+                                .text(": ")
+                        .append('svg:tspan')
+                              .attr("class", "entry-value")
+                              .text(d.PubTitel  + " ")
+
+                        svg.append('svg:text')
+                              .attr('x', 50)
+                              .attr('y', 70)
+                              .attr('class', 'label')
+                        .append('svg:tspan')
+                              .attr("class", "entry-name")
+                              .text("Aantal keer geciteerd")
+                        .append("svg:tspan")
+                                .text(": ")
+                        .append('svg:tspan')
+                              .attr("class", "entry-value")
+                              .text(d.TimesCited  + " ")
+                    
+                        svg.append('svg:text')
+                              .attr('x', 50)
+                              .attr('y', 90)
+                              .attr('class', 'label')
+                        .append('svg:tspan')
+                              .attr("class", "entry-name")
+                              .text("Journal")
+                        .append("svg:tspan")
+                                .text(": ")
+                        .append('svg:tspan')
+                              .attr("class", "entry-value")
+                              .text(d.Tijdschrift  + " ")
+                    
+                        svg.append('svg:text')
+                                .attr('x', 50)
+                              .attr('y', 110)
+                              .attr('class', 'label')
+                        .append('svg:tspan')
+                              .attr("class", "entry-name")
+                              .text("Publicatie jaar")
+                        .append("svg:tspan")
+                                .text(": ")
+                        .append('svg:tspan')
+                              .attr("class", "entry-value")
+                              .text(d.PubJr + " ")
+                    
+                    
+                        svg.append('svg:text')
+                                .attr('x', 50)
+                              .attr('y', 130)
+                              .attr('class', 'label')
+                        .append('svg:tspan')
+                              .attr("class", "entry-name")
+                              .text("Subsidienummer")
+                        .append("svg:tspan")
+                                .text(": ")
+                        .append('svg:tspan')
+                              .attr("class", "entry-value")
+                              .text(d.SubsidieNr + " ")
+                        .append('svg:tspan')
+                              .attr("class", "entry-name")
+                              .text("  Bedrag")
+                        .append("svg:tspan")
+                                .text(": ")
+                        .append('svg:tspan')
+                              .attr("class", "entry-value")
+                              .text("EUR " + d.Bedrag_num  + " ")
+                    
+                };
+                          
+        })
+        
+        
+        
+        .on('mouseleave', function(d){
+          	var nodeSelection = d3.select(this).transition()
+                                                .style("stroke", "#e0e0e0")
+                                                .style("stroke-width", ".2px")
+          d3.selectAll(".label,.entry-name,.entry-value")		
+                .remove();
+   		});
+    
+    
+    
+    
+    
+    
+    var totalNodes = nodes[0].length;
+    
+   
+    force.start();
+    for (var i = totalNodes * totalNodes; i > 0; --i) force.tick();
+    
+    link.attr("x1", function (d) { return d.source.x; })
+        .attr("y1", function (d) { return d.source.y; })
+        .attr("x2", function (d) { return d.target.x; })
+        .attr("y2", function (d) { return d.target.y; });
+    
+    nodes.attr("cx", function (d) { return d.x; })
+        .attr("cy", function (d) { return d.y; })
+//        .attr("r", function(d){
+//            var radius = 10;
+//            
+//            if (d.index === 0) radius = radius * 2;
+//            
+//            return radius;
+//        });
+    
+    force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    nodes.attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+  });
+    
+    loading.remove();
+    
+  }); 
+</script>
